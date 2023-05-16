@@ -1,5 +1,6 @@
 package com.java.everyboard.content.dto;
 
+import com.java.everyboard.content.contentEnum.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,6 +17,6 @@ public class ContentPatchDto {
     private String content;
     private String imageUrl; // 컨텐츠 이미지를 담는 주소
     @NotNull
-    private String category; // Enum으로 교체될 예정
+    private Category category; // Enum으로 교체될 예정
     private String tag;
 }

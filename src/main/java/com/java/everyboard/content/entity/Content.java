@@ -1,5 +1,6 @@
 package com.java.everyboard.content.entity;
 
+import com.java.everyboard.content.contentEnum.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,7 +32,7 @@ public class Content {
     @Column(nullable = false)
     private String imageUrl; // 컨텐츠 이미지 주소(S3에 저장된 이미지 주소값)
     @Column(nullable = false)
-    private String category; // 카테고리 (Enum값으로 받음)
+    private Category category; // 카테고리 (Enum값으로 받음)
     @Column(nullable = false)
     private String tag; // 카테고리 (Enum값으로 받음)
 
