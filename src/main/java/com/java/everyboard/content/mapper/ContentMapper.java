@@ -1,6 +1,6 @@
 package com.java.everyboard.content.mapper;
 
-import com.java.everyboard.content.contentenum.Category;
+import com.java.everyboard.content.contentEnum.Category;
 import com.java.everyboard.content.dto.*;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.repository.ContentRepository;
