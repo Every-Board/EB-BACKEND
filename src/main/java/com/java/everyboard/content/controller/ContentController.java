@@ -1,5 +1,6 @@
 package com.java.everyboard.content.controller;
 
+import com.java.everyboard.content.contentEnum.Category;
 import com.java.everyboard.content.dto.CategoryResponseDto;
 import com.java.everyboard.content.dto.ContentPatchDto;
 import com.java.everyboard.content.dto.ContentPostDto;
@@ -90,8 +91,8 @@ public class ContentController {
 
     // 카테고리별 컨텐츠 조회
     @GetMapping("/category/{category}")
-    public ResponseEntity getContentFromThemeType(@PathVariable("category") Category category){
-        CategoryResponseDto response = contentMapper.CategoryResponseDto(category, contentRepository);
+    public ResponseEntity getContentFromCategory(@PathVariable("category") Category category){
+        CategoryResponseDto response = contentMapper.categoryResponseDto(category, contentRepository);
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK
         );

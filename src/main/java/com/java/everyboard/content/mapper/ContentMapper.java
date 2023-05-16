@@ -43,7 +43,7 @@ public interface ContentMapper {
     List<ContentResponseDto> contentsToContentResponse(List<Content> contents);
 
     // 카테고리 list 선언 //
-    default CategoryResponseDto categoryResponsedto(Category category, ContentRepository contentRepository){
+    default CategoryResponseDto categoryResponseDto(Category category, ContentRepository contentRepository){
         List<Content> contents = contentRepository.findAllByCategory(category);
 
         return CategoryResponseDto.builder()
@@ -140,4 +140,5 @@ public interface ContentMapper {
                         .build())
                 .collect(Collectors.toList());
     }
+
 }
