@@ -1,13 +1,12 @@
 package com.java.everyboard.content.controller;
 
-import com.java.everyboard.content.contentEnum.Category;
-import com.java.everyboard.content.dto.CategoryResponseDto;
-import com.java.everyboard.content.dto.ContentPatchDto;
-import com.java.everyboard.content.dto.ContentPostDto;
-import com.java.everyboard.content.dto.ContentResponseDto;
+import com.java.everyboard.constant.Category;
+import com.java.everyboard.content.dto.*;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.mapper.ContentMapper;
 import com.java.everyboard.content.repository.ContentRepository;
+import com.java.everyboard.content.response.MultiResponseDto;
+import com.java.everyboard.content.response.SingleResponseDto;
 import com.java.everyboard.content.service.ContentService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -44,15 +43,15 @@ public class ContentController {
     }
 
     // 게시글 단건 조회 //
-    @GetMapping("/{contentId}")
-    public ResponseEntity getContent(@PathVariable("contentId") Long contentId) {
-        Content content = contentService.findContent(contentId);
-        long viewCount = content.getViewCount();
-        content.setViewCount(++viewCount);
-        contentService.updateViewCount(content);
-
-        return contentService.detail(content);
-    }
+//    @GetMapping("/{contentId}")
+//    public ResponseEntity getContent(@PathVariable("contentId") Long contentId) {
+//        Content content = contentService.findContent(contentId);
+//        long viewCount = content.getViewCount();
+//        content.setViewCount(++viewCount);
+//        contentService.updateViewCount(content);
+//
+//        return contentService.detail(content);
+//    }
 
     // 게시글 전체 조회 //
     @GetMapping
@@ -92,7 +91,7 @@ public class ContentController {
     // 카테고리별 컨텐츠 조회
     @GetMapping("/category/{category}")
     public ResponseEntity getContentFromCategory(@PathVariable("category") Category category){
-        CategoryResponseDto response = contentMapper.categoryResponseDto(category, contentRepository);
+        CategoryContentsResponseDto response = contentMapper.categoryContentsResponseDto(category, contentRepository);
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK
         );

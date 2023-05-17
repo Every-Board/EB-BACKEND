@@ -1,21 +1,21 @@
 package com.java.everyboard.content.entity;
 
-import com.java.everyboard.content.contentEnum.Category;
+import com.java.everyboard.audit.Auditable;
+import com.java.everyboard.constant.Category;
+import com.java.everyboard.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
 @Table(name = "CONTENTS")
-public class Content {
+public class Content extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CONTENT_ID")
@@ -32,18 +32,23 @@ public class Content {
     @Column(nullable = false)
     private String imageUrl; // 컨텐츠 이미지 주소(S3에 저장된 이미지 주소값)
     @Column(nullable = false)
-    private Category category; // 카테고리 (Enum값으로 받음)
+    @Enumerated(EnumType.STRING)
+    private Category category = Category.Board; // 카테고리 (Enum값으로 받음)
     @Column(nullable = false)
-    private String tag; // 카테고리 (Enum값으로 받음)
+    private String tag;
 
-    @CreatedDate //데이터 생성 날짜 자동 저장 어노테이션
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt; // 컨텐츠 생성 시간
-    @LastModifiedDate // 데이터 수정 날짜 자동 저장 어노테이션
-    @Column(name = "LAST_MODIFIED_AT")
-    private LocalDateTime modifiedAt; // 컨텐츠 수정 시간
+    // 연관 관계 M:N //
+    @ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
-    // 연관 관계 //
+    // 연관 관계 N:M //
+   /* @OrderBy("heartId")
+    @OneToMany(mappedBy = "content", cascade = CascadeType.REMOVE)
+    private List<Heart> hearts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "content", cascade = CascadeType.REMOVE)
+    private List<Comment> comments = new ArrayList<>();*/
 
     // 생성자 //
 
