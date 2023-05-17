@@ -1,6 +1,6 @@
 package com.java.everyboard.content.dto;
 
-import com.java.everyboard.content.contentEnum.Category;
+import com.java.everyboard.constant.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

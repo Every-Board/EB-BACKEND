@@ -1,6 +1,6 @@
 package com.java.everyboard.content.dto;
 
-import com.java.everyboard.content.contentEnum.Category;
+import com.java.everyboard.constant.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -19,4 +19,10 @@ public class ContentPatchDto {
     @NotNull
     private Category category; // Enum으로 교체될 예정
     private String tag;
+
+
+    // 생성자 //
+    public void updateId(Long id){
+        this.contentId = id;
+    }
 }

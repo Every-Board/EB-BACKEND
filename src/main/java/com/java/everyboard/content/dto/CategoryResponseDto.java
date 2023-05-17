@@ -1,6 +1,6 @@
 package com.java.everyboard.content.dto;
 
-import com.java.everyboard.content.contentEnum.Category;
+import com.java.everyboard.constant.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class CategoryResponseDto {
     private Long contentId;
     private Long userId;
+    private String nickname;
     private Long viewCount;
     private Long heartCount;
     @NotBlank(message = "게시글 제목을 입력해야 합니다.")

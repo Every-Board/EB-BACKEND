@@ -1,12 +1,14 @@
 package com.java.everyboard.content.dto;
 
-import com.java.everyboard.content.contentEnum.Category;
+import com.java.everyboard.constant.Category;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
+@AllArgsConstructor
 public class ContentPostDto {
     private Long userId;
     @NotBlank(message = "게시글 제목을 입력해야 합니다.")

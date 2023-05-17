@@ -1,6 +1,6 @@
 package com.java.everyboard.content.dto;
 
-import com.java.everyboard.content.contentEnum.Category;
+import com.java.everyboard.constant.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,5 +27,6 @@ public class ContentResponseDto {
     private String tag;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
 
 }
