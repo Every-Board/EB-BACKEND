@@ -1,4 +1,4 @@
-package com.java.everyboard.user;
+package com.java.everyboard.user.entity;
 
 import com.java.everyboard.audit.Auditable;
 import com.java.everyboard.constant.ActiveStatus;
