@@ -7,7 +7,6 @@ import com.java.everyboard.content.repository.ContentRepository;
 import com.java.everyboard.user.User;
 import org.mapstruct.Mapper;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,10 +99,11 @@ public interface ContentMapper {
                 .map(content -> HomepageContentResponseDto.builder()
                         .contentId(content.getContentId())
                         .title(content.getTitle())
+                        .imageUrl(content.getImageUrl())
+                        .viewCount(content.getViewCount())
                         .category(content.getCategory())
                         .createdAt(content.getCreatedAt())
                         .modifiedAt(content.getModifiedAt())
-                        .imageUrl(content.getImageUrl())
                         .build())
                 .collect(Collectors.toList());
     }

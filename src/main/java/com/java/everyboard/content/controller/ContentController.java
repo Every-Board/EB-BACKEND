@@ -55,17 +55,23 @@ public class ContentController {
 
     // 게시글 전체 조회 //
     @GetMapping
-    public ResponseEntity getContents(@RequestParam("page") int page,
-                                      @RequestParam("size") int size) {
-        Page<Content> pageContents = contentService.findContents(page-1, size);
-        List<Content> contents = pageContents.getContent();
+    public ResponseEntity getContents(@RequestParam("size") int size) {
+        List<Content> contents = contentService.findContents();
 
-        return new ResponseEntity<>(
-                new MultiResponseDto<>(
-                        contentMapper.contentsToContentResponse(contents),
-                        pageContents),
+        return new ResponseEntity<>(contentMapper.contentsToContentResponse(contents),
                 HttpStatus.OK);
     }
+
+
+    // 게시글 조회수 상위 조회 //
+    @GetMapping("/Homepage")
+    public ResponseEntity getContentsViewRank(@RequestParam("size") int size) {
+        List<Content> contents = contentService.findContentsViewRank();
+
+        return new ResponseEntity<>(contentMapper.contentsToHomepageContentResponseDto(contents),
+                HttpStatus.OK);
+    }
+
 
     // 게시글 수정 //
     @PatchMapping("/{contentId}")

@@ -1,22 +1,17 @@
 package com.java.everyboard.content.service;
 
-import com.java.everyboard.content.dto.ContentAllResponseDto;
+import com.java.everyboard.content.dto.HomepageContentResponseDto;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.mapper.ContentMapper;
 import com.java.everyboard.content.repository.ContentRepository;
-import com.java.everyboard.content.response.SingleResponseDto;
 import com.java.everyboard.exception.BusinessLogicException;
 import com.java.everyboard.exception.ExceptionCode;
-import com.java.everyboard.user.User;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ContentService {
@@ -74,10 +69,16 @@ public class ContentService {
     }
 
     // 게시글 전체 조회 //
-    public Page<Content> findContents(int page, int size) {
-        return contentRepository.findAll(PageRequest.of(page, size,
-                Sort.by("contentId").descending()));
+    public List<Content> findContents() {
+        return contentRepository.findAll();
     }
+
+    // 게시글 조회수 상위 조회 //
+    public List<Content> findContentsViewRank() {
+        return contentRepository.findContentsViewRank();
+    }
+
+
 
     // 게시글 삭제 //
     public void deleteContent(Long contentId) {
@@ -120,4 +121,5 @@ public class ContentService {
 //                new SingleResponseDto<>(response), HttpStatus.OK
 //        );
 //    }
+
 }
