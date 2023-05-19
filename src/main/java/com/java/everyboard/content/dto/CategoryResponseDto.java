@@ -17,7 +17,7 @@ public class CategoryResponseDto {
     private Long userId;
     private String nickname;
     private Long viewCount;
-    private Long heartCount;
+    private Long contentHeartCount;
     @NotBlank(message = "게시글 제목을 입력해야 합니다.")
     private String title;
     @NotBlank(message = "게시글의 내용을 입력해야 합니다.")

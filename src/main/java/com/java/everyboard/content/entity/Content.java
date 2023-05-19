@@ -2,6 +2,7 @@ package com.java.everyboard.content.entity;
 
 import com.java.everyboard.audit.Auditable;
 import com.java.everyboard.constant.Category;
+import com.java.everyboard.contentHeart.entity.ContentHeart;
 import com.java.everyboard.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,13 +26,13 @@ public class Content extends Auditable {
     @Column(nullable = false)
     private long viewCount = 0; // 조회수
     @Column(nullable = false)
-    private long heartCount = 0; // 좋아요수
+    private long contentHeartCount = 0; // 좋아요수
     @Column(nullable = false)
     private String title; // 컨텐츠 제목
     @Column(nullable = false)
     private String content; // 컨텐츠 내용
-//    @Column(nullable = false)
-//    private String imageUrl; // 컨텐츠 이미지 주소(S3에 저장된 이미지 주소값)
+    @Column(nullable = false)
+    private String imageUrl; // 컨텐츠 이미지 주소(S3에 저장된 이미지 주소값)
     @Transient
     private final List<ContentImage> contentImageList = new ArrayList<>(); // 컨텐츠 이미지 리스트값
     @Column(nullable = false)
@@ -46,15 +47,19 @@ public class Content extends Auditable {
     private User user;
 
     // 연관 관계 N:M //
-   /* @OrderBy("heartId")
+    @OrderBy("contentHeartId")
     @OneToMany(mappedBy = "content", cascade = CascadeType.REMOVE)
-    private List<Heart> hearts = new ArrayList<>();
+    private List<ContentHeart> contentHearts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "content", cascade = CascadeType.REMOVE)
+
+    /*@OneToMany(mappedBy = "content", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();*/
 
     // 생성자 //
 
     // 연관 관계 메서드 //
+    public void addContentHeart(ContentHeart contentHeart) {
+        contentHearts.add(contentHeart);
+    }
 
 }
