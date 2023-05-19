@@ -14,6 +14,6 @@ public interface ContentHeartRepository extends JpaRepository<ContentHeart, Long
 //    List<Heart> findAllByContent(Content content);
     Optional<ContentHeart> findByUserAndContent(User user, Content content);
 
-    @Query(value = "select * from heart where user_id = :userId", nativeQuery = true)
+    @Query(value = "select * from contentHeart where user_id = :userId", nativeQuery = true)
     List<ContentHeart> findAllByUserId(long userId);
 }
