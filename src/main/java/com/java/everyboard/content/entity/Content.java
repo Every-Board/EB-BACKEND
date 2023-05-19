@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,8 +30,10 @@ public class Content extends Auditable {
     private String title; // 컨텐츠 제목
     @Column(nullable = false)
     private String content; // 컨텐츠 내용
-    @Column(nullable = false)
-    private String imageUrl; // 컨텐츠 이미지 주소(S3에 저장된 이미지 주소값)
+//    @Column(nullable = false)
+//    private String imageUrl; // 컨텐츠 이미지 주소(S3에 저장된 이미지 주소값)
+    @Transient
+    private final List<ContentImage> contentImageList = new ArrayList<>(); // 컨텐츠 이미지 리스트값
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Category category = Category.Board; // 카테고리 (Enum값으로 받음)

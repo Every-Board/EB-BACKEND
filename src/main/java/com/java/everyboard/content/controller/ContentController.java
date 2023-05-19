@@ -1,5 +1,6 @@
 package com.java.everyboard.content.controller;
 
+import com.java.everyboard.AwsS3.AwsS3Service;
 import com.java.everyboard.constant.Category;
 import com.java.everyboard.content.dto.*;
 import com.java.everyboard.content.entity.Content;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,16 +26,20 @@ public class ContentController {
     private final ContentService contentService;
     private final ContentMapper contentMapper;
     private final ContentRepository contentRepository;
+    private final AwsS3Service awss3Service;
 
-    public ContentController(ContentService contentService, ContentMapper contentMapper, ContentRepository contentRepository) {
+
+    public ContentController(ContentService contentService, ContentMapper contentMapper, ContentRepository contentRepository, AwsS3Service awss3Service) {
         this.contentService = contentService;
         this.contentMapper = contentMapper;
         this.contentRepository = contentRepository;
+        this.awss3Service = awss3Service;
     }
 
     // 게시글 생성 //
     @PostMapping
     public ResponseEntity postContent(@Valid @RequestBody ContentPostDto requestBody) {
+
         Content content = contentService.createContent(contentMapper.contentPostDtoToContent(requestBody));
         ContentResponseDto contentResponse = contentMapper.contentToContentResponse(content);
 
