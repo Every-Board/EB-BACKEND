@@ -11,9 +11,10 @@ import lombok.Setter;
 @Builder
 public class CommentHeartResponseDto {
 
-    private Long heartId;
+    private Long commentHeartId;
 
     private Long contentId;
+    private Long commentId;
 
     private Long userId;
 

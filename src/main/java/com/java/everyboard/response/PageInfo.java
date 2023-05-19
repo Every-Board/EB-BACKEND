@@ -1,4 +1,4 @@
-package com.java.everyboard.content.response;
+package com.java.everyboard.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

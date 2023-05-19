@@ -77,7 +77,7 @@ public class UserService {
 
     // 소셜 회원 확인
     public void isSocialUser(User user) {
-        if(user.getLoginType().equals(LoginType.SOCIAL)) {
+        if (user.getLoginType().equals(LoginType.SOCIAL)) {
             throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
         }
     }

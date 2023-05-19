@@ -2,8 +2,8 @@ package com.java.everyboard.scrap.entity;
 
 import com.java.everyboard.audit.Auditable;
 import com.java.everyboard.content.entity.Content;
-import com.java.everyboard.scrap.constant.ScrapType;
-import com.java.everyboard.user.User;
+import com.java.everyboard.constant.ScrapType;
+import com.java.everyboard.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

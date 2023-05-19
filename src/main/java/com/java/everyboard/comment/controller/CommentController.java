@@ -6,6 +6,7 @@ import com.java.everyboard.comment.dto.CommentResponseDto;
 import com.java.everyboard.comment.entity.Comment;
 import com.java.everyboard.comment.mapper.CommentMapper;
 import com.java.everyboard.comment.service.CommentService;
+import com.java.everyboard.response.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

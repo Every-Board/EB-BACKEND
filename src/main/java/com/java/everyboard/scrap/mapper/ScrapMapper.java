@@ -3,7 +3,7 @@ package com.java.everyboard.scrap.mapper;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.scrap.dto.*;
 import com.java.everyboard.scrap.entity.Scrap;
-import com.java.everyboard.user.User;
+import com.java.everyboard.user.entity.User;
 import org.mapstruct.Mapper;
 
 import java.util.List;

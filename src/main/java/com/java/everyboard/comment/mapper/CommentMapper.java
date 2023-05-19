@@ -4,6 +4,8 @@ import com.java.everyboard.comment.dto.CommentPatchDto;
 import com.java.everyboard.comment.dto.CommentPostDto;
 import com.java.everyboard.comment.dto.CommentResponseDto;
 import com.java.everyboard.comment.entity.Comment;
+import com.java.everyboard.content.entity.Content;
+import com.java.everyboard.user.entity.User;
 
 import java.util.List;
 

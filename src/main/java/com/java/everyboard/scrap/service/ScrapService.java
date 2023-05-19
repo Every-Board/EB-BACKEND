@@ -4,11 +4,11 @@ import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.repository.ContentRepository;
 import com.java.everyboard.exception.BusinessLogicException;
 import com.java.everyboard.exception.ExceptionCode;
-import com.java.everyboard.scrap.constant.ScrapType;
+import com.java.everyboard.constant.ScrapType;
 import com.java.everyboard.scrap.entity.Scrap;
 import com.java.everyboard.scrap.mapper.ScrapMapper;
 import com.java.everyboard.scrap.repository.ScrapRepository;
-import com.java.everyboard.user.User;
+import com.java.everyboard.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

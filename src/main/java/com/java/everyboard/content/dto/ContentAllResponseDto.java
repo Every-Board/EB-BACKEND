@@ -1,5 +1,6 @@
 package com.java.everyboard.content.dto;
 
+import com.java.everyboard.comment.dto.CommentResponseDto;
 import com.java.everyboard.constant.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @Getter
@@ -34,5 +36,5 @@ public class ContentAllResponseDto {
     // 게시글 작성 유저 정보 //
     private String nickname;
     private String profileUrl; // 프로필 사진
-//    private List<CommentResponseDto> comments;
+    private List<CommentResponseDto> comments;
 }

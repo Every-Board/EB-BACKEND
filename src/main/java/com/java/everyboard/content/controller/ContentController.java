@@ -6,15 +6,12 @@ import com.java.everyboard.content.dto.*;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.mapper.ContentMapper;
 import com.java.everyboard.content.repository.ContentRepository;
-import com.java.everyboard.content.response.MultiResponseDto;
-import com.java.everyboard.content.response.SingleResponseDto;
+import com.java.everyboard.response.SingleResponseDto;
 import com.java.everyboard.content.service.ContentService;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -49,15 +46,15 @@ public class ContentController {
     }
 
     // 게시글 단건 조회 //
-//    @GetMapping("/{contentId}")
-//    public ResponseEntity getContent(@PathVariable("contentId") Long contentId) {
-//        Content content = contentService.findContent(contentId);
-//        long viewCount = content.getViewCount();
-//        content.setViewCount(++viewCount);
-//        contentService.updateViewCount(content);
-//
-//        return contentService.detail(content);
-//    }
+    @GetMapping("/{contentId}")
+    public ResponseEntity getContent(@PathVariable("contentId") Long contentId) {
+        Content content = contentService.findContent(contentId);
+        long viewCount = content.getViewCount();
+        content.setViewCount(++viewCount);
+        contentService.updateViewCount(content);
+
+        return contentService.detail(content);
+    }
 
     // 게시글 전체 조회 //
     @GetMapping

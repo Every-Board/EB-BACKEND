@@ -4,7 +4,7 @@ import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.contentHeart.dto.ContentHeartPatchDto;
 import com.java.everyboard.contentHeart.dto.ContentHeartResponseDto;
 import com.java.everyboard.contentHeart.entity.ContentHeart;
-import com.java.everyboard.user.User;
+import com.java.everyboard.user.entity.User;
 import org.mapstruct.Mapper;
 
 import java.util.List;

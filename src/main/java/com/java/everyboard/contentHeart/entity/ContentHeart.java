@@ -2,8 +2,8 @@ package com.java.everyboard.contentHeart.entity;
 
 import com.java.everyboard.audit.Auditable;
 import com.java.everyboard.content.entity.Content;
-import com.java.everyboard.contentHeart.constant.HeartType;
-import com.java.everyboard.user.User;
+import com.java.everyboard.constant.HeartType;
+import com.java.everyboard.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;

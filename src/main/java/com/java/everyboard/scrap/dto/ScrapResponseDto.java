@@ -1,6 +1,5 @@
 package com.java.everyboard.scrap.dto;
 
-import com.java.everyboard.scrap.constant.ScrapType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

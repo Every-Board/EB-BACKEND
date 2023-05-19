@@ -2,7 +2,7 @@ package com.java.everyboard.contentHeart.repository;
 
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.contentHeart.entity.ContentHeart;
-import com.java.everyboard.user.User;
+import com.java.everyboard.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -2,7 +2,7 @@ package com.java.everyboard.contentHeart.controller;
 
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.service.ContentService;
-import com.java.everyboard.contentHeart.constant.HeartType;
+import com.java.everyboard.constant.HeartType;
 import com.java.everyboard.contentHeart.dto.ContentHeartResponseDto;
 import com.java.everyboard.contentHeart.entity.ContentHeart;
 import com.java.everyboard.contentHeart.mapper.ContentHeartMapper;
@@ -10,7 +10,8 @@ import com.java.everyboard.contentHeart.repository.ContentHeartRepository;
 import com.java.everyboard.contentHeart.service.ContentHeartService;
 import com.java.everyboard.exception.BusinessLogicException;
 import com.java.everyboard.exception.ExceptionCode;
-import com.java.everyboard.user.User;
+import com.java.everyboard.user.entity.User;
+import com.java.everyboard.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

@@ -2,12 +2,12 @@ package com.java.everyboard.contentHeart.service;
 
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.repository.ContentRepository;
-import com.java.everyboard.contentHeart.constant.HeartType;
+import com.java.everyboard.constant.HeartType;
 import com.java.everyboard.contentHeart.entity.ContentHeart;
 import com.java.everyboard.contentHeart.repository.ContentHeartRepository;
 import com.java.everyboard.exception.BusinessLogicException;
 import com.java.everyboard.exception.ExceptionCode;
-import com.java.everyboard.user.User;
+import com.java.everyboard.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

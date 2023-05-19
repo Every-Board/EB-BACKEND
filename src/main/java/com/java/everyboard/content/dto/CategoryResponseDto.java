@@ -28,5 +28,4 @@ public class CategoryResponseDto {
     private String tag;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-
 }

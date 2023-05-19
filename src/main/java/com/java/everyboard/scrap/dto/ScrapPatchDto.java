@@ -1,7 +1,6 @@
 package com.java.everyboard.scrap.dto;
 
-import com.java.everyboard.contentHeart.constant.HeartType;
-import com.java.everyboard.scrap.constant.ScrapType;
+import com.java.everyboard.constant.ScrapType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

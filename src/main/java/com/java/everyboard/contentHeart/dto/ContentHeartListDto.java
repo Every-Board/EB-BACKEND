@@ -1,6 +1,6 @@
 package com.java.everyboard.contentHeart.dto;
 
-import com.java.everyboard.contentHeart.constant.HeartType;
+import com.java.everyboard.constant.HeartType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

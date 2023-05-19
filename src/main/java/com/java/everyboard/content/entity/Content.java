@@ -1,9 +1,11 @@
 package com.java.everyboard.content.entity;
 
 import com.java.everyboard.audit.Auditable;
+import com.java.everyboard.comment.entity.Comment;
 import com.java.everyboard.constant.Category;
 import com.java.everyboard.contentHeart.entity.ContentHeart;
-import com.java.everyboard.user.User;
+import com.java.everyboard.scrap.entity.Scrap;
+import com.java.everyboard.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -52,14 +54,17 @@ public class Content extends Auditable {
     private List<ContentHeart> contentHearts = new ArrayList<>();
 
 
-    /*@OneToMany(mappedBy = "content", cascade = CascadeType.REMOVE)
-    private List<Comment> comments = new ArrayList<>();*/
+    @OneToMany(mappedBy = "content", cascade = CascadeType.REMOVE)
+    private List<Comment> comments = new ArrayList<>();
 
-    // 생성자 //
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Scrap> scraps = new ArrayList<>();
 
     // 연관 관계 메서드 //
     public void addContentHeart(ContentHeart contentHeart) {
         contentHearts.add(contentHeart);
     }
-
+    public void addScrap(Scrap scrap) {
+        scraps.add(scrap);
+    }
 }

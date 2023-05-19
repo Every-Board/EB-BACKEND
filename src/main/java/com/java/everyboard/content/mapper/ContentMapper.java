@@ -1,12 +1,16 @@
 package com.java.everyboard.content.mapper;
 
+import com.java.everyboard.comment.dto.CommentResponseDto;
+import com.java.everyboard.comment.entity.Comment;
+import com.java.everyboard.comment.repository.CommentRepository;
 import com.java.everyboard.constant.Category;
 import com.java.everyboard.content.dto.*;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.repository.ContentRepository;
-import com.java.everyboard.user.User;
+import com.java.everyboard.user.entity.User;
 import org.mapstruct.Mapper;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,21 +25,21 @@ public interface ContentMapper {
 
     // 컨텐츠 to 컨텐츠 리스폰스 (단건) //
     default ContentResponseDto contentToContentResponse(Content content){
-    User user = content.getUser();
+        User user = content.getUser();
 
-    return ContentResponseDto.builder()
-            .contentId(content.getContentId())
-            .userId(user.getUserId())
-            .viewCount(content.getViewCount())
-            .heartCount(content.getHeartCount())
-            .title(content.getTitle())
-            .content(content.getContent())
-            .imageUrl(content.getImageUrl())
-            .category(content.getCategory())
-            .tag(content.getTag())
-            .createdAt(content.getCreatedAt())
-            .modifiedAt(content.getModifiedAt())
-            .build();
+        return ContentResponseDto.builder()
+                .contentId(content.getContentId())
+                .userId(user.getUserId())
+                .viewCount(content.getViewCount())
+                .contentHeartCount(content.getContentHeartCount())
+                .title(content.getTitle())
+                .content(content.getContent())
+                .imageUrl(content.getImageUrl())
+                .category(content.getCategory())
+                .tag(content.getTag())
+                .createdAt(content.getCreatedAt())
+                .modifiedAt(content.getModifiedAt())
+                .build();
     }
 
     // 컨텐츠(다중) to 컨텐츠 리스폰스 (전체) //
@@ -61,7 +65,7 @@ public interface ContentMapper {
                         .title(content.getTitle())
                         .content(content.getContent())
                         .viewCount(content.getViewCount())
-                        .heartCount(content.getHeartCount())
+                        .contentHeartCount(content.getContentHeartCount())
                         .category(content.getCategory())
                         .imageUrl(content.getImageUrl())
                         .createdAt(content.getCreatedAt())
@@ -71,7 +75,7 @@ public interface ContentMapper {
     }
 
     // 컨텐츠 to 컨텐트 전체 리스폰스 //
-    /*default ContentAllResponseDto contentToContentAllResponse(Content content, CommentRepository commentRepository){
+    default ContentAllResponseDto contentToContentAllResponse(Content content, CommentRepository commentRepository){
         User user = content.getUser();
         List<Comment> comments = commentRepository.findAllByContentId(content.getContentId());
         Collections.reverse(comments);
@@ -81,7 +85,7 @@ public interface ContentMapper {
                 .userId(user.getUserId())
                 .nickname(user.getNickname())
                 .title(content.getTitle())
-                .heartCount(content.getHeartCount())
+                .contentHeartCount(content.getContentHeartCount())
                 .category(content.getCategory())
                 .comments(commentsToCommentResponseDtos(comments))
                 .createdAt(content.getCreatedAt())
@@ -91,7 +95,6 @@ public interface ContentMapper {
                 .viewCount(content.getViewCount())
                 .build();
     }
-*/
     // 컨텐츠 to 홈페이지 컨텐츠 리스폰스 //
     default List<HomepageContentResponseDto> contentsToHomepageContentResponseDto(List<Content> contents){
 
@@ -125,21 +128,18 @@ public interface ContentMapper {
     }
 
     // 커멘츠 to 커멘트 리스폰스 (전체) //
-    /*default List<CommentResponseDto> commentsToCommentResponseDtos(List<Comment> comments){
+    default List<CommentResponseDto> commentsToCommentResponseDtos(List<Comment> comments){
         return comments.stream()
                 .map(comment -> CommentResponseDto.builder()
                         .commentId(comment.getCommentId())
                         .contentId(comment.getContent().getContentId())
                         .userId(comment.getUser().getUserId())
-                        .body(comment.getBody())
-                        .ratingType(comment.getRatingType())
+                        .comment(comment.getComment())
                         .createdAt(comment.getCreatedAt())
                         .modifiedAt(comment.getModifiedAt())
-                        .image(comment.getUser().getImage())
                         .title(comment.getContent().getTitle())
                         .nickName(comment.getUser().getNickname())
                         .build())
                 .collect(Collectors.toList());
-    }*/
-
+    }
 }
