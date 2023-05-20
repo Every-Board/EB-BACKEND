@@ -3,9 +3,14 @@ package com.java.everyboard.commentheart.controller;
 import com.java.everyboard.comment.entity.Comment;
 import com.java.everyboard.comment.service.CommentService;
 import com.java.everyboard.commentheart.dto.CommentHeartResponseDto;
+import com.java.everyboard.commentheart.entity.CommentHeart;
 import com.java.everyboard.commentheart.mapper.CommentHeartMapper;
 import com.java.everyboard.commentheart.repository.CommentHeartRepository;
 import com.java.everyboard.commentheart.service.CommentHeartService;
+import com.java.everyboard.exception.BusinessLogicException;
+import com.java.everyboard.exception.ExceptionCode;
+import com.java.everyboard.user.entity.User;
+import com.java.everyboard.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,11 +27,11 @@ import javax.validation.constraints.Positive;
 @RestController
 @RequiredArgsConstructor
 public class CommentHeartController {
-        private final CommentHeartMapper heartMapper;
-        private final CommentHeartService heartService;
+        private final CommentHeartMapper commentHeartMapper;
+        private final CommentHeartService commentHeartService;
         private final UserService userService;
         private final CommentService contentService;
-        private final CommentHeartRepository heartRepository;
+        private final CommentHeartRepository commentHeartRepository;
 
         // 좋아요 등록 //
         @PostMapping("/{userId}/{commentId}/hearts")
@@ -38,8 +43,8 @@ public class CommentHeartController {
             if(userService.getLoginMember().getUserId() != user.getUserId())
                 throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
             Comment comment = contentService.findComment(commentId);
-            Heart heart = heartService.createHeart(user,comment);
-            CommentHeartResponseDto response = heartMapper.heartToHeartResponseDto(heart);
+            CommentHeart commentHeart = commentHeartService.createCommentHeart(user,comment);
+            CommentHeartResponseDto response = commentHeartMapper.commentHeartToCommentHeartResponseDto(commentHeart);
 
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         }

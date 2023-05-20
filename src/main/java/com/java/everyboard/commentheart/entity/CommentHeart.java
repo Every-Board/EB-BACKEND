@@ -1,15 +1,23 @@
 package com.java.everyboard.commentheart.entity;
 
+import com.java.everyboard.audit.Auditable;
 import com.java.everyboard.comment.entity.Comment;
 import com.java.everyboard.user.entity.User;
-import org.springframework.data.domain.Auditable;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-
+@NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
+@Entity
 public class CommentHeart extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long heartId;
+    private Long commentHeartId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -26,11 +34,11 @@ public class CommentHeart extends Auditable {
 
     public void addUser(User user) {
         this.user = user;
-        user.addHeart(this);
+        user.addCommentHeart(this);
     }
 
     public void addComment(Comment comment) {
         this.comment= comment;
-        comment.addHeart(this);
+        comment.addCommentHeart(this);
     }
 }

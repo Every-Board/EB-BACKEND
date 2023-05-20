@@ -1,26 +1,21 @@
-package com.java.everyboard.comment.dto;
+package com.java.everyboard.contentHeart.dto;
 
+import com.java.everyboard.constant.HeartType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Getter
+@Setter
 @Builder
-public class CommentResponseDto {
-    private long commentId;
-
-    private long userId;
-
-    private long contentId;
-
+public class ContentHeartListDto {
     private String title;
-    private String comment;
-
-    private String nickName;
-
+    private Long contentId;
+    private HeartType heartType;
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;
