@@ -1,4 +1,4 @@
-package com.java.everyboard.commentheart.dto;
+package com.java.everyboard.contentHeart.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,14 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class CommentHeartResponseDto {
-
-    private Long commentHeartId;
-
+public class ContentHeartResponseDto {
+    private Long contentHeartId;
     private Long contentId;
-    private Long commentId;
-
     private Long userId;
-
     private String heartType;
 }

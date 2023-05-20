@@ -2,6 +2,13 @@ package com.java.everyboard.comment.service;
 
 import com.java.everyboard.comment.entity.Comment;
 import com.java.everyboard.comment.repository.CommentRepository;
+import com.java.everyboard.content.entity.Content;
+import com.java.everyboard.content.service.ContentService;
+import com.java.everyboard.exception.BusinessLogicException;
+import com.java.everyboard.exception.ExceptionCode;
+import com.java.everyboard.user.entity.User;
+import com.java.everyboard.user.repository.UserRepository;
+import com.java.everyboard.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +41,7 @@ public class CommentService {
 
         return commentRepository.save(comment);
     }
+
     // 코멘트 수정
     public Comment updateComment(
             Comment comment,
@@ -42,14 +50,11 @@ public class CommentService {
 
         Comment findComment = findVerifiedComment(commentId); //ID로 멤버 존재 확인하고 comment 정보 반환
         User writer = userService.findVerifiedUser(findComment.getUser().getUserId()); // 작성자 찾기
-        if(userService.getLoginMember().getUserId() != writer.getUserId()) // 작성자와 로그인한 사람이 다를 경우
+        if (userService.getLoginMember().getUserId() != writer.getUserId()) // 작성자와 로그인한 사람이 다를 경우
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
 
-        Optional.ofNullable(comment.getBody())
-                .ifPresent(findComment::setBody);
-
-        Optional.ofNullable(comment.getRatingType())
-                .ifPresent(findComment::setRatingType);
+        Optional.ofNullable(comment.getComment())
+                .ifPresent(findComment::setComment);
 
         return commentRepository.save(findComment);
     }
@@ -68,7 +73,7 @@ public class CommentService {
         Comment findComment = findVerifiedComment(commentId);
 
         User writer = userService.findVerifiedUser(findComment.getUser().getUserId()); // 작성자 찾기
-        if(userService.getLoginMember().getUserId() != writer.getUserId()) // 작성자와 로그인한 사람이 다를 경우
+        if (userService.getLoginMember().getUserId() != writer.getUserId()) // 작성자와 로그인한 사람이 다를 경우
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
 
         commentRepository.delete(findComment);
@@ -81,3 +86,4 @@ public class CommentService {
                         new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
         return findComment;
     }
+}

@@ -50,6 +50,8 @@ public enum ExceptionCode {
     COMMENT_NOT_FOUND(404, "Comment Not Found"),
     COMMENT_CHECK_EXISTS(409, "Comment Check exists"),
 
+    // Heart
+    HEART_NOT_FOUND(404, "Heart Not Found"),
     // stack
     STACK_NOT_PATCHED(403, "Stack not patched"),
     STACK_NOT_FOUND(404, "Stack Not Found"),

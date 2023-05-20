@@ -1,12 +1,16 @@
 package com.java.everyboard.comment.entity;
 
+import com.java.everyboard.audit.Auditable;
+import com.java.everyboard.commentheart.entity.CommentHeart;
+import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.domain.Auditable;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -21,6 +25,10 @@ public class Comment extends Auditable {
     @Column(nullable = false)
     private String comment;
 
+    @Column(nullable = false)
+    private long commentHeartCount = 0;
+
+    // 연관 관계 //
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
@@ -28,6 +36,9 @@ public class Comment extends Auditable {
     @ManyToOne
     @JoinColumn(name = "CONTENT_ID")
     private Content content;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<CommentHeart> commentHearts = new ArrayList<>();
 
     //생성자
     public Comment(String comment) {
@@ -49,4 +60,7 @@ public class Comment extends Auditable {
             this.content.getComments().add(this);
         }
     }
+
+    // 연관 관계 메서드 //
+    public void addCommentHeart(CommentHeart commentHeart) { commentHearts.add(commentHeart); }
 }
