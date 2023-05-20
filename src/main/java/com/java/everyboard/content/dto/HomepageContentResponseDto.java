@@ -18,12 +18,10 @@ import java.time.LocalDateTime;
 public class HomepageContentResponseDto {
     private Long contentId;
     private Long userId;
-    @NotBlank(message = "게시글 제목을 입력해야 합니다.")
     private String title;
     private String imageUrl; // 컨텐츠 이미지를 담는 주소
     private Long viewCount;
-    @NotNull
-    private Category category; // Enum으로 교체될 예정
+    private Category category;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
