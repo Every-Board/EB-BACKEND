@@ -20,13 +20,10 @@ public class ContentAllResponseDto {
     private Long userId;
     private Long viewCount;
     private Long contentHeartCount;
-    @NotBlank(message = "게시글 제목을 입력해야 합니다.")
     private String title;
-    @NotBlank(message = "게시글의 내용을 입력해야 합니다.")
     private String content;
     private String imageUrl; // 컨텐츠 이미지를 담는 주소
-    @NotNull
-    private Category category; // Enum으로 교체될 예정
+    private Category category;
     private String tag;
     private LocalDateTime createdAt; // 컨텐츠 작성시간
     private LocalDateTime modifiedAt; // 컨텐츠 수정 시간

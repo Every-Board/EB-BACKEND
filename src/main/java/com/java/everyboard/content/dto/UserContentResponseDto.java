@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 public class UserContentResponseDto {
     private Long contentId;
     private Long userId;
-    @NotBlank(message = "게시글 제목을 입력해야 합니다.")
     private String title;
     private String content;
     private LocalDateTime createdAt;
