@@ -12,6 +12,7 @@ import com.java.everyboard.exception.ExceptionCode;
 import com.java.everyboard.response.SingleResponseDto;
 import com.java.everyboard.content.service.ContentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +24,7 @@ import java.util.List;
 
 @RestController
 @Validated
+@Slf4j
 @RequestMapping("/contents")
 @RequiredArgsConstructor
 public class ContentController {
@@ -40,7 +42,7 @@ public class ContentController {
             throw new BusinessLogicException(ExceptionCode.STACK_NOT_FOUND);
         }
         List<String> imgPaths = awsS3Service.uploadFile(multipartFiles);
-        System.out.println("IMG 경로들 : " + imgPaths);
+        log.info("IMG 경로들 : "+ imgPaths);
         Content content = contentService.createContent(contentMapper.contentPostDtoToContent(requestBody),imgPaths);
         ContentResponseDto contentResponse = contentMapper.contentToContentResponse(content);
 
