@@ -6,12 +6,17 @@ import com.java.everyboard.content.dto.*;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.mapper.ContentMapper;
 import com.java.everyboard.content.repository.ContentRepository;
+import com.java.everyboard.exception.BusinessLogicException;
+import com.java.everyboard.exception.ErrorResponse;
+import com.java.everyboard.exception.ExceptionCode;
 import com.java.everyboard.response.SingleResponseDto;
 import com.java.everyboard.content.service.ContentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -19,25 +24,24 @@ import java.util.List;
 @RestController
 @Validated
 @RequestMapping("/contents")
+@RequiredArgsConstructor
 public class ContentController {
     private final ContentService contentService;
     private final ContentMapper contentMapper;
     private final ContentRepository contentRepository;
-    private final AwsS3Service awss3Service;
+    private final AwsS3Service awsS3Service;
 
-
-    public ContentController(ContentService contentService, ContentMapper contentMapper, ContentRepository contentRepository, AwsS3Service awss3Service) {
-        this.contentService = contentService;
-        this.contentMapper = contentMapper;
-        this.contentRepository = contentRepository;
-        this.awss3Service = awss3Service;
-    }
 
     // 게시글 생성 //
     @PostMapping
-    public ResponseEntity postContent(@Valid @RequestBody ContentPostDto requestBody) {
-
-        Content content = contentService.createContent(contentMapper.contentPostDtoToContent(requestBody));
+    public ResponseEntity postContent(@Valid @RequestBody ContentPostDto requestBody,
+                                      @RequestPart("ContentImgUrl") List<MultipartFile> multipartFiles) {
+        if (multipartFiles == null) {
+            throw new BusinessLogicException(ExceptionCode.STACK_NOT_FOUND);
+        }
+        List<String> imgPaths = awsS3Service.uploadFile(multipartFiles);
+        System.out.println("IMG 경로들 : " + imgPaths);
+        Content content = contentService.createContent(contentMapper.contentPostDtoToContent(requestBody),imgPaths);
         ContentResponseDto contentResponse = contentMapper.contentToContentResponse(content);
 
         return new ResponseEntity<>(

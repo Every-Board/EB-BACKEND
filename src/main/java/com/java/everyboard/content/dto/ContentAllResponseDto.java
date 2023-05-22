@@ -2,6 +2,7 @@ package com.java.everyboard.content.dto;
 
 import com.java.everyboard.comment.dto.CommentResponseDto;
 import com.java.everyboard.constant.Category;
+import com.java.everyboard.content.entity.ContentImage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class ContentAllResponseDto {
     private Long contentHeartCount;
     private String title;
     private String content;
-    private String imageUrl; // 컨텐츠 이미지를 담는 주소
+    private List<ContentImage> contentImageList; // 컨텐츠 이미지를 담는 주소
     private Category category;
     private String tag;
     private LocalDateTime createdAt; // 컨텐츠 작성시간
