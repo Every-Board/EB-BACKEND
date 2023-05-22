@@ -41,7 +41,7 @@ public class ContentHeartController {
             @PathVariable("contentId") @Positive Long contentId) {
         User user = userService.findUser(userId);
 
-        if(userService.getLoginMember().getUserId() != user.getUserId())
+        if(userService.getLoginUser().getUserId() != user.getUserId())
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
         Content content = contentService.findContent(contentId);
         ContentHeart contentHeart = contentHeartService.createContentHeart(user,content);

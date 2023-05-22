@@ -40,7 +40,7 @@ public class CommentHeartController {
                 @PathVariable("commentId") @Positive Long commentId) {
             User user = userService.findUser(userId);
 
-            if(userService.getLoginMember().getUserId() != user.getUserId())
+            if(userService.getLoginUser().getUserId() != user.getUserId())
                 throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
             Comment comment = contentService.findComment(commentId);
             CommentHeart commentHeart = commentHeartService.createCommentHeart(user,comment);
