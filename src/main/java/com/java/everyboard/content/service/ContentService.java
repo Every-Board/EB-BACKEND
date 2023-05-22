@@ -1,10 +1,13 @@
 package com.java.everyboard.content.service;
 
+import com.java.everyboard.AwsS3.AwsS3Service;
 import com.java.everyboard.comment.repository.CommentRepository;
 import com.java.everyboard.content.dto.ContentAllResponseDto;
 import com.java.everyboard.content.dto.HomepageContentResponseDto;
 import com.java.everyboard.content.entity.Content;
+import com.java.everyboard.content.entity.ContentImage;
 import com.java.everyboard.content.mapper.ContentMapper;
+import com.java.everyboard.content.repository.ContentImageRepository;
 import com.java.everyboard.content.repository.ContentRepository;
 import com.java.everyboard.exception.BusinessLogicException;
 import com.java.everyboard.exception.ExceptionCode;
@@ -18,11 +21,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ContentService {
     private final UserRepository userRepository;
@@ -30,10 +35,20 @@ public class ContentService {
     private final ContentRepository contentRepository;
     private final ContentMapper contentMapper;
     private final CommentRepository commentRepository;
+    private final AwsS3Service awsS3Service;
+    private final ContentImageRepository contentImageRepository;
 
     // 게시글 생성 //
-    public Content createContent(Content content) {
-        content.setUser(userService.getLoginMember());
+    public Content createContent(Content content, List<String> imgPaths) {
+        blankCheck(imgPaths);
+        content.setUser(userService.getLoginUser());
+
+        List<String> fileNameList = new ArrayList<>();
+        for (String imgUrl : imgPaths) {
+            ContentImage img = new ContentImage(imgUrl, content);
+            contentImageRepository.save(img);
+            fileNameList.add(img.getContentImgUrl());
+        }
         return contentRepository.save(content);
     }
 
@@ -41,8 +56,8 @@ public class ContentService {
     public Content updateContent(Content content) {
         Content findContent = findVerifiedContent(content.getContentId());
 
-        User writer = userService.findVerifiedUser(findContent.getUser().getUserId()); // 작성자 찾기
-        if(userService.getLoginMember().getUserId() != writer.getUserId()) // 작성자와 로그인한 사람이 다를 경우
+        User writer = userService.findUser(findContent.getUser().getUserId()); // 작성자 찾기
+        if(userService.getLoginUser().getUserId() != writer.getUserId()) // 작성자와 로그인한 사람이 다를 경우
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED); //예외 발생(권한 없음)
 
         Optional.ofNullable(content.getTitle())
@@ -78,8 +93,8 @@ public class ContentService {
     public void deleteContent(Long contentId) {
         Content findContent = findVerifiedContent(contentId);
 
-        User writer = userService.findVerifiedUser(findContent.getUser().getUserId()); // 작성자 찾기
-        if(userService.getLoginMember().getUserId() != writer.getUserId()) // 작성자와 로그인한 사람이 다를 경우
+        User writer = userService.findUser(findContent.getUser().getUserId()); // 작성자 찾기
+        if(userService.getLoginUser().getUserId() != writer.getUserId()) // 작성자와 로그인한 사람이 다를 경우
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED); //예외 발생(권한 없음)
         contentRepository.delete(findContent);
     }
@@ -116,4 +131,9 @@ public class ContentService {
         );
     }
 
+    private void blankCheck(List<String> imgPaths) {
+        if(imgPaths == null || imgPaths.isEmpty()){ //.isEmpty()도 되는지 확인해보기
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+        }
+    }
 }
