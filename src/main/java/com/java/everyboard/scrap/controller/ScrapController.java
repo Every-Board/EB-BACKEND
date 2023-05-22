@@ -41,7 +41,7 @@ public class ScrapController {
 
         User user = userService.findUser(userId);
 
-        if(userService.getLoginMember().getUserId() != user.getUserId())
+        if(userService.getLoginUser().getUserId() != user.getUserId())
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
         Content content = contentService.findContent(contentId);
         Scrap scrap = scrapService.createScrap(user,content);

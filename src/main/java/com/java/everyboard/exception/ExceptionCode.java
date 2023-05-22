@@ -12,6 +12,7 @@ public enum ExceptionCode {
     NOT_IMPLEMENTATION(501, "Not Implementation"),
     INVALID_VALUES(400, "Invalid Values"),
     INVALID_DATE(400, "Invalid Date"),
+    EMAIL_EXISTS(409, "Email exists"),
 
     // auth
     INVALID_EMAIL_AUTH_NUMBER(400, "Invalid email authNumber"),

@@ -33,7 +33,7 @@ public class CommentService {
             Long contentId) {
         // 이미 등록된 이메일인지 확인
         Content content = contentService.findContent(contentId);
-        User user = userService.getLoginMember();
+        User user = userService.getLoginUser();
 
         comment.setUser(user);
 //        comment.setNickname(user.getNickname());
@@ -49,8 +49,8 @@ public class CommentService {
 
 
         Comment findComment = findVerifiedComment(commentId); //ID로 멤버 존재 확인하고 comment 정보 반환
-        User writer = userService.findVerifiedUser(findComment.getUser().getUserId()); // 작성자 찾기
-        if (userService.getLoginMember().getUserId() != writer.getUserId()) // 작성자와 로그인한 사람이 다를 경우
+        User writer = userService.findUser(findComment.getUser().getUserId()); // 작성자 찾기
+        if (userService.getLoginUser().getUserId() != writer.getUserId()) // 작성자와 로그인한 사람이 다를 경우
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
 
         Optional.ofNullable(comment.getComment())
@@ -72,8 +72,8 @@ public class CommentService {
     public void deleteComment(long commentId) {
         Comment findComment = findVerifiedComment(commentId);
 
-        User writer = userService.findVerifiedUser(findComment.getUser().getUserId()); // 작성자 찾기
-        if (userService.getLoginMember().getUserId() != writer.getUserId()) // 작성자와 로그인한 사람이 다를 경우
+        User writer = userService.findUser(findComment.getUser().getUserId()); // 작성자 찾기
+        if (userService.getLoginUser().getUserId() != writer.getUserId()) // 작성자와 로그인한 사람이 다를 경우
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
 
         commentRepository.delete(findComment);

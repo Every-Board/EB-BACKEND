@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@transactional
+@Transactional
 public class AwsS3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
