@@ -5,9 +5,11 @@ import com.java.everyboard.commentheart.dto.CommentHeartResponseDto;
 import com.java.everyboard.commentheart.entity.CommentHeart;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.user.entity.User;
+import org.mapstruct.Mapper;
 
 import java.util.List;
 
+@Mapper(componentModel = "spring")
 public interface CommentHeartMapper {
     default CommentHeartResponseDto commentHeartToCommentHeartResponseDto(CommentHeart commentHeart) {
         User user = commentHeart.getUser();
