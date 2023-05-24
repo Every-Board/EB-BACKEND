@@ -26,15 +26,4 @@ public class HomepageContentResponseDto {
     private Category category;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-
-    public HomepageContentResponseDto(Long contentId, Long userId, String title, List<ContentImage> contentImageList, Long viewCount, Category category, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        this.contentId = contentId;
-        this.userId = userId;
-        this.title = title;
-        this.contentImageList = contentImageList;
-        this.viewCount = viewCount;
-        this.category = category;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-    }
 }
