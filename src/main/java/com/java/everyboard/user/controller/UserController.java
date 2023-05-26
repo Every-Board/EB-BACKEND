@@ -17,7 +17,7 @@ import javax.validation.constraints.Positive;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;

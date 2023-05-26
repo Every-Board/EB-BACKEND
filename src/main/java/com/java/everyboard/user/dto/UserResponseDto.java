@@ -16,4 +16,5 @@ public class UserResponseDto {
     private String password;
     private String profileUrl;
     private LoginType loginType;
+    private String createdAt;
 }
