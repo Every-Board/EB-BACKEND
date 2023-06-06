@@ -14,5 +14,5 @@ import java.util.List;
 @Builder
 public class HomepageContentImageResponseDto {
     private Long contentId;
-    private List<ContentImage> contentImageList; // 컨텐츠 이미지를 담는 주소
+    private List<ContentImage> contentImages; // 컨텐츠 이미지를 담는 주소
 }

@@ -17,7 +17,7 @@ public class ContentPatchDto {
     private String title;
     @NotBlank(message = "게시글의 내용을 입력해야 합니다.")
     private String content;
-    private List<ContentImage> contentImageList; // 컨텐츠 이미지를 담는 주소
+    private List<ContentImage> contentImages; // 컨텐츠 이미지를 담는 주소
     @NotNull
     private Category category; // Enum으로 교체될 예정
     private String tag;

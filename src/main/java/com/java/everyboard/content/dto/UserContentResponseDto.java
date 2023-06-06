@@ -19,7 +19,7 @@ public class UserContentResponseDto {
     private Long userId;
     private String title;
     private String content;
-    private List<ContentImage> contentImageList;
+    private List<ContentImage> contentImages;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 

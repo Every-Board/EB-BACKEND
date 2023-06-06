@@ -50,7 +50,7 @@ public class ContentService {
             contentImageRepository.save(img);
             fileNameList.add(img.getContentImgUrl());
         }
-        return contentRepository.save(content);
+        return content;
     }
 
     // 게시글 수정 //

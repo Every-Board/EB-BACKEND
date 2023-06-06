@@ -6,6 +6,7 @@ import com.java.everyboard.comment.repository.CommentRepository;
 import com.java.everyboard.constant.Category;
 import com.java.everyboard.content.dto.*;
 import com.java.everyboard.content.entity.Content;
+import com.java.everyboard.content.entity.ContentImage;
 import com.java.everyboard.content.repository.ContentRepository;
 import com.java.everyboard.user.entity.User;
 import org.mapstruct.Mapper;
@@ -34,7 +35,7 @@ public interface ContentMapper {
                 .contentHeartCount(content.getContentHeartCount())
                 .title(content.getTitle())
                 .content(content.getContent())
-                .contentImageList(content.getContentImageList())
+                .contentImages(content.getContentImages())
                 .category(content.getCategory())
                 .tag(content.getTag())
                 .createdAt(content.getCreatedAt())
@@ -67,7 +68,7 @@ public interface ContentMapper {
                         .viewCount(content.getViewCount())
                         .contentHeartCount(content.getContentHeartCount())
                         .category(content.getCategory())
-                        .contentImageList(content.getContentImageList())
+                        .contentImages(content.getContentImages())
                         .createdAt(content.getCreatedAt())
                         .modifiedAt(content.getModifiedAt())
                         .build())
@@ -91,7 +92,7 @@ public interface ContentMapper {
                 .comments(commentsToCommentResponseDtos(comments))
                 .createdAt(content.getCreatedAt())
                 .modifiedAt(content.getModifiedAt())
-                .contentImageList(content.getContentImageList())
+                .contentImages(content.getContentImages())
                 .tag(content.getTag())
                 .viewCount(content.getViewCount())
                 .build();
@@ -110,7 +111,7 @@ public interface ContentMapper {
         return contents.stream()
                 .map(content -> HomepageContentImageResponseDto.builder()
                         .contentId(content.getContentId())
-                        .contentImageList(content.getContentImageList())
+                        .contentImages(content.getContentImages())
                         .build())
                 .collect(Collectors.toList());
     }
