@@ -1,4 +1,4 @@
-package com.java.everyboard.AwsS3;
+package com.java.everyboard.awsS3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;

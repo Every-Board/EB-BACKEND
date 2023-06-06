@@ -1,13 +1,12 @@
 package com.java.everyboard.content.controller;
 
-import com.java.everyboard.AwsS3.AwsS3Service;
+import com.java.everyboard.awsS3.AwsS3Service;
 import com.java.everyboard.constant.Category;
 import com.java.everyboard.content.dto.*;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.mapper.ContentMapper;
 import com.java.everyboard.content.repository.ContentRepository;
 import com.java.everyboard.exception.BusinessLogicException;
-import com.java.everyboard.exception.ErrorResponse;
 import com.java.everyboard.exception.ExceptionCode;
 import com.java.everyboard.response.SingleResponseDto;
 import com.java.everyboard.content.service.ContentService;
@@ -36,7 +35,7 @@ public class ContentController {
 
     // 게시글 생성 //
     @PostMapping
-    public ResponseEntity postContent(@Valid @RequestBody ContentPostDto requestBody,
+    public ResponseEntity postContent(@Valid @RequestPart("content") ContentPostDto requestBody,
                                       @RequestPart("ContentImgUrl") List<MultipartFile> multipartFiles) {
         if (multipartFiles == null) {
             throw new BusinessLogicException(ExceptionCode.STACK_NOT_FOUND);

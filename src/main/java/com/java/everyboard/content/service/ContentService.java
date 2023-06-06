@@ -1,9 +1,8 @@
 package com.java.everyboard.content.service;
 
-import com.java.everyboard.AwsS3.AwsS3Service;
+import com.java.everyboard.awsS3.AwsS3Service;
 import com.java.everyboard.comment.repository.CommentRepository;
 import com.java.everyboard.content.dto.ContentAllResponseDto;
-import com.java.everyboard.content.dto.HomepageContentResponseDto;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.entity.ContentImage;
 import com.java.everyboard.content.mapper.ContentMapper;
@@ -24,7 +23,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -41,11 +39,14 @@ public class ContentService {
     // 게시글 생성 //
     public Content createContent(Content content, List<String> imgPaths) {
         blankCheck(imgPaths);
+        System.out.println("로그인한 user: "+userService.getLoginUser());
         content.setUser(userService.getLoginUser());
 
+        contentRepository.save(content);
+
         List<String> fileNameList = new ArrayList<>();
-        for (String imgUrl : imgPaths) {
-            ContentImage img = new ContentImage(imgUrl, content);
+        for (String contentImgUrl : imgPaths) {
+            ContentImage img = new ContentImage(contentImgUrl, content);
             contentImageRepository.save(img);
             fileNameList.add(img.getContentImgUrl());
         }

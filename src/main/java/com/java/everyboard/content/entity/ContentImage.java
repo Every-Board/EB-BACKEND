@@ -19,7 +19,7 @@ public class ContentImage {
     private String contentImgUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
+    @JoinColumn(name = "content_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Content content;
 
