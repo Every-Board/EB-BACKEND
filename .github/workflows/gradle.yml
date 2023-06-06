@@ -11,7 +11,7 @@ permissions:
 
 env:
   S3_BUCKET_NAME: backendcontentimage
-  PROPERTIES_PATH: ./src/main/resources/application.properties
+  PROPERTIES_PATH: EB-BACKEND/src/main/resources/application.properties
 
 jobs:
   build:
