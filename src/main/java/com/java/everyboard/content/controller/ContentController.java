@@ -35,7 +35,7 @@ public class ContentController {
 
     // 게시글 생성 //
     @PostMapping
-    public ResponseEntity postContent(@Valid @RequestPart("content") ContentPostDto requestBody,
+    public ResponseEntity postContent(@Valid @RequestPart("data") ContentPostDto requestBody,
                                       @RequestPart("ContentImgUrl") List<MultipartFile> multipartFiles) {
         if (multipartFiles == null) {
             throw new BusinessLogicException(ExceptionCode.STACK_NOT_FOUND);
