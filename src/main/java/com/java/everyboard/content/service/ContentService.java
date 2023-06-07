@@ -46,7 +46,7 @@ public class ContentService {
 
         List<String> fileNameList = new ArrayList<>();
         for (String contentImgUrl : imgPaths) {
-            ContentImage img = new ContentImage(contentImgUrl, content);
+            ContentImage img = new ContentImage(contentImgUrl);
             contentImageRepository.save(img);
             fileNameList.add(img.getContentImgUrl());
         }
@@ -134,7 +134,7 @@ public class ContentService {
 
     // 게시글 검증 로직 //
     public Content findVerifiedContent(Long contentId) {
-        Optional<Content> optionalContent = contentRepository.findById(contentId);
+        Optional<Content> optionalContent = contentRepository.findByContentId(contentId);
         Content findContent =
                 optionalContent.orElseThrow(() ->
                         new BusinessLogicException(ExceptionCode.STACK_NOT_FOUND));

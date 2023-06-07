@@ -7,6 +7,7 @@ import com.java.everyboard.constant.Category;
 import com.java.everyboard.content.dto.*;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.entity.ContentImage;
+import com.java.everyboard.content.repository.ContentImageRepository;
 import com.java.everyboard.content.repository.ContentRepository;
 import com.java.everyboard.user.entity.User;
 import org.mapstruct.Mapper;
@@ -25,8 +26,9 @@ public interface ContentMapper {
     Content contentPatchDtoToContent(ContentPatchDto requestBody);
 
     // 컨텐츠 to 컨텐츠 리스폰스 (단건) //
-    default ContentResponseDto contentToContentResponse(Content content){
+    default ContentResponseDto contentToContentResponse(Content content, ContentImageRepository contentImageRepository){
         User user = content.getUser();
+        List<ContentImage> contentImage = contentImageRepository.findByContentImageId(content.getContentId());
 
         return ContentResponseDto.builder()
                 .contentId(content.getContentId())
@@ -35,7 +37,8 @@ public interface ContentMapper {
                 .contentHeartCount(content.getContentHeartCount())
                 .title(content.getTitle())
                 .content(content.getContent())
-                .contentImages(content.getContentImages())
+                .contentImages(contentImage)
+//                .contentImages(content.getContentImages())
                 .category(content.getCategory())
                 .tag(content.getTag())
                 .createdAt(content.getCreatedAt())

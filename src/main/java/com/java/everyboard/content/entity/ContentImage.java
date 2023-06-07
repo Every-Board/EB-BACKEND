@@ -2,8 +2,6 @@ package com.java.everyboard.content.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -18,13 +16,7 @@ public class ContentImage {
     @Column(nullable = false)
     private String contentImgUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "content_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Content content;
-
-    public ContentImage(String contentImgUrl, Content content) {
+    public ContentImage(String contentImgUrl) {
         this.contentImgUrl = contentImgUrl;
-        this.content = content;
     }
 }

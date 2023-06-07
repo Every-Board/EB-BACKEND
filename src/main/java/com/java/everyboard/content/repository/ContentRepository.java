@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ContentRepository extends JpaRepository<Content, Long> {
     List<Content> findAllByCategory(Category category);
+    Optional<Content> findByContentId(long contentId);
 
     @Query(value = "select * from contents where user_id = :userId", nativeQuery = true)
     List<Content> findAllByUserId(long userId);

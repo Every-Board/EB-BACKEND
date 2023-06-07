@@ -5,6 +5,7 @@ import com.java.everyboard.constant.Category;
 import com.java.everyboard.content.dto.*;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.mapper.ContentMapper;
+import com.java.everyboard.content.repository.ContentImageRepository;
 import com.java.everyboard.content.repository.ContentRepository;
 import com.java.everyboard.exception.BusinessLogicException;
 import com.java.everyboard.exception.ExceptionCode;
@@ -30,6 +31,7 @@ public class ContentController {
     private final ContentService contentService;
     private final ContentMapper contentMapper;
     private final ContentRepository contentRepository;
+    private final ContentImageRepository contentImageRepository;
     private final AwsS3Service awsS3Service;
 
 
@@ -43,14 +45,13 @@ public class ContentController {
         List<String> imgPaths = awsS3Service.uploadFile(multipartFiles);
         log.info("IMG 경로들 : "+ imgPaths);
         Content content = contentService.createContent(contentMapper.contentPostDtoToContent(requestBody),imgPaths);
-        ContentResponseDto contentResponse = contentMapper.contentToContentResponse(content);
+        ContentResponseDto contentResponse = contentMapper.contentToContentResponse(content, contentImageRepository);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(contentResponse) , HttpStatus.CREATED
         );
     }
 
-    // 게시글 단건 조회 //
     @GetMapping("/{contentId}")
     public ResponseEntity getContent(@PathVariable("contentId") Long contentId) {
         Content content = contentService.findContent(contentId);
@@ -58,7 +59,8 @@ public class ContentController {
         content.setViewCount(++viewCount);
         contentService.updateViewCount(content);
 
-        return contentService.detail(content);
+        return new ResponseEntity<>(contentMapper.contentToContentResponse(content,contentImageRepository),
+                HttpStatus.OK);
     }
 
     // 게시글 전체 조회 //
@@ -117,7 +119,7 @@ public class ContentController {
         Content content = contentService.updateContent(
                 contentMapper.contentPatchDtoToContent(requestBody));
 
-        ContentResponseDto contentResponse = contentMapper.contentToContentResponse(content);
+        ContentResponseDto contentResponse = contentMapper.contentToContentResponse(content, contentImageRepository);
 
         return new ResponseEntity<>(contentResponse, HttpStatus.OK);
     }
