@@ -27,7 +27,9 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     List<Content> findContentsWeeklyViewRank();
 
     // 좋아요 상위
-    @Query(value = "select * from contents order by content_heart_count desc limit 10", nativeQuery = true)
+//    @Query(value = "select * from contents order by content_heart_count desc limit 10", nativeQuery = true)
+    // 이번주 좋아요 상위
+    @Query(value = "select * from contents where created_at BETWEEN TIMESTAMPADD(day, -7, NOW()) AND NOW() order by content_heart_count desc limit 10", nativeQuery = true)
     List<Content> findContentsLikeRank();
 
     // 홈페이지 최신 이미지
