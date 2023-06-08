@@ -12,11 +12,23 @@ public class ContentImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contentImageId;
-
-    @Column(nullable = false)
+    private Long contentId;
     private String contentImgUrl;
 
     public ContentImage(String contentImgUrl) {
         this.contentImgUrl = contentImgUrl;
+    }
+
+    public ContentImage(Long contentId) {
+        this.contentId = contentId;
+    }
+
+    public ContentImage(Long contentId, String contentImgUrl) {
+        this.contentId = contentId;
+        this.contentImgUrl = contentImgUrl;
+    }
+
+    public void setContentId(Long contentId) {
+        this.contentId = contentId;
     }
 }

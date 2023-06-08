@@ -28,7 +28,7 @@ public interface ContentMapper {
     // 컨텐츠 to 컨텐츠 리스폰스 (단건) //
     default ContentResponseDto contentToContentResponse(Content content, ContentImageRepository contentImageRepository){
         User user = content.getUser();
-        List<ContentImage> contentImage = contentImageRepository.findByContentImageId(content.getContentId());
+        List<ContentImage> contentImage = contentImageRepository.findByContentId(content.getContentId());
 
         return ContentResponseDto.builder()
                 .contentId(content.getContentId())
@@ -38,7 +38,6 @@ public interface ContentMapper {
                 .title(content.getTitle())
                 .content(content.getContent())
                 .contentImages(contentImage)
-//                .contentImages(content.getContentImages())
                 .category(content.getCategory())
                 .tag(content.getTag())
                 .createdAt(content.getCreatedAt())

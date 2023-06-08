@@ -46,10 +46,12 @@ public class ContentService {
 
         List<String> fileNameList = new ArrayList<>();
         for (String contentImgUrl : imgPaths) {
-            ContentImage img = new ContentImage(contentImgUrl);
+            ContentImage img = new ContentImage(content.getContentId(),contentImgUrl);
+            img.setContentId(content.getContentId());
             contentImageRepository.save(img);
             fileNameList.add(img.getContentImgUrl());
         }
+
         return content;
     }
 
