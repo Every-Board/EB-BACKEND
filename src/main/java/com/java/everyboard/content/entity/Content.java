@@ -41,12 +41,6 @@ public class Content extends Auditable {
     @Transient
     private final List<ContentImage> contentImages = new ArrayList<>(); // 컨텐츠 이미지 리스트값
 
-/*
-    @OrderBy("contentImageId")
-    @OneToMany(mappedBy = "content", cascade = CascadeType.REMOVE)
-    private List<ContentImage> contentImages = new ArrayList<>();
-*/
-
     // 연관 관계 M:N //
     @ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "USER_ID")
