@@ -19,11 +19,11 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     // 게시글 조회수 상위 조회//
 
     // today(현재시간-24 ~ 현재시간)
-    @Query(value = "select * from contents order by view_count desc limit 10", nativeQuery = true)
+    @Query(value = "select * from contents where created_at BETWEEN TIMESTAMPADD(hour, -24, NOW()) AND NOW() order by view_count desc limit 10", nativeQuery = true)
     List<Content> findContentsTodayViewRank();
 
     // weekly(현재시간 -일주일 ~ 현재시간)
-    @Query(value = "select * from contents order by view_count desc limit 10", nativeQuery = true)
+    @Query(value = "select * from contents where created_at BETWEEN TIMESTAMPADD(day, -7, NOW()) AND NOW() order by view_count desc limit 10", nativeQuery = true)
     List<Content> findContentsWeeklyViewRank();
 
     // 좋아요 상위
@@ -31,7 +31,7 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     List<Content> findContentsLikeRank();
 
     // 홈페이지 최신 이미지
-    @Query(value = "select * from contents order by create_at asc", nativeQuery = true)
+    @Query(value = "select * from contents order by created_at desc", nativeQuery = true)
     List<Content> findContentsRecentImage();
 
     // 게시글 검색기능
