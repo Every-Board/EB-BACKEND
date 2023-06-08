@@ -1,5 +1,6 @@
 package com.java.everyboard.content.controller;
 
+
 import com.java.everyboard.awsS3.AwsS3Service;
 import com.java.everyboard.constant.Category;
 import com.java.everyboard.content.dto.*;
@@ -52,6 +53,7 @@ public class ContentController {
         );
     }
 
+    // 게시글 단건 조회 //
     @GetMapping("/{contentId}")
     public ResponseEntity getContent(@PathVariable("contentId") Long contentId) {
         Content content = contentService.findContent(contentId);

@@ -71,5 +71,4 @@ public class Content extends Auditable {
     public void addScrap(Scrap scrap) {
         scraps.add(scrap);
     }
-
 }

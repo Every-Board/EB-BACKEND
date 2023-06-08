@@ -12,6 +12,7 @@ public class ContentImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contentImageId;
+
     private Long contentId;
     private String contentImgUrl;
 
