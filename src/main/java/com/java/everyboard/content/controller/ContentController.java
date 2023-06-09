@@ -2,6 +2,7 @@ package com.java.everyboard.content.controller;
 
 
 import com.java.everyboard.awsS3.AwsS3Service;
+import com.java.everyboard.comment.repository.CommentRepository;
 import com.java.everyboard.constant.Category;
 import com.java.everyboard.content.dto.*;
 import com.java.everyboard.content.entity.Content;
@@ -34,6 +35,7 @@ public class ContentController {
     private final ContentRepository contentRepository;
     private final ContentImageRepository contentImageRepository;
     private final AwsS3Service awsS3Service;
+    private final CommentRepository commentRepository;
 
 
     // 게시글 생성 //
@@ -75,6 +77,7 @@ public class ContentController {
     }
 
 
+
     // 홈페이지 조회수 상위 조회 //
     // today(현재시간-24 ~ 현재시간)
     @GetMapping("/homepage/today")
@@ -112,6 +115,22 @@ public class ContentController {
                 HttpStatus.OK);
     }
 
+    // 카테고리별 컨텐츠 조회
+    @GetMapping("/category/{category}")
+    public ResponseEntity getContentFromCategory(@PathVariable("category") Category category){
+        CategoryContentsResponseDto response = contentMapper.categoryContentsResponseDto(category, contentRepository, contentImageRepository);
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.OK
+        );
+    }
+
+    // 게시글 검색 기능 //
+    @GetMapping("/search")
+    public ResponseEntity getSearch(@RequestParam(value = "keyword",required = false) String keyword) {
+        List<Content> contents = contentService.findAllSearch(keyword);
+        return new ResponseEntity<>(contentMapper.contentsToContentResponse(contents),
+                HttpStatus.OK);
+    }
 
     // 게시글 수정 //
     @PatchMapping("/{contentId}")
@@ -134,20 +153,4 @@ public class ContentController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // 카테고리별 컨텐츠 조회
-    @GetMapping("/category/{category}")
-    public ResponseEntity getContentFromCategory(@PathVariable("category") Category category){
-        CategoryContentsResponseDto response = contentMapper.categoryContentsResponseDto(category, contentRepository, contentImageRepository);
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(response), HttpStatus.OK
-        );
-    }
-
-    // 게시글 검색 기능 //
-    @GetMapping("/search")
-    public ResponseEntity getSearch(@RequestParam(value = "keyword",required = false) String keyword) {
-        List<Content> contents = contentService.findAllSearch(keyword);
-        return new ResponseEntity<>(contentMapper.contentsToContentResponse(contents),
-                HttpStatus.OK);
-    }
 }

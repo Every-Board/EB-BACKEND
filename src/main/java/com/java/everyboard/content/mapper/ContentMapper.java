@@ -81,7 +81,7 @@ public interface ContentMapper {
     default ContentAllResponseDto contentToContentAllResponse(Content content, CommentRepository commentRepository, ContentImageRepository contentImageRepository){
         User user = content.getUser();
         List<Comment> comments = commentRepository.findAllByContentId(content.getContentId());
-        List<ContentImage> contentImage = contentImageRepository.findByContentId(content.getContentId());
+//        List<ContentImage> contentImage = contentImageRepository.findByContentId(content.getContentId());
         Collections.reverse(comments);
 
         return ContentAllResponseDto.builder()
@@ -96,7 +96,7 @@ public interface ContentMapper {
                 .createdAt(content.getCreatedAt())
                 .modifiedAt(content.getModifiedAt())
 //                .contentImages(content.getContentImages())
-                .contentImages(contentImage)
+                .contentImages(contentImageRepository.findByContentId(content.getContentId()))
                 .tag(content.getTag())
                 .viewCount(content.getViewCount())
                 .build();

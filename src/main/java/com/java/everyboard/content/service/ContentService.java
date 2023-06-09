@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -124,6 +125,8 @@ public class ContentService {
         if(userService.getLoginUser().getUserId() != writer.getUserId()) // 작성자와 로그인한 사람이 다를 경우
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED); //예외 발생(권한 없음)
         contentRepository.delete(findContent);
+
+        contentImageRepository.deleteAllByContentId(contentId);
     }
 
     // 유저 검증 로직 //
@@ -144,6 +147,7 @@ public class ContentService {
 
         return findContent;
     }
+
     public Content updateViewCount(Content content){
         return contentRepository.save(content);
     }
