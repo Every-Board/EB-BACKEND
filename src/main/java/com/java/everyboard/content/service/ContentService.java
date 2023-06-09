@@ -151,7 +151,7 @@ public class ContentService {
     @Transactional
     public ResponseEntity detail(Content content) {
 
-        ContentAllResponseDto response = contentMapper.contentToContentAllResponse(content, commentRepository);
+        ContentAllResponseDto response = contentMapper.contentToContentAllResponse(content, commentRepository, contentImageRepository);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK

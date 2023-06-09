@@ -108,7 +108,7 @@ public class ContentController {
     public ResponseEntity getContentsRecentImage() {
         List<Content> contents = contentService.findContentsRecentImage();
 
-        return new ResponseEntity<>(contentMapper.contentsToHomepageContentImageResponseDto(contents),
+        return new ResponseEntity<>(contentMapper.contentsToHomepageContentImageResponseDto(contents, contentImageRepository),
                 HttpStatus.OK);
     }
 
@@ -137,7 +137,7 @@ public class ContentController {
     // 카테고리별 컨텐츠 조회
     @GetMapping("/category/{category}")
     public ResponseEntity getContentFromCategory(@PathVariable("category") Category category){
-        CategoryContentsResponseDto response = contentMapper.categoryContentsResponseDto(category, contentRepository);
+        CategoryContentsResponseDto response = contentMapper.categoryContentsResponseDto(category, contentRepository, contentImageRepository);
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK
         );

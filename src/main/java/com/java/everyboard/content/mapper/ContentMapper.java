@@ -49,17 +49,17 @@ public interface ContentMapper {
     List<ContentResponseDto> contentsToContentResponse(List<Content> contents);
 
     // 카테고리 list 선언 //
-    default CategoryContentsResponseDto categoryContentsResponseDto(Category category, ContentRepository contentRepository){
+    default CategoryContentsResponseDto categoryContentsResponseDto(Category category, ContentRepository contentRepository, ContentImageRepository contentImageRepository){
         List<Content> contents = contentRepository.findAllByCategory(category);
 
         return CategoryContentsResponseDto.builder()
                 .category(category)
-                .contents(contentsToCategoryContentsResponseDtos(contents))
+                .contents(contentsToCategoryContentsResponseDtos(contents, contentImageRepository))
                 .build();
     }
 
     // 컨텐츠 to 카테고리 리스폰스 //
-    default List<CategoryResponseDto> contentsToCategoryContentsResponseDtos(List<Content> contents){
+    default List<CategoryResponseDto> contentsToCategoryContentsResponseDtos(List<Content> contents, ContentImageRepository contentImageRepository){
         return contents.stream()
                 .map(content -> CategoryResponseDto.builder()
                         .contentId(content.getContentId())
@@ -70,7 +70,7 @@ public interface ContentMapper {
                         .viewCount(content.getViewCount())
                         .contentHeartCount(content.getContentHeartCount())
                         .category(content.getCategory())
-                        .contentImages(content.getContentImages())
+                        .contentImages(contentImageRepository.findByContentId(content.getContentId()))
                         .createdAt(content.getCreatedAt())
                         .modifiedAt(content.getModifiedAt())
                         .build())
@@ -78,9 +78,10 @@ public interface ContentMapper {
     }
 
     // 컨텐츠 to 컨텐트 전체 리스폰스 //
-    default ContentAllResponseDto contentToContentAllResponse(Content content, CommentRepository commentRepository){
+    default ContentAllResponseDto contentToContentAllResponse(Content content, CommentRepository commentRepository, ContentImageRepository contentImageRepository){
         User user = content.getUser();
         List<Comment> comments = commentRepository.findAllByContentId(content.getContentId());
+        List<ContentImage> contentImage = contentImageRepository.findByContentId(content.getContentId());
         Collections.reverse(comments);
 
         return ContentAllResponseDto.builder()
@@ -94,7 +95,8 @@ public interface ContentMapper {
                 .comments(commentsToCommentResponseDtos(comments))
                 .createdAt(content.getCreatedAt())
                 .modifiedAt(content.getModifiedAt())
-                .contentImages(content.getContentImages())
+//                .contentImages(content.getContentImages())
+                .contentImages(contentImage)
                 .tag(content.getTag())
                 .viewCount(content.getViewCount())
                 .build();
@@ -109,11 +111,11 @@ public interface ContentMapper {
                 .collect(Collectors.toList());
     }
     // 컨텐츠 to 홈페이지 컨텐츠 이미지 리스폰스 //
-    default List<HomepageContentImageResponseDto> contentsToHomepageContentImageResponseDto(List<Content> contents){
+    default List<HomepageContentImageResponseDto> contentsToHomepageContentImageResponseDto(List<Content> contents, ContentImageRepository contentImageRepository){
         return contents.stream()
                 .map(content -> HomepageContentImageResponseDto.builder()
                         .contentId(content.getContentId())
-                        .contentImages(content.getContentImages())
+                        .contentImages(contentImageRepository.findByContentId(content.getContentId()))
                         .build())
                 .collect(Collectors.toList());
     }
