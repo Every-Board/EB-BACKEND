@@ -2,7 +2,6 @@ package com.java.everyboard.content.service;
 
 import com.java.everyboard.awsS3.AwsS3Service;
 import com.java.everyboard.comment.repository.CommentRepository;
-import com.java.everyboard.content.dto.ContentAllResponseDto;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.entity.ContentImage;
 import com.java.everyboard.content.mapper.ContentMapper;
@@ -10,13 +9,10 @@ import com.java.everyboard.content.repository.ContentImageRepository;
 import com.java.everyboard.content.repository.ContentRepository;
 import com.java.everyboard.exception.BusinessLogicException;
 import com.java.everyboard.exception.ExceptionCode;
-import com.java.everyboard.response.SingleResponseDto;
 import com.java.everyboard.user.entity.User;
 import com.java.everyboard.user.repository.UserRepository;
 import com.java.everyboard.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -74,9 +70,6 @@ public class ContentService {
         Optional.ofNullable(content.getCategory())
                 .ifPresent(findContent::setCategory);
 
-//        Optional.ofNullable(content.getTag())
-//                .ifPresent(findContent::setTag);
-
         return contentRepository.save(findContent);
     }
 
@@ -128,7 +121,6 @@ public class ContentService {
         List<ContentImage> contentImagesList = contentImageRepository.findByContentId(contentId);
         for(ContentImage contentImage: contentImagesList){
             awsS3Service.deleteFile(contentImage.getContentImgUrl());
-//            awsS3Service.deleteFile(contentImage.getContentImgUrl().replace("contents/","contents-resized/"));
         }
 
         contentImageRepository.deleteAllByContentId(contentId);
@@ -155,16 +147,6 @@ public class ContentService {
 
     public Content updateViewCount(Content content){
         return contentRepository.save(content);
-    }
-
-    @Transactional
-    public ResponseEntity detail(Content content) {
-
-        ContentAllResponseDto response = contentMapper.contentToContentAllResponse(content, commentRepository, contentImageRepository);
-
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(response), HttpStatus.OK
-        );
     }
 
     private void blankCheck(List<String> imgPaths) {

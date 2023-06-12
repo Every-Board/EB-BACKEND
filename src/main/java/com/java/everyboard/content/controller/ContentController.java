@@ -13,6 +13,7 @@ import com.java.everyboard.exception.BusinessLogicException;
 import com.java.everyboard.exception.ExceptionCode;
 import com.java.everyboard.response.SingleResponseDto;
 import com.java.everyboard.content.service.ContentService;
+import com.java.everyboard.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -119,6 +120,16 @@ public class ContentController {
     @GetMapping("/category/{category}")
     public ResponseEntity getContentFromCategory(@PathVariable("category") Category category){
         CategoryContentsResponseDto response = contentMapper.categoryContentsResponseDto(category, contentRepository, contentImageRepository);
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.OK
+        );
+    }
+
+    // 스크랩한 컨텐츠 조회
+    @GetMapping("/{userId}/scraps")
+    public ResponseEntity getContentFromScrap(@PathVariable("userId") Long userId){
+        User user = contentService.findVerifiedUser(userId);
+        ScrapListDto response = contentMapper.scrapResponseDto(user, contentRepository, contentImageRepository);
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK
         );

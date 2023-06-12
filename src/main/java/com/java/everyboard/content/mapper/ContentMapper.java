@@ -124,6 +124,33 @@ public interface ContentMapper {
                 .collect(Collectors.toList());
     }
 
+    // 스크랩 list 선언 //
+    default ScrapListDto scrapResponseDto(User user, ContentRepository contentRepository, ContentImageRepository contentImageRepository){
+        List<Content> contents = contentRepository.findAllByScraps(user.getUserId());
+
+        return ScrapListDto.builder()
+                .contents(contentsRoScrapList(contents, contentImageRepository))
+                .build();
+    }
+
+    // 스크랩 to 카테고리 리스폰스 //
+    default List<ScrapResponseDto> contentsRoScrapList(List<Content> contents, ContentImageRepository contentImageRepository){
+        return contents.stream()
+                .map(content -> ScrapResponseDto.builder()
+                        .contentId(content.getContentId())
+                        .userId(content.getUser().getUserId())
+                        .nickname(content.getUser().getNickname())
+                        .title(content.getTitle())
+                        .content(content.getContent())
+                        .viewCount(content.getViewCount())
+                        .contentHeartCount(content.getContentHeartCount())
+                        .contentImages(contentImageRepository.findByContentId(content.getContentId()))
+                        .createdAt(content.getCreatedAt())
+                        .modifiedAt(content.getModifiedAt())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
 
     // 컨텐츠 to 홈페이지 컨텐츠 리스폰스 //
     default List<HomepageContentResponseDto> contentsToHomepageContentResponseDto(List<Content> contents){

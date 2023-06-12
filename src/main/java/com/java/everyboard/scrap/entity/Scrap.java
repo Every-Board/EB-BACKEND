@@ -23,7 +23,7 @@ public class Scrap extends Auditable {
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private ScrapType scrapType;
+    private ScrapType scrapType = ScrapType.REMOVE;
 
     public Scrap(User user, Content content) {
         this.user = user;
