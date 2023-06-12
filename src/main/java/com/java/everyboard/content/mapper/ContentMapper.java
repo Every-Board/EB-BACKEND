@@ -102,6 +102,7 @@ public interface ContentMapper {
         return CategoryContentsResponseDto.builder()
                 .category(category)
                 .contents(contentsToCategoryContentsResponseDtos(contents, contentImageRepository))
+                .build();
     }
 
     // 컨텐츠 to 카테고리 리스폰스 //
