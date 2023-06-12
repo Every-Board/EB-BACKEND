@@ -1,6 +1,6 @@
 package com.java.everyboard.content.service;
 
-import com.java.everyboard.awsS3.AwsS3Service;
+import com.java.everyboard.AwsS3.AwsS3Service;
 import com.java.everyboard.comment.repository.CommentRepository;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.entity.ContentImage;
