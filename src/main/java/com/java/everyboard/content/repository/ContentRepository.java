@@ -36,6 +36,6 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     List<Content> findContentsRecentImage();
 
     // 게시글 검색기능
-    @Query(value = "select * from contents WHERE title LIKE %:keyword% OR content LIKE %:keyword% ", nativeQuery = true)
+    @Query(value = "select * from contents where title like %:keyword% or content like %:keyword% ", nativeQuery = true)
     List<Content> findAllSearch(@Param(value = "keyword")String keyword);
 }

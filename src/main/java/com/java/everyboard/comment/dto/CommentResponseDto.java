@@ -11,17 +11,11 @@ import java.time.LocalDateTime;
 @Builder
 public class CommentResponseDto {
     private long commentId;
-
     private long userId;
-
     private long contentId;
-
     private String title;
     private String comment;
-
     private String nickName;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime modifiedAt;
 }
