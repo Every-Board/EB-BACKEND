@@ -22,7 +22,6 @@ public class ContentPatchDto {
     private Category category; // Enum으로 교체될 예정
 //    private String tag;
 
-
     // 생성자 //
     public void updateId(Long id){
         this.contentId = id;

@@ -102,7 +102,6 @@ public interface ContentMapper {
         return CategoryContentsResponseDto.builder()
                 .category(category)
                 .contents(contentsToCategoryContentsResponseDtos(contents, contentImageRepository))
-                .build();
     }
 
     // 컨텐츠 to 카테고리 리스폰스 //
@@ -150,7 +149,6 @@ public interface ContentMapper {
                         .build())
                 .collect(Collectors.toList());
     }
-
 
     // 컨텐츠 to 홈페이지 컨텐츠 리스폰스 //
     default List<HomepageContentResponseDto> contentsToHomepageContentResponseDto(List<Content> contents){

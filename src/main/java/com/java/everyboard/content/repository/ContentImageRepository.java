@@ -13,5 +13,4 @@ public interface ContentImageRepository extends JpaRepository<ContentImage, Long
     @Modifying
     @Query(value = "delete from content_image where content_id=:contentId", nativeQuery = true)
     void deleteAllByContentId(@Param("contentId")Long contentId);
-
 }
