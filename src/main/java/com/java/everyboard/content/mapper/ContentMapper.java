@@ -25,7 +25,7 @@ public interface ContentMapper {
     // 컨텐츠 패치 to 컨텐츠 //
     Content contentPatchDtoToContent(ContentPatchDto requestBody);
 
-    // 컨텐츠 to 컨텐츠 리스폰스 (단건) //
+    // 컨텐츠 to 컨텐츠 리스폰스 //
     default ContentResponseDto contentToContentResponse(Content content, ContentImageRepository contentImageRepository){
         User user = content.getUser();
         List<ContentImage> contentImage = contentImageRepository.findByContentId(content.getContentId());
@@ -42,6 +42,29 @@ public interface ContentMapper {
                 .tag(content.getTag())
                 .createdAt(content.getCreatedAt())
                 .modifiedAt(content.getModifiedAt())
+                .build();
+    }
+
+    // 컨텐츠 to 컨텐트 단건 조회 //
+    default ContentAllResponseDto contentToContentAllResponse(Content content, CommentRepository commentRepository, ContentImageRepository contentImageRepository){
+        User user = content.getUser();
+        List<Comment> comments = commentRepository.findAllByContentId(content.getContentId());
+        Collections.reverse(comments);
+
+        return ContentAllResponseDto.builder()
+                .contentId(content.getContentId())
+                .userId(user.getUserId())
+                .nickname(user.getNickname())
+                .title(content.getTitle())
+                .content(content.getContent())
+                .contentHeartCount(content.getContentHeartCount())
+                .category(content.getCategory())
+                .comments(commentsToCommentResponseDtos(comments))
+                .createdAt(content.getCreatedAt())
+                .modifiedAt(content.getModifiedAt())
+                .contentImages(contentImageRepository.findByContentId(content.getContentId()))
+                .tag(content.getTag())
+                .viewCount(content.getViewCount())
                 .build();
     }
 
@@ -77,30 +100,7 @@ public interface ContentMapper {
                 .collect(Collectors.toList());
     }
 
-    // 컨텐츠 to 컨텐트 전체 리스폰스 //
-    default ContentAllResponseDto contentToContentAllResponse(Content content, CommentRepository commentRepository, ContentImageRepository contentImageRepository){
-        User user = content.getUser();
-        List<Comment> comments = commentRepository.findAllByContentId(content.getContentId());
-//        List<ContentImage> contentImage = contentImageRepository.findByContentId(content.getContentId());
-        Collections.reverse(comments);
 
-        return ContentAllResponseDto.builder()
-                .contentId(content.getContentId())
-                .userId(user.getUserId())
-                .nickname(user.getNickname())
-                .title(content.getTitle())
-                .content(content.getContent())
-                .contentHeartCount(content.getContentHeartCount())
-                .category(content.getCategory())
-                .comments(commentsToCommentResponseDtos(comments))
-                .createdAt(content.getCreatedAt())
-                .modifiedAt(content.getModifiedAt())
-//                .contentImages(content.getContentImages())
-                .contentImages(contentImageRepository.findByContentId(content.getContentId()))
-                .tag(content.getTag())
-                .viewCount(content.getViewCount())
-                .build();
-    }
     // 컨텐츠 to 홈페이지 컨텐츠 리스폰스 //
     default List<HomepageContentResponseDto> contentsToHomepageContentResponseDto(List<Content> contents){
         return contents.stream()

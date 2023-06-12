@@ -63,7 +63,7 @@ public class ContentController {
         content.setViewCount(++viewCount);
         contentService.updateViewCount(content);
 
-        return new ResponseEntity<>(contentMapper.contentToContentResponse(content,contentImageRepository),
+        return new ResponseEntity<>(contentMapper.contentToContentAllResponse(content,commentRepository,contentImageRepository),
                 HttpStatus.OK);
     }
 
