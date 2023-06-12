@@ -39,7 +39,6 @@ public interface ContentMapper {
                 .content(content.getContent())
                 .contentImages(contentImage)
                 .category(content.getCategory())
-                .tag(content.getTag())
                 .createdAt(content.getCreatedAt())
                 .modifiedAt(content.getModifiedAt())
                 .build();
@@ -63,13 +62,38 @@ public interface ContentMapper {
                 .createdAt(content.getCreatedAt())
                 .modifiedAt(content.getModifiedAt())
                 .contentImages(contentImageRepository.findByContentId(content.getContentId()))
-                .tag(content.getTag())
                 .viewCount(content.getViewCount())
+                .build();
+    }
+/*
+    // 컨텐츠(다중) to 컨텐츠 리스폰스 (전체) //
+    List<ContentResponseDto> contentsToContentResponse(List<Content> contents);*/
+
+    // 컨텐츠 List 선언
+    default ContentsListDto contentsToContentResponse(List<Content> contents, ContentImageRepository contentImageRepository){
+
+        return ContentsListDto.builder()
+                .contentResponseDto(contentsToContentsResponse(contents, contentImageRepository))
                 .build();
     }
 
     // 컨텐츠(다중) to 컨텐츠 리스폰스 (전체) //
-    List<ContentResponseDto> contentsToContentResponse(List<Content> contents);
+    default List<ContentResponseDto> contentsToContentsResponse(List<Content> contents, ContentImageRepository contentImageRepository){
+        return contents.stream()
+                .map(content -> ContentResponseDto.builder()
+                        .contentId(content.getContentId())
+                        .userId(content.getUser().getUserId())
+                        .title(content.getTitle())
+                        .content(content.getContent())
+                        .viewCount(content.getViewCount())
+                        .contentHeartCount(content.getContentHeartCount())
+                        .category(content.getCategory())
+                        .contentImages(contentImageRepository.findByContentId(content.getContentId()))
+                        .createdAt(content.getCreatedAt())
+                        .modifiedAt(content.getModifiedAt())
+                        .build())
+                .collect(Collectors.toList());
+    }
 
     // 카테고리 list 선언 //
     default CategoryContentsResponseDto categoryContentsResponseDto(Category category, ContentRepository contentRepository, ContentImageRepository contentImageRepository){

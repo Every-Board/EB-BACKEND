@@ -72,7 +72,7 @@ public class ContentController {
     public ResponseEntity getContents(@RequestParam("size") int size) {
         List<Content> contents = contentService.findContents();
 
-        return new ResponseEntity<>(contentMapper.contentsToContentResponse(contents),
+        return new ResponseEntity<>(contentMapper.contentsToContentResponse(contents, contentImageRepository),
                 HttpStatus.OK);
     }
 
@@ -128,7 +128,7 @@ public class ContentController {
     @GetMapping("/search")
     public ResponseEntity getSearch(@RequestParam(value = "keyword",required = false) String keyword) {
         List<Content> contents = contentService.findAllSearch(keyword);
-        return new ResponseEntity<>(contentMapper.contentsToContentResponse(contents),
+        return new ResponseEntity<>(contentMapper.contentsToContentResponse(contents, contentImageRepository),
                 HttpStatus.OK);
     }
 

@@ -20,7 +20,7 @@ public class ContentResponseDto {
     private String content;
     private List<ContentImage> contentImages; // 컨텐츠 이미지를 담는 주소
     private Category category;
-    private String tag;
+//    private String tag;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 

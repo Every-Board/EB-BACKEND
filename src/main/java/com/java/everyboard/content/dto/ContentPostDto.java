@@ -21,6 +21,6 @@ public class ContentPostDto {
     private String content;
     @NotNull
     private Category category; // Enum으로 교체될 예정
-    private String tag;
+//    private String tag;
     public List<ContentImage> contentImages;
 }

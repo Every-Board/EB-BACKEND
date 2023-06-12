@@ -74,8 +74,8 @@ public class ContentService {
         Optional.ofNullable(content.getCategory())
                 .ifPresent(findContent::setCategory);
 
-        Optional.ofNullable(content.getTag())
-                .ifPresent(findContent::setTag);
+//        Optional.ofNullable(content.getTag())
+//                .ifPresent(findContent::setTag);
 
         return contentRepository.save(findContent);
     }

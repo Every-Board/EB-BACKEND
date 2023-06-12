@@ -20,7 +20,7 @@ public class ContentPatchDto {
     private List<ContentImage> contentImages; // 컨텐츠 이미지를 담는 주소
     @NotNull
     private Category category; // Enum으로 교체될 예정
-    private String tag;
+//    private String tag;
 
 
     // 생성자 //

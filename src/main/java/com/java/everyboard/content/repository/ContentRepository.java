@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ContentRepository extends JpaRepository<Content, Long> {
+    List<Content> findAll();
     List<Content> findAllByCategory(Category category);
     Optional<Content> findByContentId(long contentId);
 

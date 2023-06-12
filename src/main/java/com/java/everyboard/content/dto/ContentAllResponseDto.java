@@ -25,7 +25,7 @@ public class ContentAllResponseDto {
     private String content;
     private List<ContentImage> contentImages; // 컨텐츠 이미지를 담는 주소
     private Category category;
-    private String tag;
+//    private String tag;
     private LocalDateTime createdAt; // 컨텐츠 작성시간
     private LocalDateTime modifiedAt; // 컨텐츠 수정 시간
 

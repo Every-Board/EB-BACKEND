@@ -36,8 +36,8 @@ public class Content extends Auditable {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Category category; // 카테고리 (Enum값으로 받음)
-    @Column(nullable = false)
-    private String tag;
+//    @Column(nullable = false)
+//    private String tag;
     @Transient
     private final List<ContentImage> contentImages = new ArrayList<>(); // 컨텐츠 이미지 리스트값
 
