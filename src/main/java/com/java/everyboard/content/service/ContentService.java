@@ -109,7 +109,6 @@ public class ContentService {
         return contentRepository.findAllSearch(keyword);
     }
 
-
     // 게시글 삭제 //
     public void deleteContent(Long contentId) {
         Content findContent = findVerifiedContent(contentId);
@@ -118,6 +117,7 @@ public class ContentService {
         if(userService.getLoginUser().getUserId() != writer.getUserId()) // 작성자와 로그인한 사람이 다를 경우
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED); //예외 발생(권한 없음)
         contentRepository.delete(findContent);
+
         List<ContentImage> contentImagesList = contentImageRepository.findByContentId(contentId);
         for(ContentImage contentImage: contentImagesList){
             awsS3Service.deleteFile(contentImage.getContentImgUrl());
@@ -138,6 +138,7 @@ public class ContentService {
     // 게시글 검증 로직 //
     public Content findVerifiedContent(Long contentId) {
         Optional<Content> optionalContent = contentRepository.findByContentId(contentId);
+
         Content findContent =
                 optionalContent.orElseThrow(() ->
                         new BusinessLogicException(ExceptionCode.STACK_NOT_FOUND));

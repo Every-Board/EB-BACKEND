@@ -26,5 +26,4 @@ public class UserContentResponseDto {
     // 유저 정보 //
     private String nickname;
     private String profileUrl; // 프로필 사진
-
 }

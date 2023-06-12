@@ -151,7 +151,6 @@ public interface ContentMapper {
                 .collect(Collectors.toList());
     }
 
-
     // 컨텐츠 to 홈페이지 컨텐츠 리스폰스 //
     default List<HomepageContentResponseDto> contentsToHomepageContentResponseDto(List<Content> contents){
         return contents.stream()

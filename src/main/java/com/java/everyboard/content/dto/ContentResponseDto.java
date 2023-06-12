@@ -23,6 +23,4 @@ public class ContentResponseDto {
 //    private String tag;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-
-
 }
