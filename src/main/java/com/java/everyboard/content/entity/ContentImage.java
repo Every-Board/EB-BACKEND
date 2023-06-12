@@ -2,12 +2,12 @@ package com.java.everyboard.content.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 public class ContentImage {
@@ -15,16 +15,23 @@ public class ContentImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contentImageId;
 
-    @Column(nullable = false)
+    private Long contentId;
     private String contentImgUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Content content;
-
-    public ContentImage(String contentImgUrl, Content content) {
+    public ContentImage(String contentImgUrl) {
         this.contentImgUrl = contentImgUrl;
-        this.content = content;
+    }
+
+    public ContentImage(Long contentId) {
+        this.contentId = contentId;
+    }
+
+    public ContentImage(Long contentId, String contentImgUrl) {
+        this.contentId = contentId;
+        this.contentImgUrl = contentImgUrl;
+    }
+
+    public void setContentId(Long contentId) {
+        this.contentId = contentId;
     }
 }

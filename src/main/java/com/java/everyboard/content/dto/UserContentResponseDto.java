@@ -19,12 +19,11 @@ public class UserContentResponseDto {
     private Long userId;
     private String title;
     private String content;
-    private List<ContentImage> contentImageList;
+    private List<ContentImage> contentImages;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
     // 유저 정보 //
     private String nickname;
     private String profileUrl; // 프로필 사진
-
 }

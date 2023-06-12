@@ -22,8 +22,12 @@ public interface ScrapMapper {
         return ScrapResponseDto.builder()
                 .userId(user.getUserId())
                 .contentId(content.getContentId())
+                .title(content.getTitle())
+                .content(content.getContent())
                 .scrapId(scrap.getScrapId())
                 .scrapType(scrap.getScrapType().toString())
+                .createdAt(content.getCreatedAt())
+                .modifiedAt(content.getModifiedAt())
                 .build();
     }
     // 스크랩 TO 스크랩 리스트 리스폰스 //

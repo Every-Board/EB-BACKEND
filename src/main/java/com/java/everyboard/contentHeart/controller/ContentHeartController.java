@@ -35,7 +35,7 @@ public class ContentHeartController {
     private final ContentHeartRepository contentHeartRepository;
 
     // 좋아요 등록 //
-    @PostMapping("/{userId}/{contentId}/hearts")
+    @PostMapping("/{userId}/{contentId}/contenthearts")
     public ResponseEntity postHeart(
             @PathVariable("userId") @Positive Long userId,
             @PathVariable("contentId") @Positive Long contentId) {

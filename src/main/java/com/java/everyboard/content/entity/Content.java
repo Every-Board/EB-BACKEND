@@ -33,13 +33,13 @@ public class Content extends Auditable {
     private String title; // 컨텐츠 제목
     @Column(nullable = false)
     private String content; // 컨텐츠 내용
-    @Transient
-    private final List<ContentImage> contentImageList = new ArrayList<>(); // 컨텐츠 이미지 리스트값
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Category category = Category.Board; // 카테고리 (Enum값으로 받음)
-    @Column(nullable = false)
-    private String tag;
+    private Category category; // 카테고리 (Enum값으로 받음)
+//    @Column(nullable = false)
+//    private String tag;
+    @Transient
+    private final List<ContentImage> contentImages = new ArrayList<>(); // 컨텐츠 이미지 리스트값
 
     // 연관 관계 M:N //
     @ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
