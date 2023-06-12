@@ -1,8 +1,6 @@
 package com.java.everyboard.content.controller;
 
-
-
-import com.java.everyboard.awsS3.AwsS3Service;
+import com.java.everyboard.AwsS3.AwsS3Service;
 import com.java.everyboard.comment.repository.CommentRepository;
 import com.java.everyboard.constant.Category;
 import com.java.everyboard.content.dto.*;
@@ -39,8 +37,6 @@ public class ContentController {
     private final ContentImageRepository contentImageRepository;
     private final AwsS3Service awsS3Service;
     private final CommentRepository commentRepository;
-
-
 
     // 게시글 생성 //
     @PostMapping

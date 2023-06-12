@@ -1,6 +1,6 @@
 package com.java.everyboard.content.service;
 
-import com.java.everyboard.awsS3.AwsS3Service;
+import com.java.everyboard.AwsS3.AwsS3Service;
 import com.java.everyboard.comment.repository.CommentRepository;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.entity.ContentImage;
@@ -116,7 +116,7 @@ public class ContentService {
         if(userService.getLoginUser().getUserId() != writer.getUserId()) // 작성자와 로그인한 사람이 다를 경우
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED); //예외 발생(권한 없음)
         contentRepository.delete(findContent);
-      
+
         List<ContentImage> contentImagesList = contentImageRepository.findByContentId(contentId);
         for(ContentImage contentImage: contentImagesList){
             awsS3Service.deleteFile(contentImage.getContentImgUrl());
