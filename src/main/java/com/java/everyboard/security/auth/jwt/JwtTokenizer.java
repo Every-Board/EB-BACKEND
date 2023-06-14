@@ -9,7 +9,11 @@ import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
@@ -94,5 +98,22 @@ public class JwtTokenizer {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+    private URI createURI(String accessToken, String refreshToken, Long userId) {
+        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+
+        queryParams.add("accessToken", accessToken);
+        queryParams.add("refreshToken", refreshToken);
+        queryParams.add("userId", String.valueOf(userId));
+
+        return UriComponentsBuilder
+                .newInstance()
+                .scheme("https")
+                .host("every-board.shop")
+//                .port(80)
+                .path("/auth/loading")
+                .queryParams(queryParams)
+                .build()
+                .toUri();
+    }
 }
 
