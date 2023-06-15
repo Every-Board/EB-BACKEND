@@ -1,5 +1,6 @@
 package com.java.everyboard.config;
 
+import com.amazonaws.HttpMethod;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -14,7 +15,13 @@ public class WebConfig implements WebMvcConfigurer {
                 .addMapping("/**")
                 .allowedOrigins("http://localhost:3000")
                 .allowedOriginPatterns("*")
-                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+                .allowedMethods(
+                        HttpMethod.GET.name(),
+                        HttpMethod.HEAD.name(),
+                        HttpMethod.POST.name(),
+                        HttpMethod.PUT.name(),
+                        HttpMethod.DELETE.name(),
+                        HttpMethod.PATCH.name(),"GET","POST","PUT","PATCH","HEAD","DELETE","OPTIONS")
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization", "Refresh")
                 .allowCredentials(true).maxAge(3600);

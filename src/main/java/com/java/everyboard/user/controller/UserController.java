@@ -46,6 +46,7 @@ public class UserController {
     private final AwsS3Service awsS3Service;
 
     // 회원 가입
+    @CrossOrigin
     @PostMapping("/join")
     public ResponseEntity postUser(@Valid @RequestPart("data") UserPostDto requestBody) {
 
