@@ -165,6 +165,9 @@ public interface ContentMapper {
         return contents.stream()
                 .map(content -> HomepageContentImageResponseDto.builder()
                         .contentId(content.getContentId())
+                        .title(content.getTitle())
+                        .content(content.getContent())
+                        .viewCount(content.getViewCount())
                         .contentImages(contentImageRepository.findByContentId(content.getContentId()))
                         .build())
                 .collect(Collectors.toList());
