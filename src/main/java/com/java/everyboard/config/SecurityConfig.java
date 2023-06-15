@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .headers().frameOptions().sameOrigin()
                 .and()
                 .csrf().disable()
-                .cors(withDefaults())
+                .cors().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin().disable()
@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests(auth -> auth
                         .antMatchers(HttpMethod.GET, "/**").permitAll()
-                        .antMatchers(HttpMethod.POST, "/user/join", "/logout", "/token/reissue", "/email/**").permitAll()
+                        .antMatchers(HttpMethod.POST, "/user/join","/login", "/logout", "/token/reissue", "/email/**").permitAll()
                         .antMatchers(HttpMethod.DELETE, "/user").hasRole("USER")
                         .antMatchers("/h2/**").permitAll()
                         .antMatchers("/login/**", "/oauth2/**", "/loading/**").permitAll()
