@@ -50,7 +50,7 @@ public class ScrapService {
     public Scrap findVerifiedScrap(User user,Content content) {
         Optional<Scrap> optionalScrap = scrapRepository.findByUserAndContent(user, content);
         Scrap scrap = optionalScrap.orElseThrow(
-                () -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND)
+                () -> new BusinessLogicException(ExceptionCode.SCRAP_NOT_FOUND)
         );
         return scrap;
     }

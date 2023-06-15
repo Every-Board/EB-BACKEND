@@ -66,7 +66,7 @@ public class UserController {
         requestBody.setUserId(userId);
 
         if (multipartfiles == null) {
-            throw new BusinessLogicException(ExceptionCode.STACK_NOT_FOUND);
+            throw new BusinessLogicException(ExceptionCode.PROFILE_IMAGE_NOT_FOUND);
         }
         List<String> profileImgPath = awsS3Service.uploadFile(multipartfiles);
         log.info("IMG 경로들 : "+ profileImgPath);

@@ -141,7 +141,7 @@ public class ContentService {
 
         Content findContent =
                 optionalContent.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.STACK_NOT_FOUND));
+                        new BusinessLogicException(ExceptionCode.CONTENT_NOT_FOUND));
 
         return findContent;
     }
@@ -152,7 +152,7 @@ public class ContentService {
 
     private void blankCheck(List<String> imgPaths) {
         if(imgPaths == null || imgPaths.isEmpty()){ //.isEmpty()도 되는지 확인해보기
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+            throw new BusinessLogicException(ExceptionCode.CONTENT_IMAGE_CHECK_ERROR);
         }
     }
 }

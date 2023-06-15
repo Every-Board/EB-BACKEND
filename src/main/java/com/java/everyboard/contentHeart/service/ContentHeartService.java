@@ -53,7 +53,7 @@ public class ContentHeartService {
     public ContentHeart findVerifiedHeart(User user,Content content) {
         Optional<ContentHeart> optionalHeart = contentHeartRepository.findByUserAndContent(user, content);
         ContentHeart contentHeart = optionalHeart.orElseThrow(
-                () -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND)
+                () -> new BusinessLogicException(ExceptionCode.CONTENT_HEART_NOT_FOUND)
         );
         return contentHeart;
     }

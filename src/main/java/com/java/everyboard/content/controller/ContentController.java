@@ -45,9 +45,9 @@ public class ContentController {
     public ResponseEntity postContent(@Valid @RequestPart("data") ContentPostDto requestBody,
                                       @RequestPart(required=false, value="ContentImgUrl") List<MultipartFile> multipartFiles) {
 
-        /* if (multipartFiles == null) {
-            throw new BusinessLogicException(ExceptionCode.STACK_NOT_FOUND);
-        }*/
+         if (multipartFiles == null) {
+            throw new BusinessLogicException(ExceptionCode.CONTENT_IMAGE_NOT_FOUND);
+        }
 
         List<String> imgPaths = awsS3Service.uploadFile(multipartFiles);
         log.info("IMG 경로들 : "+ imgPaths);
