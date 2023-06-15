@@ -9,6 +9,7 @@ import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.entity.ContentImage;
 import com.java.everyboard.content.repository.ContentImageRepository;
 import com.java.everyboard.content.repository.ContentRepository;
+import com.java.everyboard.user.dto.UserContentResponseDto;
 import com.java.everyboard.user.entity.User;
 import org.mapstruct.Mapper;
 
@@ -179,13 +180,10 @@ public interface ContentMapper {
 
         return UserContentResponseDto.builder()
                 .contentId(content.getContentId())
-                .userId(user.getUserId())
                 .title(content.getTitle())
                 .content(content.getContent())
                 .createdAt(content.getCreatedAt())
                 .modifiedAt(content.getModifiedAt())
-                .nickname(user.getNickname())
-                .profileUrl(user.getProfileUrl())
                 .build();
     }
 

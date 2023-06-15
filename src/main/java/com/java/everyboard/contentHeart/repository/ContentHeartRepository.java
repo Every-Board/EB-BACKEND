@@ -5,6 +5,7 @@ import com.java.everyboard.contentHeart.entity.ContentHeart;
 import com.java.everyboard.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,6 @@ public interface ContentHeartRepository extends JpaRepository<ContentHeart, Long
 //    List<Heart> findAllByContent(Content content);
     Optional<ContentHeart> findByUserAndContent(User user, Content content);
 
-    @Query(value = "select * from contentHeart where user_id = :userId", nativeQuery = true)
-    List<ContentHeart> findAllByUserId(long userId);
+    @Query(value = "select * from content_heart where user_id = :userId", nativeQuery = true)
+    List<ContentHeart> findByUserId(@Param("userId") long userId);
 }

@@ -35,7 +35,7 @@ public class Scrap extends Auditable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "content_id")
     private Content content;
 
