@@ -2,7 +2,9 @@ package com.java.everyboard.user.mapper;
 
 import com.java.everyboard.comment.entity.Comment;
 import com.java.everyboard.comment.repository.CommentRepository;
+import com.java.everyboard.content.dto.ContentResponseDto;
 import com.java.everyboard.content.entity.Content;
+import com.java.everyboard.content.entity.ContentImage;
 import com.java.everyboard.content.repository.ContentImageRepository;
 import com.java.everyboard.content.repository.ContentRepository;
 import com.java.everyboard.contentHeart.dto.ContentHeartResponseDto;
@@ -12,6 +14,8 @@ import com.java.everyboard.scrap.entity.Scrap;
 import com.java.everyboard.scrap.repository.ScrapRepository;
 import com.java.everyboard.user.dto.*;
 import com.java.everyboard.user.entity.User;
+import com.java.everyboard.user.entity.UserImage;
+import com.java.everyboard.user.repository.UserImageRepository;
 import org.mapstruct.Mapper;
 
 import java.util.Collections;
@@ -25,9 +29,24 @@ public interface UserMapper {
 
     User patchDtoToUser(UserPatchDto requestBody);
 
-    UserResponseDto userToUserResponseDto(User user);
+//    UserResponseDto userToUserResponseDto(User user);
 
-    default UserAllResponseDto userMyPage(User user, ContentRepository contentRepository, ContentImageRepository contentImageRepository, CommentRepository commentRepository, ContentHeartRepository contentHeartRepository, ScrapRepository scrapRepository){
+    default UserResponseDto userToUserResponseDto(User user, UserImageRepository userImageRepository){
+        List<UserImage> userImage = userImageRepository.findByUserId(user.getUserId());
+
+        return UserResponseDto.builder()
+                .userId(user.getUserId())
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .password(user.getPassword())
+                .profileUrl(userImage)
+                .loginType(user.getLoginType())
+                .createdAt(user.getCreatedAt())
+                .modifiedAt(user.getModifiedAt())
+                .build();
+    }
+
+    default UserAllResponseDto userMyPage(User user, UserImageRepository userImageRepository, ContentRepository contentRepository, ContentImageRepository contentImageRepository, CommentRepository commentRepository, ContentHeartRepository contentHeartRepository, ScrapRepository scrapRepository){
         List<Content> contents = contentRepository.findByUserId(user.getUserId());
         Collections.reverse(contents);
         List<Comment> comments = commentRepository.findByUserId(user.getUserId());
@@ -42,7 +61,7 @@ public interface UserMapper {
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .nickname(user.getNickname())
-//                .profileUrl(user.getProfileUrl())
+                .profileUrl(user.getProfileUrl())
                 .createdAt(user.getCreatedAt())
                 .modifiedAt(user.getModifiedAt())
                 .comments(commentsToCommentResponseDtos(comments))

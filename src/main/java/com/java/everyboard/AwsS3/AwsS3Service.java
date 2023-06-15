@@ -71,9 +71,6 @@ public class AwsS3Service {
 
 
     public void deleteFile(String fileName){
-        Logger logger = (Logger) LoggerFactory.getLogger(AwsS3Service.class);
         amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
-        logger.info("Aws S3 Log:"+bucket);
-//        System.out.println(bucket);
     }
 }

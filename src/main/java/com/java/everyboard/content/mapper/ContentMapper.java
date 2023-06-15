@@ -11,6 +11,8 @@ import com.java.everyboard.content.repository.ContentImageRepository;
 import com.java.everyboard.content.repository.ContentRepository;
 import com.java.everyboard.user.dto.UserContentResponseDto;
 import com.java.everyboard.user.entity.User;
+import com.java.everyboard.user.entity.UserImage;
+import com.java.everyboard.user.repository.UserImageRepository;
 import org.mapstruct.Mapper;
 
 import java.util.Collections;
@@ -46,10 +48,11 @@ public interface ContentMapper {
     }
 
     // 컨텐츠 to 컨텐트 단건 조회 //
-    default ContentAllResponseDto contentToContentAllResponse(Content content, CommentRepository commentRepository, ContentImageRepository contentImageRepository){
+    default ContentAllResponseDto contentToContentAllResponse(Content content, CommentRepository commentRepository, ContentImageRepository contentImageRepository, UserImageRepository userImageRepository){
         User user = content.getUser();
         List<Comment> comments = commentRepository.findAllByContentId(content.getContentId());
         Collections.reverse(comments);
+        List<UserImage> userImage = userImageRepository.findByUserId(user.getUserId());
 
         return ContentAllResponseDto.builder()
                 .contentId(content.getContentId())
@@ -60,6 +63,7 @@ public interface ContentMapper {
                 .contentHeartCount(content.getContentHeartCount())
                 .category(content.getCategory())
                 .comments(commentsToCommentResponseDtos(comments))
+                .profileUrl(userImage)
                 .createdAt(content.getCreatedAt())
                 .modifiedAt(content.getModifiedAt())
                 .contentImages(contentImageRepository.findByContentId(content.getContentId()))

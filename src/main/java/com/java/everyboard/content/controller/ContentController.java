@@ -14,6 +14,7 @@ import com.java.everyboard.exception.ExceptionCode;
 import com.java.everyboard.response.SingleResponseDto;
 import com.java.everyboard.content.service.ContentService;
 import com.java.everyboard.user.entity.User;
+import com.java.everyboard.user.repository.UserImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,7 @@ public class ContentController {
     private final ContentImageRepository contentImageRepository;
     private final AwsS3Service awsS3Service;
     private final CommentRepository commentRepository;
+    private final UserImageRepository userImageRepository;
 
     // 게시글 생성 //
     @PostMapping
@@ -65,7 +67,7 @@ public class ContentController {
         content.setViewCount(++viewCount);
         contentService.updateViewCount(content);
 
-        return new ResponseEntity<>(contentMapper.contentToContentAllResponse(content,commentRepository,contentImageRepository),
+        return new ResponseEntity<>(contentMapper.contentToContentAllResponse(content,commentRepository,contentImageRepository, userImageRepository),
                 HttpStatus.OK);
     }
 

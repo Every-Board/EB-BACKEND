@@ -3,6 +3,7 @@ package com.java.everyboard.content.dto;
 import com.java.everyboard.comment.dto.CommentResponseDto;
 import com.java.everyboard.constant.Category;
 import com.java.everyboard.content.entity.ContentImage;
+import com.java.everyboard.user.entity.UserImage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,6 +34,6 @@ public class ContentAllResponseDto {
 
     // 게시글 작성 유저 정보 //
     private String nickname;
-    private String profileUrl; // 프로필 사진
+    private List<UserImage> profileUrl; // 프로필 사진
     private List<CommentResponseDto> comments;
 }

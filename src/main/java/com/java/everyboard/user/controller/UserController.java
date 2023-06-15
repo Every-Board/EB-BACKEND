@@ -1,25 +1,35 @@
 package com.java.everyboard.user.controller;
 
+import com.java.everyboard.AwsS3.AwsS3Service;
 import com.java.everyboard.comment.repository.CommentRepository;
 import com.java.everyboard.content.repository.ContentImageRepository;
 import com.java.everyboard.content.repository.ContentRepository;
 import com.java.everyboard.contentHeart.repository.ContentHeartRepository;
+import com.java.everyboard.exception.BusinessLogicException;
+import com.java.everyboard.exception.ExceptionCode;
+import com.java.everyboard.response.SingleResponseDto;
 import com.java.everyboard.scrap.repository.ScrapRepository;
 import com.java.everyboard.user.dto.UserPatchDto;
 import com.java.everyboard.user.dto.UserPostDto;
+import com.java.everyboard.user.dto.UserResponseDto;
 import com.java.everyboard.user.entity.User;
 import com.java.everyboard.user.mapper.UserMapper;
+import com.java.everyboard.user.repository.UserImageRepository;
 import com.java.everyboard.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @Validated
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
@@ -31,12 +41,26 @@ public class UserController {
     private final CommentRepository commentRepository;
     private final ContentHeartRepository contentHeartRepository;
     private final ScrapRepository scrapRepository;
+    private final UserImageRepository userImageRepository;
+    private final AwsS3Service awsS3Service;
 
     // 회원 가입
     @PostMapping("/join")
-    public ResponseEntity postUser(@RequestBody @Valid UserPostDto requestBody) {
-        User user = userService.createUser(userMapper.postDtoToUser(requestBody));
-        return new ResponseEntity<>(userMapper.userToUserResponseDto(user), HttpStatus.CREATED);
+    public ResponseEntity postUser(@Valid @RequestPart("data") UserPostDto requestBody,
+                                   @RequestPart(required = false, value = "ProfileUrl") List<MultipartFile> multipartfiles) {
+        if (multipartfiles == null) {
+            throw new BusinessLogicException(ExceptionCode.STACK_NOT_FOUND);
+        }
+
+        List<String> profileImgPath = awsS3Service.uploadFile(multipartfiles);
+        log.info("IMG 경로들 : "+ profileImgPath);
+
+        User user = userService.createUser(userMapper.postDtoToUser(requestBody), profileImgPath);
+        UserResponseDto userResponseDto = userMapper.userToUserResponseDto(user, userImageRepository);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(userResponseDto) , HttpStatus.CREATED
+        );
     }
 
     // 회원 수정
@@ -48,21 +72,23 @@ public class UserController {
         User user = userService.updateUser(userMapper.patchDtoToUser(requestBody));
         user.setUserId(userId);
 
-        return new ResponseEntity<>(userMapper.userToUserResponseDto(user), HttpStatus.OK);
+        UserResponseDto userResponseDto = userMapper.userToUserResponseDto(user, userImageRepository);
+
+        return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
     }
 
     // 회원 단건 조회
     @GetMapping("/{userId}")
     public ResponseEntity getUser(@PathVariable("userId") @Positive Long userId) {
         User user = userService.findUser(userId);
-        return new ResponseEntity<>(userMapper.userToUserResponseDto(user), HttpStatus.OK);
+        return new ResponseEntity<>(userMapper.userToUserResponseDto(user,userImageRepository), HttpStatus.OK);
     }
 
     // 회원 마이페이지 조회
     @GetMapping("/{userId}/mypage")
     public ResponseEntity getUserMypage(@PathVariable("userId") @Positive Long userId) {
         User user = userService.findUser(userId);
-        return new ResponseEntity<>(userMapper.userMyPage(user, contentRepository, contentImageRepository, commentRepository, contentHeartRepository, scrapRepository), HttpStatus.OK);
+        return new ResponseEntity<>(userMapper.userMyPage(user, userImageRepository, contentRepository, contentImageRepository, commentRepository, contentHeartRepository, scrapRepository), HttpStatus.OK);
     }
 
     // 회원 탈퇴

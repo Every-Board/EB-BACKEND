@@ -1,10 +1,14 @@
 package com.java.everyboard.user.service;
 
+import com.java.everyboard.AwsS3.AwsS3Service;
 import com.java.everyboard.constant.LoginType;
+import com.java.everyboard.content.entity.ContentImage;
 import com.java.everyboard.exception.BusinessLogicException;
 import com.java.everyboard.exception.ExceptionCode;
 import com.java.everyboard.security.utils.CustomAuthorityUtils;
 import com.java.everyboard.user.entity.User;
+import com.java.everyboard.user.entity.UserImage;
+import com.java.everyboard.user.repository.UserImageRepository;
 import com.java.everyboard.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +27,10 @@ public class UserService {
     private final UserRepository userRepository;
     private final CustomAuthorityUtils authorityUtils;
     private final PasswordEncoder passwordEncoder;
+    private final UserImageRepository userImageRepository;
+    private final AwsS3Service awsS3Service;
     // 회원가입
-    public User createUser(User user) {
+    public User createUser(User user, List<String> profileImgPath) {
 
         verifiedUser(user.getEmail());
         List<String> roles = authorityUtils.createRoles(user.getEmail());
@@ -32,7 +39,16 @@ public class UserService {
         String encryptPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptPassword);
 
-        return userRepository.save(user);
+        userRepository.save(user);
+
+        List<String> UserFileNameList = new ArrayList<>();
+        for (String userProfileUrl : profileImgPath) {
+            UserImage img = new UserImage(user.getUserId(),userProfileUrl);
+            img.setUserId(user.getUserId());
+            userImageRepository.save(img);
+            UserFileNameList.add(img.getUserImgUrl());
+        }
+        return user;
     }
 
     // 회원정보 수정
@@ -72,6 +88,12 @@ public class UserService {
         checkJwtAndUser(userId);
         User findUSer = existUser(userId);
         userRepository.delete(findUSer);
+
+        List<UserImage> userImages = userImageRepository.findByUserId(userId);
+        for (UserImage userImage: userImages) {
+            awsS3Service.deleteFile(userImage.getUserImgUrl());
+        }
+        userImageRepository.deleteAllByUserId(userId);
     }
 
     // 회원 존재 유무
