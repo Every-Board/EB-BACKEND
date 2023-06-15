@@ -11,6 +11,7 @@ import com.java.everyboard.response.SingleResponseDto;
 import com.java.everyboard.scrap.repository.ScrapRepository;
 import com.java.everyboard.user.dto.UserPatchDto;
 import com.java.everyboard.user.dto.UserPostDto;
+import com.java.everyboard.user.dto.UserPostImageDto;
 import com.java.everyboard.user.dto.UserResponseDto;
 import com.java.everyboard.user.entity.User;
 import com.java.everyboard.user.mapper.UserMapper;
@@ -46,16 +47,31 @@ public class UserController {
 
     // 회원 가입
     @PostMapping("/join")
-    public ResponseEntity postUser(@Valid @RequestPart("data") UserPostDto requestBody,
-                                   @RequestPart(required = false, value = "ProfileUrl") List<MultipartFile> multipartfiles) {
+    public ResponseEntity postUser(@Valid @RequestPart("data") UserPostDto requestBody) {
+
+
+        User user = userService.createUser(userMapper.postDtoToUser(requestBody));
+        UserResponseDto userResponseDto = userMapper.userToUserResponseDto(user, userImageRepository);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(userResponseDto) , HttpStatus.CREATED
+        );
+    }
+
+    // 프로필 이미지 업로드
+    @PostMapping("/{userId}/profile")
+    public ResponseEntity postProfile(@PathVariable("userId") @Positive Long userId,@RequestPart("data") UserPostImageDto requestBody,
+                                      @RequestPart(required = false, value = "ProfileUrl") List<MultipartFile> multipartfiles) {
+
+        requestBody.setUserId(userId);
+
         if (multipartfiles == null) {
             throw new BusinessLogicException(ExceptionCode.STACK_NOT_FOUND);
         }
-
         List<String> profileImgPath = awsS3Service.uploadFile(multipartfiles);
         log.info("IMG 경로들 : "+ profileImgPath);
 
-        User user = userService.createUser(userMapper.postDtoToUser(requestBody), profileImgPath);
+        User user = userService.uploadProfile(userMapper.postImageDtoToUser(requestBody),profileImgPath);
         UserResponseDto userResponseDto = userMapper.userToUserResponseDto(user, userImageRepository);
 
         return new ResponseEntity<>(
@@ -95,6 +111,13 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public ResponseEntity deleteUser(@PathVariable("userId") @Positive Long userId) {
         userService.deleteUser(userId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // 프로필 삭제
+    @DeleteMapping("/{userId}/profile")
+    public ResponseEntity deleteProfile(@PathVariable("userId") @Positive Long userId) {
+        userService.deleteProfile(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

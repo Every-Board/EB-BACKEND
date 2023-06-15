@@ -29,7 +29,7 @@ public interface UserMapper {
 
     User patchDtoToUser(UserPatchDto requestBody);
 
-//    UserResponseDto userToUserResponseDto(User user);
+    User postImageDtoToUser(UserPostImageDto requestBody);
 
     default UserResponseDto userToUserResponseDto(User user, UserImageRepository userImageRepository){
         List<UserImage> userImage = userImageRepository.findByUserId(user.getUserId());

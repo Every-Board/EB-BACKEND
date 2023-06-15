@@ -30,7 +30,7 @@ public class UserService {
     private final UserImageRepository userImageRepository;
     private final AwsS3Service awsS3Service;
     // 회원가입
-    public User createUser(User user, List<String> profileImgPath) {
+    public User createUser(User user) {
 
         verifiedUser(user.getEmail());
         List<String> roles = authorityUtils.createRoles(user.getEmail());
@@ -41,14 +41,29 @@ public class UserService {
 
         userRepository.save(user);
 
-        List<String> UserFileNameList = new ArrayList<>();
+        return user;
+    }
+
+    // 프로필 업로드
+    public User uploadProfile(User user, List<String> profileImgPath) {
+        checkJwtAndUser(user.getUserId());
+        User findUSer = existUser(user.getUserId());
+
+        // 소셜 회원일 경우 수정 불가
+        isSocialUser(findUSer);
+
+         List<String> UserFileNameList = new ArrayList<>();
         for (String userProfileUrl : profileImgPath) {
             UserImage img = new UserImage(user.getUserId(),userProfileUrl);
             img.setUserId(user.getUserId());
             userImageRepository.save(img);
             UserFileNameList.add(img.getUserImgUrl());
         }
-        return user;
+
+        Optional.ofNullable(user.getProfileUrl())
+                .ifPresent(findUSer::setProfileUrl);
+
+        return userRepository.save(findUSer);
     }
 
     // 회원정보 수정
@@ -88,6 +103,18 @@ public class UserService {
         checkJwtAndUser(userId);
         User findUSer = existUser(userId);
         userRepository.delete(findUSer);
+
+        List<UserImage> userImages = userImageRepository.findByUserId(userId);
+        for (UserImage userImage: userImages) {
+            awsS3Service.deleteFile(userImage.getUserImgUrl());
+        }
+        userImageRepository.deleteAllByUserId(userId);
+    }
+
+    // 프로필 삭제
+    public void deleteProfile(Long userId) {
+        checkJwtAndUser(userId);
+        User findUSer = existUser(userId);
 
         List<UserImage> userImages = userImageRepository.findByUserId(userId);
         for (UserImage userImage: userImages) {
