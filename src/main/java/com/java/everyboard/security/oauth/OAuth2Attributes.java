@@ -1,5 +1,6 @@
 package com.java.everyboard.security.oauth;
 
+import com.java.everyboard.constant.AuthProvider;
 import com.java.everyboard.exception.BusinessLogicException;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +17,7 @@ public class OAuth2Attributes {
     private String name;
     private String email;
     private String profileUrl;
+    private String authProvider;
 
     public static OAuth2Attributes of(String registrationId,
                                       String userNameAttributeName,
@@ -41,6 +43,7 @@ public class OAuth2Attributes {
                 .name((String)kakaoProfile.get("nickname"))
                 .email((String)kakaoAccount.get("email"))
                 .profileUrl((String)kakaoProfile.get("profile_image_url"))
+                .authProvider(AuthProvider.KAKAO.toString())
                 .nameAttributeKey(userNameAttributeName)
                 .attributes(attributes)
                 .build();
@@ -52,6 +55,7 @@ public class OAuth2Attributes {
                 .name((String)attributes.get("name"))
                 .email((String)attributes.get("email"))
                 .profileUrl((String)attributes.get("picture"))
+                .authProvider(AuthProvider.GOOGLE.toString())
                 .nameAttributeKey(userNameAttributeName)
                 .attributes(attributes)
                 .build();

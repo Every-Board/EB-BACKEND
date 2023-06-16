@@ -1,5 +1,6 @@
 package com.java.everyboard.security.oauth;
 
+import com.java.everyboard.constant.AuthProvider;
 import com.java.everyboard.security.utils.CustomAuthorityUtils;
 import com.java.everyboard.user.entity.User;
 import com.java.everyboard.user.repository.UserRepository;
@@ -40,6 +41,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
             saveUser(attributes.getEmail()
                     ,attributes.getName()
                     ,attributes.getProfileUrl()
+                    ,attributes.getAuthProvider()
                     ,registrationId.toUpperCase());
         }
 
@@ -51,7 +53,8 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     private void saveUser(String email,
                           String nickname,
                           String profileUrl,
-                          String profileKey) {
+                          String profileKey,
+                          String authProvider) {
         List<String> roles = authorityUtils.createRoles(email);
         User user = new User();
 
@@ -60,6 +63,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         user.setProfileUrl(profileUrl);
         user.setProfileKey(profileKey);
         user.setPassword(profileKey);
+        user.setAuthProvider(AuthProvider.valueOf(authProvider));
         user.setRoles(roles);
         userRepository.save(user);
     }

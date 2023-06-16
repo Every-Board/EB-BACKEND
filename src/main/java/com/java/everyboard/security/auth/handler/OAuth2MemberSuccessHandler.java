@@ -114,10 +114,10 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("https")
-//                .host("everyboard.shop")
-                .host("localhost")
+                .host("everyboard.shop")
+//                .host("localhost")
 //                .port(80)
-                .path("/auth/loading")
+                .path("/loading")
                 .queryParams(queryParams)
                 .build()
                 .toUri();

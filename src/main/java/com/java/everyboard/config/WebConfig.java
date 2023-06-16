@@ -29,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
                         HttpMethod.PATCH.name(),
                         "GET","POST","PUT","PATCH","HEAD","DELETE","OPTIONS")
                 .allowedHeaders("*")
-                .exposedHeaders("Authorization", "Refresh")
-                .allowCredentials(true).maxAge(3600);
+                .exposedHeaders("*", "Authorization", "Refresh")
+                .allowCredentials(true).maxAge(3000);
     }
 }

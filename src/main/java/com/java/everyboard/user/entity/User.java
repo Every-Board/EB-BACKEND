@@ -56,7 +56,7 @@ public class User extends Auditable {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private AuthProvider authProvider = AuthProvider.local;
+    private AuthProvider authProvider = AuthProvider.LOCAL;
 
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> roles = new ArrayList<>();

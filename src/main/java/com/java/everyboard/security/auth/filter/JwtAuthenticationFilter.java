@@ -1,11 +1,15 @@
 package com.java.everyboard.security.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.java.everyboard.exception.BusinessLogicException;
+import com.java.everyboard.exception.ExceptionCode;
 import com.java.everyboard.security.dto.LoginDto;
 import com.java.everyboard.security.auth.jwt.JwtTokenizer;
+import com.java.everyboard.security.utils.RedisUtils;
 import com.java.everyboard.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,21 +25,33 @@ import java.util.Date;
 import java.util.HashMap;
 
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
+    private final RedisUtils redisUtils;
 
     @SneakyThrows
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
+        //로그인 http method : POST
+        if (!request.getMethod().equals("POST")) {
+            throw new BusinessLogicException(ExceptionCode.METHOD_NOT_ALLOWED);
+        }
+        LoginDto loginDto = new LoginDto();
+        UsernamePasswordAuthenticationToken authenticationToken;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
-
-        UsernamePasswordAuthenticationToken authenticationToken
-                = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        } finally {
+            authenticationToken
+                    = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+        }
 
         return authenticationManager.authenticate(authenticationToken);
     }
@@ -78,6 +94,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String subject = user.getEmail();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
         String encodeBase64SecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-        return jwtTokenizer.generateRefreshToken(subject, expiration, encodeBase64SecretKey);
+        String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, encodeBase64SecretKey);
+
+        //refresh 발급시 redis에 저장
+        redisUtils.set("refresh_" + user.getEmail(), refreshToken, jwtTokenizer.getRefreshTokenExpirationMinutes());
+
+        return refreshToken;
     }
 }
