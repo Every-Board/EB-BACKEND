@@ -1,7 +1,10 @@
 package com.java.everyboard.security.auth.filter;
 
+import com.java.everyboard.exception.BusinessLogicException;
+import com.java.everyboard.exception.ExceptionCode;
 import com.java.everyboard.security.auth.jwt.JwtTokenizer;
 import com.java.everyboard.security.utils.CustomAuthorityUtils;
+import com.java.everyboard.security.utils.RedisUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
@@ -18,20 +21,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
 @RequiredArgsConstructor
 public class JwtVerificationFilter extends OncePerRequestFilter {
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
+    private final RedisUtils redisUtils;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
-
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             Map<String, Object> claims = verifyJws(request);
+
+            if (redisUtils.hasKeyBlackList(request.getHeader("Authorization").replace("Bearer ", ""))) {
+                throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+            }
             setAuthenticationToContext(claims);
         } catch (SignatureException se) {
             request.setAttribute("exception", se);
@@ -40,11 +44,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             request.setAttribute("exception", e);
         }
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("http://localhost:3000"));
-        response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT, PATCH");
-        response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
         filterChain.doFilter(request, response);
     }
 

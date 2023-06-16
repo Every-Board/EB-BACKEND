@@ -97,22 +97,11 @@ public class JwtTokenizer {
         byte[] keyBytes = Decoders.BASE64.decode(base64EncodedSecretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-  /*  private URI createURI(String accessToken, String refreshToken, Long userId) {
-        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-
-        queryParams.add("accessToken", accessToken);
-        queryParams.add("refreshToken", refreshToken);
-        queryParams.add("userId", String.valueOf(userId));
-
-        return UriComponentsBuilder
-                .newInstance()
-                .scheme("https")
-                .host("every-board.shop")
-//                .port(80)
-                .path("/auth/loading")
-                .queryParams(queryParams)
-                .build()
-                .toUri();
-    }*/
+    public Long getExpiration(String token, String base64EncodedSecretKey) {
+        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+        Date expiration = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getExpiration();
+        Long now = new Date().getTime();
+        return (expiration.getTime() - now);
+    }
 }
 

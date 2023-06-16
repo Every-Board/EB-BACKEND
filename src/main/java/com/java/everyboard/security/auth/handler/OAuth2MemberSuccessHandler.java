@@ -1,11 +1,11 @@
 package com.java.everyboard.security.auth.handler;
 
-import com.java.everyboard.constant.OauthType;
 import com.java.everyboard.security.auth.jwt.JwtTokenizer;
-import com.java.everyboard.security.utils.CustomAuthorityUtils;
+import com.java.everyboard.security.utils.RedisUtils;
 import com.java.everyboard.user.entity.User;
-import com.java.everyboard.user.service.UserService;
+import com.java.everyboard.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -13,7 +13,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -23,33 +22,56 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RequiredArgsConstructor
 public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtTokenizer jwtTokenizer;
-    private final CustomAuthorityUtils authorityUtils;
-    private final UserService userService;
+    private final UserRepository userRepository;
+    private final RedisUtils redisUtils;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        var oAuth2User = (OAuth2User)authentication.getPrincipal();
-        String email = String.valueOf(oAuth2User.getAttributes().get("email"));
-        List<String> authorities = authorityUtils.createRoles(email);
+    public void onAuthenticationSuccess(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        Authentication authentication) throws IOException {
+        String email;
+        String clientId;
+        var oAuth2User = (OAuth2User) authentication.getPrincipal();
+        Map<String, Object> attributes = oAuth2User.getAttributes();
+        Map<String, Object> kakao = (Map<String, Object>) attributes.get("kakao_account");
 
-        saveUser(email);
-        redirect(request, response, email, authorities);
+        if (kakao != null) {
+            email = kakao.get("email").toString();
+            clientId = "KAKAO";
+        }
+        else{
+            email = attributes.get("email").toString();
+            clientId = "GOOGLE";
+        }
+
+        String password = userRepository.findByEmail(email).get().getPassword();
+
+        log.info("User Email : {}", email);
+
+        redirect(request, response, email, password.equals(clientId));
     }
+    private void redirect(HttpServletRequest request,
+                          HttpServletResponse response,
+                          String username,
+                          Boolean isMember) throws IOException {
+        String accessToken = "";
+        String refreshToken = "";
 
-    private void saveUser(String email) {
-        User user = new User(email);
-        user.setOauthType(OauthType.YES);
-        userService.createUser(user);
-    }
+        if(isMember) {
+            accessToken = delegateAccessToken(username, List.of("USER"));
+            refreshToken = delegateRefreshToken(username);
 
-    private void redirect(HttpServletRequest request, HttpServletResponse response, String username, List<String> authorities) throws IOException {
-        String accessToken = delegateAccessToken(username, authorities);
-        String refreshToken = delegateRefreshToken(username);
+            response.setHeader("Authorization", "Bearer " + accessToken);
+            response.setHeader("Refresh", refreshToken);
+        }
 
-        String uri = createURI(accessToken, refreshToken).toString();
+        User user = userRepository.findByEmail(username).get();
+        String uri = createURI("Bearer " + accessToken, refreshToken, user.getUserId()).toString();
+
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
@@ -65,6 +87,8 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
 
+        log.info("--- 액세스 토큰 생성완료 ---");
+
         return accessToken;
     }
 
@@ -75,25 +99,27 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
 
+        redisUtils.set(subject, refreshToken, jwtTokenizer.getRefreshTokenExpirationMinutes());
+
         return refreshToken;
     }
 
-    private URI createURI(String accessToken, String refreshToken) {
+    private URI createURI(String accessToken, String refreshToken, Long userId) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-        queryParams.add("access_token", accessToken);
-        queryParams.add("refresh_token", refreshToken);
+
+        queryParams.add("accessToken", accessToken);
+        queryParams.add("refreshToken", refreshToken);
+        queryParams.add("userId", String.valueOf(userId));
 
         return UriComponentsBuilder
                 .newInstance()
-                .scheme("http")
+                .scheme("https")
+//                .host("everyboard.shop")
                 .host("localhost")
-//                .host("every-board.shop")
 //                .port(80)
-                .path("/receive-token.html")
-//                .path("/auth/loading")
+                .path("/auth/loading")
                 .queryParams(queryParams)
                 .build()
                 .toUri();
     }
-
 }
