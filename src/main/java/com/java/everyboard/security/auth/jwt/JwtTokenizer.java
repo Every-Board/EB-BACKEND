@@ -97,8 +97,7 @@ public class JwtTokenizer {
         byte[] keyBytes = Decoders.BASE64.decode(base64EncodedSecretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
-    private URI createURI(String accessToken, String refreshToken, Long userId) {
+  /*  private URI createURI(String accessToken, String refreshToken, Long userId) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
 
         queryParams.add("accessToken", accessToken);
@@ -114,6 +113,6 @@ public class JwtTokenizer {
                 .queryParams(queryParams)
                 .build()
                 .toUri();
-    }
+    }*/
 }
 

@@ -5,6 +5,7 @@ import com.java.everyboard.comment.entity.Comment;
 import com.java.everyboard.commentheart.entity.CommentHeart;
 import com.java.everyboard.constant.ActiveStatus;
 import com.java.everyboard.constant.LoginType;
+import com.java.everyboard.constant.OauthType;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.contentHeart.entity.ContentHeart;
 import com.java.everyboard.scrap.entity.Scrap;
@@ -52,6 +53,10 @@ public class User extends Auditable {
     @Enumerated(EnumType.STRING)
     private ActiveStatus activeStatus = ActiveStatus.ACTIVE;
 
+    @Column
+    @Enumerated(EnumType.STRING)
+    private OauthType oauthType = OauthType.NONE;
+
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> roles = new ArrayList<>();
 
@@ -70,6 +75,10 @@ public class User extends Auditable {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Scrap> scraps = new ArrayList<>();
+
+    public User(String email) {
+        this.email = email;
+    }
 
     // 연관 관계 메서드 //
     public void addContentHeart(ContentHeart contentHeart) {
