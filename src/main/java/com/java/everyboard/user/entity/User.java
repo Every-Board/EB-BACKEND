@@ -4,6 +4,7 @@ import com.java.everyboard.audit.Auditable;
 import com.java.everyboard.comment.entity.Comment;
 import com.java.everyboard.commentheart.entity.CommentHeart;
 import com.java.everyboard.constant.ActiveStatus;
+import com.java.everyboard.constant.AuthProvider;
 import com.java.everyboard.constant.LoginType;
 import com.java.everyboard.constant.OauthType;
 import com.java.everyboard.content.entity.Content;
@@ -55,7 +56,7 @@ public class User extends Auditable {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private OauthType oauthType = OauthType.NONE;
+    private AuthProvider authProvider = AuthProvider.local;
 
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> roles = new ArrayList<>();

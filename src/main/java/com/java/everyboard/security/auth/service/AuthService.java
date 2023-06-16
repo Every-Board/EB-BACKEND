@@ -129,7 +129,7 @@ public class AuthService {
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         mimeMessage.addRecipients(MimeMessage.RecipientType.TO, userEmail);
-        mimeMessage.setSubject("[SPAM-MAYO] 비밀번호 변경 안내");
+        mimeMessage.setSubject("[Every-Board] 비밀번호 변경 안내");
         mimeMessage.setFrom(teamEmail);
         mimeMessage.setText(setPasswordContext(authCode), "utf-8", "html");
         return mimeMessage;
@@ -141,7 +141,7 @@ public class AuthService {
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         mimeMessage.addRecipients(MimeMessage.RecipientType.TO, userEmail);
-        mimeMessage.setSubject("[SPAM-MAYO] 회원가입 이메일 인증");
+        mimeMessage.setSubject("[Every-Board] 회원가입 이메일 인증");
         mimeMessage.setFrom(teamEmail);
         mimeMessage.setText(setJoinContext(authCode), "utf-8", "html");
         return mimeMessage;
