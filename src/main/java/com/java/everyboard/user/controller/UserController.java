@@ -48,7 +48,7 @@ public class UserController {
     // 회원 가입
     @CrossOrigin
     @PostMapping("/join")
-    public ResponseEntity postUser(@Valid @RequestPart("data") UserPostDto requestBody) {
+    public ResponseEntity postUser(@Valid @RequestBody UserPostDto requestBody) {
 
 
         User user = userService.createUser(userMapper.postDtoToUser(requestBody));
