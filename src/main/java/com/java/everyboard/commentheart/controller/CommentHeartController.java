@@ -34,7 +34,7 @@ public class CommentHeartController {
         private final CommentHeartRepository commentHeartRepository;
 
         // 좋아요 등록 //
-        @PostMapping("/{userId}/{commentId}/hearts")
+        @PostMapping("/{userId}/{contentId}/{commentId}/commenthearts")
         public ResponseEntity postHeart(
                 @PathVariable("userId") @Positive Long userId,
                 @PathVariable("commentId") @Positive Long commentId) {

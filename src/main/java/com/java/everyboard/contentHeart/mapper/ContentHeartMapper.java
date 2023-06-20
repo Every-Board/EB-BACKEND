@@ -21,7 +21,6 @@ public interface ContentHeartMapper {
                 .contentHeartId(contentHeart.getContentHeartId())
                 .contentId(content.getContentId())
                 .heartType(contentHeart.getHeartType().toString())
-
                 .build();
     }
     List<ContentHeartResponseDto> contentHeartsToContentHeartResponseDtos(List<ContentHeart> contentHeart);

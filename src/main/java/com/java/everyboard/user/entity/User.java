@@ -9,6 +9,8 @@ import com.java.everyboard.constant.LoginType;
 import com.java.everyboard.constant.OauthType;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.contentHeart.entity.ContentHeart;
+import com.java.everyboard.reply.entity.Reply;
+import com.java.everyboard.replyHeart.entity.ReplyHeart;
 import com.java.everyboard.scrap.entity.Scrap;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -69,6 +71,12 @@ public class User extends Auditable {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Reply> replies = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<ReplyHeart> replyHearts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<ContentHeart> contentHearts = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
@@ -86,6 +94,7 @@ public class User extends Auditable {
         contentHearts.add(contentHeart);
     }
     public void addCommentHeart(CommentHeart commentHeart) { commentHearts.add(commentHeart); }
+    public void addReplyHeart(ReplyHeart replyHeart) { replyHearts.add(replyHeart); }
     public void addScrap(Scrap scrap) {
         scraps.add(scrap);
     }

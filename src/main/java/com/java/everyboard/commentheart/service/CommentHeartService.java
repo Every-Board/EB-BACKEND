@@ -4,6 +4,7 @@ import com.java.everyboard.comment.entity.Comment;
 import com.java.everyboard.comment.repository.CommentRepository;
 import com.java.everyboard.commentheart.entity.CommentHeart;
 import com.java.everyboard.commentheart.repository.CommentHeartRepository;
+import com.java.everyboard.constant.HeartType;
 import com.java.everyboard.exception.BusinessLogicException;
 import com.java.everyboard.exception.ExceptionCode;
 import com.java.everyboard.user.entity.User;
@@ -25,10 +26,21 @@ public class CommentHeartService {
         //좋아요 안했을 경우
         if (isNotAlreadyHeart(user, comment)) {
             commentHeart = new CommentHeart(user,comment);
+            commentHeart.setHeartType(HeartType.ADD);
             commentHeartStatus = 1;
         }else{//좋아요를 했지만 취소했을 경우
             commentHeart = findVerifiedHeart(user,comment);
-            commentHeartStatus = -1;
+            switch (commentHeart.getHeartType()){
+                case ADD:
+                    commentHeart.setHeartType(HeartType.REMOVE);
+                    commentHeartStatus = -1;
+                    break;
+                case REMOVE:
+                    commentHeart.setHeartType(HeartType.ADD);
+                    commentHeartStatus = 1;
+                    break;
+                default:
+            }
         }
         long commentHeartCount = comment.getCommentHeartCount();
         commentHeartCount+=commentHeartStatus;

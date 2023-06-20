@@ -7,8 +7,6 @@ import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.user.entity.User;
 import org.mapstruct.Mapper;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring")
 public interface CommentHeartMapper {
     default CommentHeartResponseDto commentHeartToCommentHeartResponseDto(CommentHeart commentHeart) {
@@ -19,6 +17,7 @@ public interface CommentHeartMapper {
                 .userId(user.getUserId())
                 .commentHeartId(commentHeart.getCommentHeartId())
                 .commentId(comment.getCommentId())
+                .heartType(commentHeart.getHeartType().toString())
                 .build();
     }
 }

@@ -1,9 +1,9 @@
-package com.java.everyboard.commentheart.entity;
+package com.java.everyboard.replyHeart.entity;
 
 import com.java.everyboard.audit.Auditable;
 import com.java.everyboard.comment.entity.Comment;
 import com.java.everyboard.constant.HeartType;
-import com.java.everyboard.content.entity.Content;
+import com.java.everyboard.reply.entity.Reply;
 import com.java.everyboard.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,15 +11,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+
 @NoArgsConstructor
 @Getter
 @Setter
 @AllArgsConstructor
 @Entity
-public class CommentHeart extends Auditable {
+public class ReplyHeart extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentHeartId;
+    private Long replyHeartId;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -33,18 +34,28 @@ public class CommentHeart extends Auditable {
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
-    public CommentHeart(User user, Comment comment) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reply_id")
+    private Reply reply;
+
+
+    public ReplyHeart(User user, Reply reply) {
         this.user = user;
+        this.reply = reply;
+    }
+
+    public ReplyHeart(User user) {
+        this.user = user;
+        user.addReplyHeart(this);
+    }
+
+    public ReplyHeart(Comment comment) {
         this.comment = comment;
+        comment.addReplyHeart(this);
     }
 
-    public void addUser(User user) {
-        this.user = user;
-        user.addCommentHeart(this);
-    }
-
-    public void addComment(Comment comment) {
-        this.comment= comment;
-        comment.addCommentHeart(this);
+    public ReplyHeart(Reply reply) {
+        this.reply = reply;
+        reply.addReplyHeart(this);
     }
 }
