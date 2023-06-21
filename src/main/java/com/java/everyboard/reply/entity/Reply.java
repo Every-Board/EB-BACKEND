@@ -3,7 +3,7 @@ package com.java.everyboard.reply.entity;
 import com.java.everyboard.audit.Auditable;
 import com.java.everyboard.comment.entity.Comment;
 import com.java.everyboard.content.entity.Content;
-import com.java.everyboard.replyHeart.entity.ReplyHeart;
+import com.java.everyboard.heart.replyHeart.entity.ReplyHeart;
 import com.java.everyboard.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

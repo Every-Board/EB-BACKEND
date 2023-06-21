@@ -1,7 +1,6 @@
 package com.java.everyboard.content.dto;
 
 import com.java.everyboard.content.entity.ContentImage;
-import com.java.everyboard.scrap.entity.Scrap;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

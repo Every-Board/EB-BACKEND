@@ -1,10 +1,10 @@
 package com.java.everyboard.comment.entity;
 
 import com.java.everyboard.audit.Auditable;
-import com.java.everyboard.commentheart.entity.CommentHeart;
+import com.java.everyboard.heart.commentheart.entity.CommentHeart;
 import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.reply.entity.Reply;
-import com.java.everyboard.replyHeart.entity.ReplyHeart;
+import com.java.everyboard.heart.replyHeart.entity.ReplyHeart;
 import com.java.everyboard.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
