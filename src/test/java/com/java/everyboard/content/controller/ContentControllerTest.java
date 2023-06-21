@@ -1,53 +1,38 @@
 //package com.java.everyboard.content.controller;
 //
 //import com.google.gson.Gson;
-//import com.java.everyboard.constant.ActiveStatus;
-//import com.java.everyboard.constant.Category;
-//import com.java.everyboard.constant.LoginType;
-//import com.java.everyboard.content.dto.ContentPatchDto;
-//import com.java.everyboard.content.dto.ContentPostDto;
+//import com.java.everyboard.AwsS3.AwsS3Service;
 //import com.java.everyboard.content.dto.ContentResponseDto;
 //import com.java.everyboard.content.entity.Content;
+//import com.java.everyboard.constant.Category;
+//import com.java.everyboard.content.dto.ContentPostDto;
+//import com.java.everyboard.content.entity.ContentImage;
 //import com.java.everyboard.content.mapper.ContentMapper;
+//import com.java.everyboard.content.repository.ContentImageRepository;
 //import com.java.everyboard.content.service.ContentService;
-//import com.java.everyboard.user.User;
-//import com.jayway.jsonpath.JsonPath;
+//import org.junit.jupiter.api.DisplayName;
 //import org.junit.jupiter.api.Test;
-//import org.mockito.Mockito;
+//import org.mockito.InjectMocks;
 //import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.core.AutoConfigureCache;
 //import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 //import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.boot.test.mock.mockito.MockBean;
-//import org.springframework.http.MediaType;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.mock.web.MockMultipartFile;
 //import org.springframework.security.test.context.support.WithMockUser;
 //import org.springframework.test.web.servlet.MockMvc;
-//import org.springframework.test.web.servlet.MvcResult;
-//import org.springframework.test.web.servlet.ResultActions;
-//import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-//import org.springframework.util.LinkedMultiValueMap;
-//import org.springframework.util.MultiValueMap;
-//import org.springframework.web.util.UriComponents;
-//import org.springframework.web.util.UriComponentsBuilder;
+//import org.springframework.web.multipart.MultipartFile;
 //
 //import javax.transaction.Transactional;
-//import javax.validation.constraints.NotBlank;
-//import javax.validation.constraints.NotNull;
 //
-//import java.net.URI;
 //import java.time.LocalDateTime;
+//import java.util.ArrayList;
 //import java.util.List;
 //
-//import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+//import static org.mockito.ArgumentMatchers.any;
 //import static org.junit.jupiter.api.Assertions.*;
-//import static org.mockito.ArgumentMatchers.anyLong;
-//import static org.mockito.BDDMockito.given;
-//import static org.mockito.Mockito.doNothing;
-//import static org.slf4j.MDC.get;
-//import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
-//import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+//import static org.mockito.Mockito.*;
 //
 //@Transactional
 //@SpringBootTest
@@ -63,188 +48,109 @@
 //    @MockBean
 //    private ContentService contentService;
 //
+//    @InjectMocks
+//    private ContentController contentController;
+//
 //    @MockBean
 //    private ContentMapper contentMapper;
 //
+//    @MockBean
+//    private ContentImageRepository contentImageRepository;
+//
+//    @MockBean
+//    private AwsS3Service awsS3Service;
+//
+//    @DisplayName("POST 게시글 등록")
 //    @Test
-//    void postContent() throws Exception{
+//    void postContent() throws Exception {
+//        List<MultipartFile> images = new ArrayList<>();
+//        MockMultipartFile image1 = new MockMultipartFile("image", "1.png", "image/png", "test image".getBytes());
+//        MockMultipartFile image2 = new MockMultipartFile("image", "2.png", "image/png", "test image".getBytes());
+//        images.add(image1);
+//        images.add(image2);
+//        List<String> imgPaths = awsS3Service.uploadFile(images);
 //
-//        // ContentPostDto에 기입될 정보 입력 //
-//        ContentPostDto post = new ContentPostDto(1L, "반갑습니다","안녕하세요","image.png", Category.Board,"안녕");
+//        ContentImage contentImage = new ContentImage(1L,"1.png");
+//        List<ContentImage> contentImages = new ArrayList<>();
+//        contentImages.add(contentImage);
 //
-//        ContentResponseDto responseBody = new ContentResponseDto(1L,1L,1L,1L,"반갑습니다","안녕하세요","image.png", Category.Board,"안녕", LocalDateTime.now(), LocalDateTime.now());
-//
-//        // given
-//        given(contentMapper.contentPostDtoToContent(Mockito.any(ContentPostDto.class))).willReturn(new Content());
-//
-//        given(contentService.createContent(Mockito.any(Content.class))).willReturn(new Content());
-//
-//        given(contentMapper.contentToContentResponse(Mockito.any(Content.class))).willReturn(responseBody);
-//
-//        Gson gson = new Gson();
-//
-//        String content = gson.toJson(post);
-//        URI uri = UriComponentsBuilder.newInstance().path("/contents").build().toUri();
-//
-//        // when
-//                ResultActions actions =
-//                mockMvc.perform(
-//                        MockMvcRequestBuilders
-//                                .post(uri)
-//                                .accept(MediaType.APPLICATION_JSON)
-//                                .contentType(MediaType.APPLICATION_JSON)
-//                                .with(csrf()) // 403 에러가 날 때 csrf 때문에 error가 발생하는 것임 (.with(csrf())을 추가하면 됨)
-//                                .content(content));
-//        // then
-//        MvcResult result = actions
-//                .andExpect(status().isCreated())
-//                .andExpect(jsonPath("$.data.userId").value(post.getUserId()))
-//                .andExpect(jsonPath("$.data.title").value(post.getTitle()))
-//                .andExpect(jsonPath("$.data.content").value(post.getContent()))
-////                .andExpect(jsonPath("$.data.category").value(post.getCategory()))
-//                .andExpect(jsonPath("$.data.tag").value(post.getTag()))
-//                .andReturn();
-//    }
-//
-//    /*@Test
-//    void getContent() throws Exception {
-//        //given
-//        long contentId = 1L;
-//
+//        ContentPostDto contentPostDto = new ContentPostDto(1L, "오늘의 날씨 소개","오늘 날씨 너무 좋다", Category.자유게시판, contentImages);
 //        Content content = new Content();
-//        content.setContentId(contentId);
+//        ContentResponseDto contentResponseDto = new ContentResponseDto(1L,1L, 0L, 0L,"오늘의 날씨 소개", "오늘 날씨 너무 좋다", contentImages,Category.자유게시판, LocalDateTime.now(),LocalDateTime.now());
 //
-//        ContentResponseDto response = new ContentResponseDto(1L,1L,1L,1L,"반갑습니다","안녕하세요","image.png", Category.Board,"안녕", LocalDateTime.now(), LocalDateTime.now());
+//        when(contentMapper.contentPostDtoToContent(any(ContentPostDto.class))).thenReturn(content);
+//        when(contentService.createContent(any(Content.class), anyList())).thenReturn(content);
+//        when(contentMapper.contentToContentResponse(any(Content.class),eq(contentImageRepository))).thenReturn(contentResponseDto);
 //
-//        given(contentService.findContent(Mockito.anyLong())).willReturn(new Content());
+//        // Act
+//        ResponseEntity responseEntity = contentController.postContent(contentPostDto,images);
 //
-//        given(contentMapper.contentToContentResponse(Mockito.any(Content.class))).willReturn(response);
-//
-//
-//        URI uri = UriComponentsBuilder.newInstance().path("/contents/{contentId}").buildAndExpand(contentId).toUri();
-//
-//        // when
-//        ResultActions actions = mockMvc.perform(
-//                MockMvcRequestBuilders
-//                        .get(uri)
-//                        .accept(MediaType.APPLICATION_JSON)
-//                        .with(csrf()));
-//
-//        // then
-//        actions.andExpect(status().isOk())
-//                .andExpect(jsonPath("$.data.contentId").value(content.getContentId()))
-//                .andExpect(jsonPath("$.viewCount").value(content.getViewCount()))
-//                .andExpect(jsonPath("$.heartCount").value(content.getHeartCount()))
-//                .andExpect(jsonPath("$.title").value(content.getTitle()))
-//                .andExpect(jsonPath("$.content").value(content.getContent()))
-//                .andExpect(jsonPath("$.imageUrl").value(content.getImageUrl()))
-//                .andExpect(jsonPath("$.category").value(content.getCategory()))
-//                .andExpect(jsonPath("$.createAt").value(content.getCreatedAt().toLocalTime()))
-//                .andExpect(jsonPath("$.modifiedAt").value(content.getModifiedAt().toLocalTime()))
-//                .andExpect(jsonPath("$.tag").value(content.getTag()));
-//    }*/
-//
-////    @Test
-////    void getContents() {
-////
-////        ContentPostDto post1 = new ContentPostDto(1L, "반갑습니다","안녕하세요","image.png", Category.Board,"안녕");
-////        String postContent1 = gson.toJson(post1);
-////
-////        ContentPostDto post2 = new ContentPostDto(2L, "반과수깡","안녕하수꽝","image2.png", Category.Board,"안녕");
-////        String postContent2 = gson.toJson(post2);
-////
-////        URI postUri = UriComponentsBuilder.newInstance().path("/contents").build().toUri();
-////
-////        String page = "1";
-////        String size = "10";
-////        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-////        queryParams.add("page", page);
-////        queryParams.add("size", size);
-////
-////        URI getUri = UriComponentsBuilder.newInstance().path("/contents").build().toUri();
-////
-////
-////        ResultActions actions = mockMvc.perform(getRequestBuilder(uri, queryParams));
-////        // when
-////        ResultActions actions =
-////                mockMvc.perform(
-//////                        get(getUri)
-//////                                .params(queryParams)
-////                        getRequestBuilder(getUri,queryParams)
-////                                .accept(MediaType.APPLICATION_JSON)
-////                );
-////
-////        // then
-////        MvcResult result = actions
-////                .andExpect(status().isOk())
-////                .andExpect(jsonPath("$.content").isArray())
-////                .andReturn();
-////
-////        List list = JsonPath.parse(result.getResponse().getContentAsString()).read("$.data");
-////
-////        assertThat(list.size(), is(2));
-////    }
-//
-//    @Test
-//    void patchContent() throws Exception {
-//
-//        // 컨텐츠 수정 정보 기입 //
-//        long contentId = 1L;
-//        ContentPatchDto patch = new ContentPatchDto(1L, "반가와유","안냐세용","image2.png", Category.Board,"안녕");
-//
-//        // 컨텐츠 수정 정보 리스폰스 //
-//        ContentResponseDto response = new ContentResponseDto(1L,1L, 2L, 1L,"반가와유","안냐세용","image2.png", Category.Board,"안녕",LocalDateTime.now(),LocalDateTime.now());
-//
-//
-//        //given
-//        given(contentMapper.contentPatchDtoToContent(Mockito.any(ContentPatchDto.class))).willReturn(new Content());
-//
-//        given(contentService.updateContent(Mockito.any(Content.class))).willReturn(new Content());
-//
-//        given(contentMapper.contentToContentResponse(Mockito.any(Content.class))).willReturn(response);
-//
-//        Gson gson = new Gson();
-//
-//        String content = gson.toJson(patch);
-//
-//        URI uri = UriComponentsBuilder.newInstance().path("/contents/{contentId}").buildAndExpand(contentId).toUri();
-//
-//
-//        // when
-//        ResultActions actions =
-//        mockMvc.perform(
-//                MockMvcRequestBuilders
-//                        .patch(uri)
-//                        .accept(MediaType.APPLICATION_JSON)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .with(csrf())
-//                        .content(content));
-//
-//        // then
-//        actions.andExpect(status().isOk())
-//                .andExpect(jsonPath("$.contentId").value(patch.getContentId()))
-//                .andExpect(jsonPath("$.title").value(patch.getTitle()))
-//                .andExpect(jsonPath("$.content").value(patch.getContent()))
-//                .andExpect(jsonPath("$.imageUrl").value(patch.getImageUrl()))
-////                .andExpect(jsonPath("$.data.category").value(patch.getCategory()))
-//                .andExpect(jsonPath("$.tag").value(patch.getTag()));
-//
+//        // Assert
+//        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+//        assertEquals(contentResponseDto, responseEntity.getBody());
+//        verify(contentService, times(1)).createContent(content, imgPaths);
 //    }
 //
 //    @Test
-//    void deleteContent() throws Exception {
-//        // given
-//        long contentId = 1L;
-//        doNothing().when(contentService).deleteContent(contentId);
+//    void getContent() {
+//        ContentImage contentImage = new ContentImage(1L,"1.png");
+//        List<ContentImage> contentImages = new ArrayList<>();
+//        contentImages.add(contentImage);
+//        contentImageRepository.save(contentImage);
 //
-//        // when
-//        ResultActions actions = mockMvc.perform(delete("/contents/" + contentId).with(csrf()));
+//        // Arrange
+//        Long contentId = 1L;
+//        Content content = new Content();
+//        ContentResponseDto contentResponseDto = new ContentResponseDto(1L,1L,1L,0L,"게시글제목","덧글 내용",contentImages,Category.자유게시판, LocalDateTime.now(),LocalDateTime.now());
+//        when(contentService.findContent(anyLong())).thenReturn(content);
+//        when(contentMapper.contentToContentResponse(any(Content.class),eq(contentImageRepository))).thenReturn(contentResponseDto);
 //
-//        // then
-//        actions.andExpect(status().isNoContent());
+//        // Act
+//        ResponseEntity responseEntity = contentController.getContent(contentId);
+//
+//        // Assert
+//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+//        assertEquals(contentResponseDto, responseEntity.getBody());
+//        verify(contentService, times(1)).findContent(contentId);
 //    }
 //
-////    @Test
-////    void getContentFromCategory() {
-////    }
+//    @Test
+//    void getContents() {
+//    }
+//
+//    @Test
+//    void getContentsTodayViewRank() {
+//    }
+//
+//    @Test
+//    void getContentsWeeklyViewRank() {
+//    }
+//
+//    @Test
+//    void getContentsLikeRank() {
+//    }
+//
+//    @Test
+//    void getContentsRecentImage() {
+//    }
+//
+//    @Test
+//    void getContentFromCategory() {
+//    }
+//
+//    @Test
+//    void getContentFromScrap() {
+//    }
+//
+//    @Test
+//    void getSearch() {
+//    }
+//
+//    @Test
+//    void patchContent() {
+//    }
+//
+//    @Test
+//    void deleteContent() {
+//    }
 //}
