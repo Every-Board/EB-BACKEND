@@ -49,10 +49,6 @@ public class ScrapController {
         Scrap scrap = scrapService.createScrap(user,content);
         ScrapResponseDto response = scrapMapper.scrapToScrapResponseDto(scrap);
 
-        if(scrap.getScrapType()== ScrapType.REMOVE){
-            scrapRepository.delete(scrap);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
 
