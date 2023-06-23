@@ -1,4 +1,4 @@
-package com.java.everyboard.AwsS3;
+package com.java.everyboard.awsS3;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
