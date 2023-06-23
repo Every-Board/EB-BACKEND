@@ -64,8 +64,7 @@ public class ContentController {
     @GetMapping("/{contentId}")
     public ResponseEntity getContent(@PathVariable("contentId") Long contentId) {
         Content content = contentService.findContent(contentId);
-        long viewCount = content.getViewCount();
-        content.setViewCount(++viewCount);
+        content.setViewCount(content.getViewCount()+1L);
         contentService.updateViewCount(content);
 
         return new ResponseEntity<>(contentMapper.contentToContentAllResponse(content,commentRepository,contentImageRepository, userImageRepository),
