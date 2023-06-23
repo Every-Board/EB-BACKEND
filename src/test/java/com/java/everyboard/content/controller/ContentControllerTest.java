@@ -88,6 +88,8 @@ class ContentControllerTest {
         ContentResponseDto contentResponseDto = new ContentResponseDto(1L,1L, 0L, 0L,"오늘의 날씨 소개", "오늘 날씨 너무 좋다", contentImages,Category.자유게시판, LocalDateTime.now(),LocalDateTime.now());
 
         SingleResponseDto sing = new SingleResponseDto(contentResponseDto);
+
+        // Arrange
         when(contentMapper.contentPostDtoToContent(any(ContentPostDto.class))).thenReturn(content);
         when(contentService.createContent(any(Content.class), anyList())).thenReturn(content);
         when(contentMapper.contentToContentResponse(any(Content.class),eq(contentImageRepository))).thenReturn(contentResponseDto);
