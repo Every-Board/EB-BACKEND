@@ -60,7 +60,6 @@ public enum ExceptionCode {
 
     // Heart
     HEART_NOT_FOUND(404, "Heart Not Found"),
-
     // stack
     STACK_NOT_PATCHED(403, "Stack not patched"),
     STACK_NOT_FOUND(404, "Stack Not Found"),

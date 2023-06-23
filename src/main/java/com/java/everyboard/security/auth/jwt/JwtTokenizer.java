@@ -104,4 +104,3 @@ public class JwtTokenizer {
         return (expiration.getTime() - now);
     }
 }
-
