@@ -1,4 +1,4 @@
-package com.java.everyboard.AwsS3;
+package com.java.everyboard.awsS3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -71,9 +71,9 @@ public class AwsS3Service {
 
 
     public void deleteFile(String fileName){
-        Logger logger = (Logger) LoggerFactory.getLogger(AwsS3Service.class);
+//        Logger logger = (Logger) LoggerFactory.getLogger(AwsS3Service.class);
         amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
-        logger.info("Aws S3 Log:"+bucket);
+//        logger.info("Aws S3 Log:"+bucket);
 //        System.out.println(bucket);
     }
 }

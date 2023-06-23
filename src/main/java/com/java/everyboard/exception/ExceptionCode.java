@@ -23,6 +23,7 @@ public enum ExceptionCode {
 
     // user
     INVALID_MEMBER_STATUS(400, "Invalid member status"),
+    PROFILE_IMAGE_NOT_FOUND(404,  "Profile 이미지가 업로드 되지 않았습니다."),
     MAX_FILE_SIZE_2MB(400, "Max file size 2MB"),
     MEMBER_EXISTS(409, "Member exists"),
     MEMBER_NOT_FOUND(404, "Member not found"),
@@ -30,16 +31,22 @@ public enum ExceptionCode {
     MEMBER_NOT_LOGIN(400, "Member not login"),
     ID_NOT_EXIST(404, "Id not exist"),
 
-    // study
-    STUDY_NOT_PATCHED(403, "Study not patched"),
-    STUDY_NOT_FOUND(404, "Study Not Found"),
-    STUDY_CHECK_EXISTS(409, "Study Check exists"),
-    STUDY_EXISTS(409, "Study exists"),
-    STUDY_REQUEST_EXISTS(409, "Study Request exists"),
-    STUDY_NOT_RECRUITING(403, "Study status not recruiting"),
-    INVALID_STUDY_STATUS(403, "Invalid Study Status"),
-    STUDY_MEMBER_EXISTS(409, "Study Member exists"),
+    // content (게시글)
+    CONTENT_IMAGE_NOT_FOUND(404,  "CONTENT 이미지가 업로드 되지 않았습니다."),
+    CONTENT_IMAGE_CHECK_ERROR(404,  "CONTENT 이미지 경로가 확인되지 않았습니다."),
+    CONTENT_NOT_PATCHED(403, "Content not patched"),
+    CONTENT_NOT_FOUND(404, "Content Not Found"),
+    CONTENT_CHECK_EXISTS(409, "Content Check exists"),
+    CONTENT_EXISTS(409, "CONTENT exists"),
+    CONTENT_REQUEST_EXISTS(409, "CONTENT Request exists"),
+    CONTENT_NOT_RECRUITING(403, "CONTENT status not recruiting"),
+    INVALID_CONTENT_STATUS(403, "Invalid CONTENT Status"),
+    CONTENT_MEMBER_EXISTS(409, "CONTENT Member exists"),
 
+    // CONTENT HEART (게시글 좋아요)
+    CONTENT_HEART_NOT_FOUND(404, "CONTENT HEART not found"),
+    // SCRAP (스크랩)
+    SCRAP_NOT_FOUND(404, "SCRAP not found"),
     // offer
     OFFER_NOT_PATCHED(403, "Offer not patched"),
     OFFER_NOT_FOUND(404, "Offer Not Found"),
@@ -59,7 +66,7 @@ public enum ExceptionCode {
     STACK_CHECK_EXISTS(409, "Stack Check exists"),
     STACK_EXISTS(409, "Stack exists"),
 
-    // study_Task
+    // CONTENT_Task
     TASK_NOT_PATCHED(403, "Task not patched"),
     TASK_NOT_FOUND(404, "Task Not Found"),
     TASK_CHECK_EXISTS(409, "Task Check exists"),

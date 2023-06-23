@@ -1,20 +1,24 @@
 package com.java.everyboard.user.dto;
 
 import com.java.everyboard.constant.LoginType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.java.everyboard.user.entity.UserImage;
+import lombok.*;
 
-@Getter @Setter
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserResponseDto {
     private Long userId;
     private String email;
     private String nickname;
     private String password;
-    private String profileUrl;
+    private List<UserImage> profileUrl;
     private LoginType loginType;
-    private String createdAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 }

@@ -12,5 +12,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAllByContentId(@Param("contentId") long contentId);
 
     @Query(value = "select * from comments where user_id = :userId", nativeQuery = true)
-    List<Comment> findAllByUserId(long userId);
+    List<Comment> findByUserId(@Param("userId") long userId);
 }

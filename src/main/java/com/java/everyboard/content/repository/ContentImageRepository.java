@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface ContentImageRepository extends JpaRepository<ContentImage, Long> {
     List<ContentImage> findByContentId(long contentId);
+    @Query(value = "select * from content_image where user_id = :userId", nativeQuery = true)
+    List<ContentImage> findByUserId(@Param("userId") long userId);
     @Modifying
     @Query(value = "delete from content_image where content_id=:contentId", nativeQuery = true)
     void deleteAllByContentId(@Param("contentId")Long contentId);

@@ -14,6 +14,7 @@ import com.java.everyboard.exception.ExceptionCode;
 import com.java.everyboard.response.SingleResponseDto;
 import com.java.everyboard.content.service.ContentService;
 import com.java.everyboard.user.entity.User;
+import com.java.everyboard.user.repository.UserImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -37,15 +38,17 @@ public class ContentController {
     private final ContentImageRepository contentImageRepository;
     private final AwsS3Service awsS3Service;
     private final CommentRepository commentRepository;
+    private final UserImageRepository userImageRepository;
 
     // 게시글 생성 //
     @PostMapping
     public ResponseEntity postContent(@Valid @RequestPart("data") ContentPostDto requestBody,
                                       @RequestPart(required=false, value="ContentImgUrl") List<MultipartFile> multipartFiles) {
 
-        if (multipartFiles == null) {
-            throw new BusinessLogicException(ExceptionCode.STACK_NOT_FOUND);
+         if (multipartFiles == null) {
+            throw new BusinessLogicException(ExceptionCode.CONTENT_IMAGE_NOT_FOUND);
         }
+
         List<String> imgPaths = awsS3Service.uploadFile(multipartFiles);
         log.info("IMG 경로들 : "+ imgPaths);
         Content content = contentService.createContent(contentMapper.contentPostDtoToContent(requestBody),imgPaths);
@@ -61,11 +64,10 @@ public class ContentController {
     @GetMapping("/{contentId}")
     public ResponseEntity getContent(@PathVariable("contentId") Long contentId) {
         Content content = contentService.findContent(contentId);
-        long viewCount = content.getViewCount();
-        content.setViewCount(++viewCount);
+        content.setViewCount(content.getViewCount()+1L);
         contentService.updateViewCount(content);
 
-        return new ResponseEntity<>(contentMapper.contentToContentAllResponse(content,commentRepository,contentImageRepository),
+        return new ResponseEntity<>(contentMapper.contentToContentAllResponse(content,commentRepository,contentImageRepository, userImageRepository),
                 HttpStatus.OK);
     }
 

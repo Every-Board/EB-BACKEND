@@ -9,7 +9,11 @@ import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
@@ -93,6 +97,10 @@ public class JwtTokenizer {
         byte[] keyBytes = Decoders.BASE64.decode(base64EncodedSecretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
+    public Long getExpiration(String token, String base64EncodedSecretKey) {
+        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+        Date expiration = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getExpiration();
+        Long now = new Date().getTime();
+        return (expiration.getTime() - now);
+    }
 }
-

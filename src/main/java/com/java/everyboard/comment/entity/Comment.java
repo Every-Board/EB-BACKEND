@@ -1,8 +1,10 @@
 package com.java.everyboard.comment.entity;
 
 import com.java.everyboard.audit.Auditable;
-import com.java.everyboard.commentheart.entity.CommentHeart;
+import com.java.everyboard.heart.commentheart.entity.CommentHeart;
 import com.java.everyboard.content.entity.Content;
+import com.java.everyboard.reply.entity.Reply;
+import com.java.everyboard.heart.replyHeart.entity.ReplyHeart;
 import com.java.everyboard.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,6 +42,12 @@ public class Comment extends Auditable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<CommentHeart> commentHearts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
+    private List<Reply> replies = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<ReplyHeart> replyHearts = new ArrayList<>();
+
     //생성자
     public Comment(String comment) {
         this.comment = comment;
@@ -53,7 +61,7 @@ public class Comment extends Auditable {
         }
     }
 
-    //Comment와 연관관계를 맺을 대상인 Post 객체
+    //Comment와 연관관계를 맺을 대상인 Content 객체
     public void setContent(Content content) {
         this.content = content;
         if (!this.content.getComments().contains(this)) {
@@ -63,4 +71,5 @@ public class Comment extends Auditable {
 
     // 연관 관계 메서드 //
     public void addCommentHeart(CommentHeart commentHeart) { commentHearts.add(commentHeart); }
+    public void addReplyHeart(ReplyHeart replyHeart) { replyHearts.add(replyHeart); }
 }

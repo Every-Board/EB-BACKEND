@@ -2,11 +2,11 @@ package com.java.everyboard.comment.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
-@Setter
 public class CommentPostDto {
     private long contentId;
     private String comment;

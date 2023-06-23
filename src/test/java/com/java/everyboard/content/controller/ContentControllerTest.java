@@ -1,250 +1,404 @@
-//package com.java.everyboard.content.controller;
-//
-//import com.google.gson.Gson;
-//import com.java.everyboard.constant.ActiveStatus;
-//import com.java.everyboard.constant.Category;
-//import com.java.everyboard.constant.LoginType;
-//import com.java.everyboard.content.dto.ContentPatchDto;
-//import com.java.everyboard.content.dto.ContentPostDto;
-//import com.java.everyboard.content.dto.ContentResponseDto;
-//import com.java.everyboard.content.entity.Content;
-//import com.java.everyboard.content.mapper.ContentMapper;
-//import com.java.everyboard.content.service.ContentService;
-//import com.java.everyboard.user.User;
-//import com.jayway.jsonpath.JsonPath;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.Mockito;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.core.AutoConfigureCache;
-//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.boot.test.mock.mockito.MockBean;
-//import org.springframework.http.MediaType;
-//import org.springframework.security.test.context.support.WithMockUser;
-//import org.springframework.test.web.servlet.MockMvc;
-//import org.springframework.test.web.servlet.MvcResult;
-//import org.springframework.test.web.servlet.ResultActions;
-//import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-//import org.springframework.util.LinkedMultiValueMap;
-//import org.springframework.util.MultiValueMap;
-//import org.springframework.web.util.UriComponents;
-//import org.springframework.web.util.UriComponentsBuilder;
-//
-//import javax.transaction.Transactional;
-//import javax.validation.constraints.NotBlank;
-//import javax.validation.constraints.NotNull;
-//
-//import java.net.URI;
-//import java.time.LocalDateTime;
-//import java.util.List;
-//
-//import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-//import static org.junit.jupiter.api.Assertions.*;
-//import static org.mockito.ArgumentMatchers.anyLong;
-//import static org.mockito.BDDMockito.given;
-//import static org.mockito.Mockito.doNothing;
-//import static org.slf4j.MDC.get;
-//import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
-//import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-//
-//@Transactional
-//@SpringBootTest
-//@AutoConfigureMockMvc
-//@WithMockUser
-//class ContentControllerTest {
-//    @Autowired
-//    private MockMvc mockMvc;
-//
-//    @Autowired
-//    private Gson gson;
-//
-//    @MockBean
-//    private ContentService contentService;
-//
-//    @MockBean
-//    private ContentMapper contentMapper;
-//
-//    @Test
-//    void postContent() throws Exception{
-//
-//        // ContentPostDto에 기입될 정보 입력 //
-//        ContentPostDto post = new ContentPostDto(1L, "반갑습니다","안녕하세요","image.png", Category.Board,"안녕");
-//
-//        ContentResponseDto responseBody = new ContentResponseDto(1L,1L,1L,1L,"반갑습니다","안녕하세요","image.png", Category.Board,"안녕", LocalDateTime.now(), LocalDateTime.now());
-//
-//        // given
-//        given(contentMapper.contentPostDtoToContent(Mockito.any(ContentPostDto.class))).willReturn(new Content());
-//
-//        given(contentService.createContent(Mockito.any(Content.class))).willReturn(new Content());
-//
-//        given(contentMapper.contentToContentResponse(Mockito.any(Content.class))).willReturn(responseBody);
-//
-//        Gson gson = new Gson();
-//
-//        String content = gson.toJson(post);
-//        URI uri = UriComponentsBuilder.newInstance().path("/contents").build().toUri();
-//
-//        // when
-//                ResultActions actions =
-//                mockMvc.perform(
-//                        MockMvcRequestBuilders
-//                                .post(uri)
-//                                .accept(MediaType.APPLICATION_JSON)
-//                                .contentType(MediaType.APPLICATION_JSON)
-//                                .with(csrf()) // 403 에러가 날 때 csrf 때문에 error가 발생하는 것임 (.with(csrf())을 추가하면 됨)
-//                                .content(content));
-//        // then
-//        MvcResult result = actions
-//                .andExpect(status().isCreated())
-//                .andExpect(jsonPath("$.data.userId").value(post.getUserId()))
-//                .andExpect(jsonPath("$.data.title").value(post.getTitle()))
-//                .andExpect(jsonPath("$.data.content").value(post.getContent()))
-////                .andExpect(jsonPath("$.data.category").value(post.getCategory()))
-//                .andExpect(jsonPath("$.data.tag").value(post.getTag()))
-//                .andReturn();
-//    }
-//
-//    /*@Test
-//    void getContent() throws Exception {
-//        //given
-//        long contentId = 1L;
-//
-//        Content content = new Content();
-//        content.setContentId(contentId);
-//
-//        ContentResponseDto response = new ContentResponseDto(1L,1L,1L,1L,"반갑습니다","안녕하세요","image.png", Category.Board,"안녕", LocalDateTime.now(), LocalDateTime.now());
-//
-//        given(contentService.findContent(Mockito.anyLong())).willReturn(new Content());
-//
-//        given(contentMapper.contentToContentResponse(Mockito.any(Content.class))).willReturn(response);
-//
-//
-//        URI uri = UriComponentsBuilder.newInstance().path("/contents/{contentId}").buildAndExpand(contentId).toUri();
-//
-//        // when
-//        ResultActions actions = mockMvc.perform(
-//                MockMvcRequestBuilders
-//                        .get(uri)
-//                        .accept(MediaType.APPLICATION_JSON)
-//                        .with(csrf()));
-//
-//        // then
-//        actions.andExpect(status().isOk())
-//                .andExpect(jsonPath("$.data.contentId").value(content.getContentId()))
-//                .andExpect(jsonPath("$.viewCount").value(content.getViewCount()))
-//                .andExpect(jsonPath("$.heartCount").value(content.getHeartCount()))
-//                .andExpect(jsonPath("$.title").value(content.getTitle()))
-//                .andExpect(jsonPath("$.content").value(content.getContent()))
-//                .andExpect(jsonPath("$.imageUrl").value(content.getImageUrl()))
-//                .andExpect(jsonPath("$.category").value(content.getCategory()))
-//                .andExpect(jsonPath("$.createAt").value(content.getCreatedAt().toLocalTime()))
-//                .andExpect(jsonPath("$.modifiedAt").value(content.getModifiedAt().toLocalTime()))
-//                .andExpect(jsonPath("$.tag").value(content.getTag()));
-//    }*/
-//
-////    @Test
-////    void getContents() {
-////
-////        ContentPostDto post1 = new ContentPostDto(1L, "반갑습니다","안녕하세요","image.png", Category.Board,"안녕");
-////        String postContent1 = gson.toJson(post1);
-////
-////        ContentPostDto post2 = new ContentPostDto(2L, "반과수깡","안녕하수꽝","image2.png", Category.Board,"안녕");
-////        String postContent2 = gson.toJson(post2);
-////
-////        URI postUri = UriComponentsBuilder.newInstance().path("/contents").build().toUri();
-////
-////        String page = "1";
-////        String size = "10";
-////        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-////        queryParams.add("page", page);
-////        queryParams.add("size", size);
-////
-////        URI getUri = UriComponentsBuilder.newInstance().path("/contents").build().toUri();
-////
-////
-////        ResultActions actions = mockMvc.perform(getRequestBuilder(uri, queryParams));
-////        // when
-////        ResultActions actions =
-////                mockMvc.perform(
-//////                        get(getUri)
-//////                                .params(queryParams)
-////                        getRequestBuilder(getUri,queryParams)
-////                                .accept(MediaType.APPLICATION_JSON)
-////                );
-////
-////        // then
-////        MvcResult result = actions
-////                .andExpect(status().isOk())
-////                .andExpect(jsonPath("$.content").isArray())
-////                .andReturn();
-////
-////        List list = JsonPath.parse(result.getResponse().getContentAsString()).read("$.data");
-////
-////        assertThat(list.size(), is(2));
-////    }
-//
-//    @Test
-//    void patchContent() throws Exception {
-//
-//        // 컨텐츠 수정 정보 기입 //
-//        long contentId = 1L;
-//        ContentPatchDto patch = new ContentPatchDto(1L, "반가와유","안냐세용","image2.png", Category.Board,"안녕");
-//
-//        // 컨텐츠 수정 정보 리스폰스 //
-//        ContentResponseDto response = new ContentResponseDto(1L,1L, 2L, 1L,"반가와유","안냐세용","image2.png", Category.Board,"안녕",LocalDateTime.now(),LocalDateTime.now());
-//
-//
-//        //given
-//        given(contentMapper.contentPatchDtoToContent(Mockito.any(ContentPatchDto.class))).willReturn(new Content());
-//
-//        given(contentService.updateContent(Mockito.any(Content.class))).willReturn(new Content());
-//
-//        given(contentMapper.contentToContentResponse(Mockito.any(Content.class))).willReturn(response);
-//
-//        Gson gson = new Gson();
-//
-//        String content = gson.toJson(patch);
-//
-//        URI uri = UriComponentsBuilder.newInstance().path("/contents/{contentId}").buildAndExpand(contentId).toUri();
-//
-//
-//        // when
-//        ResultActions actions =
-//        mockMvc.perform(
-//                MockMvcRequestBuilders
-//                        .patch(uri)
-//                        .accept(MediaType.APPLICATION_JSON)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .with(csrf())
-//                        .content(content));
-//
-//        // then
-//        actions.andExpect(status().isOk())
-//                .andExpect(jsonPath("$.contentId").value(patch.getContentId()))
-//                .andExpect(jsonPath("$.title").value(patch.getTitle()))
-//                .andExpect(jsonPath("$.content").value(patch.getContent()))
-//                .andExpect(jsonPath("$.imageUrl").value(patch.getImageUrl()))
-////                .andExpect(jsonPath("$.data.category").value(patch.getCategory()))
-//                .andExpect(jsonPath("$.tag").value(patch.getTag()));
-//
-//    }
-//
-//    @Test
-//    void deleteContent() throws Exception {
-//        // given
-//        long contentId = 1L;
-//        doNothing().when(contentService).deleteContent(contentId);
-//
-//        // when
-//        ResultActions actions = mockMvc.perform(delete("/contents/" + contentId).with(csrf()));
-//
-//        // then
-//        actions.andExpect(status().isNoContent());
-//    }
-//
-////    @Test
-////    void getContentFromCategory() {
-////    }
-//}
+package com.java.everyboard.content.controller;
+
+import com.java.everyboard.AwsS3.AwsS3Service;
+import com.java.everyboard.comment.dto.CommentResponseDto;
+import com.java.everyboard.comment.repository.CommentRepository;
+import com.java.everyboard.content.dto.*;
+import com.java.everyboard.content.entity.Content;
+import com.java.everyboard.constant.Category;
+import com.java.everyboard.content.entity.ContentImage;
+import com.java.everyboard.content.mapper.ContentMapper;
+import com.java.everyboard.content.repository.ContentImageRepository;
+import com.java.everyboard.content.repository.ContentRepository;
+import com.java.everyboard.content.service.ContentService;
+import com.java.everyboard.response.SingleResponseDto;
+import com.java.everyboard.user.entity.User;
+import com.java.everyboard.user.entity.UserImage;
+import com.java.everyboard.user.repository.UserImageRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Validation;
+import javax.validation.Validator;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+class ContentControllerTest {
+    @Mock
+    private ContentService contentService;
+
+
+    @Mock
+    private ContentMapper contentMapper;
+
+    @Mock
+    private ContentImageRepository contentImageRepository;
+
+    @Mock
+    private UserImageRepository userImageRepository;
+
+    @Mock
+    private CommentRepository commentRepository;
+
+    @Mock
+    private ContentRepository contentRepository;
+
+    @Mock
+    private AwsS3Service awsS3Service;
+
+    @InjectMocks
+    private ContentController contentController;
+
+    private Validator validator;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
+    }
+
+    @DisplayName("POST 게시글 등록")
+    @Test
+    void postContent() throws Exception {
+        List<MultipartFile> images = new ArrayList<>();
+        MockMultipartFile image1 = new MockMultipartFile("image", "1.png", "image/png", "test image".getBytes());
+        images.add(image1);
+        List<String> imgPaths = awsS3Service.uploadFile(images);
+
+        ContentImage contentImage = new ContentImage(1L,"1.png");
+        List<ContentImage> contentImages = new ArrayList<>();
+        contentImages.add(contentImage);
+
+        ContentPostDto contentPostDto = new ContentPostDto(1L, "오늘의 날씨 소개","오늘 날씨 너무 좋다", Category.자유게시판, contentImages);
+        Content content = new Content();
+        ContentResponseDto contentResponseDto = new ContentResponseDto(1L,1L, 0L, 0L,"오늘의 날씨 소개", "오늘 날씨 너무 좋다", contentImages,Category.자유게시판, LocalDateTime.now(),LocalDateTime.now());
+
+        SingleResponseDto sing = new SingleResponseDto(contentResponseDto);
+
+        // Arrange
+        when(contentMapper.contentPostDtoToContent(any(ContentPostDto.class))).thenReturn(content);
+        when(contentService.createContent(any(Content.class), anyList())).thenReturn(content);
+        when(contentMapper.contentToContentResponse(any(Content.class),eq(contentImageRepository))).thenReturn(contentResponseDto);
+
+        // Act
+        ResponseEntity responseEntity = contentController.postContent(contentPostDto,images);
+
+        // Assert
+        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+        assertEquals(sing.toString(), responseEntity.getBody().toString());
+        verify(contentMapper, times(1)).contentPostDtoToContent(contentPostDto);
+        verify(contentService, times(1)).createContent(content, imgPaths);
+        verify(contentMapper, times(1)).contentToContentResponse(content,contentImageRepository);
+    }
+
+    @Test
+    void getContent() {
+        CommentResponseDto commentResponseDto = new CommentResponseDto(1L,1L,1L,"좋습니다~!","최고입니다~","홍길동",LocalDateTime.now(),LocalDateTime.now());
+        List<CommentResponseDto> comments = new ArrayList<>();
+        comments.add(commentResponseDto);
+
+        ContentImage contentImage = new ContentImage(1L,"1.png");
+        List<ContentImage> contentImages = new ArrayList<>();
+        contentImages.add(contentImage);
+
+        UserImage userImage = new UserImage(1L, "2.png");
+        List<UserImage> userImages = new ArrayList<>();
+        userImages.add(userImage);
+
+        // Arrange
+        Content content = new Content();
+        ContentAllResponseDto contentAllResponseDto = new ContentAllResponseDto(1L,1L, 0L, 0L,"오늘의 날씨 소개", "오늘 날씨 너무 좋다", contentImages,Category.자유게시판, LocalDateTime.now(),LocalDateTime.now(),"홍길동",userImages,comments);
+        when(contentService.findContent(anyLong())).thenReturn(content);
+        when(contentService.updateViewCount(any(Content.class))).thenReturn(content);
+        when(contentMapper.contentToContentAllResponse(
+                any(Content.class),
+                eq(commentRepository),
+                eq(contentImageRepository),eq(userImageRepository))).thenReturn(contentAllResponseDto);
+
+        // Act
+        ResponseEntity responseEntity = contentController.getContent(contentAllResponseDto.getContentId());
+
+        // Assert
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(contentAllResponseDto, responseEntity.getBody());
+        verify(contentService, times(1)).findContent(contentAllResponseDto.getContentId());
+        verify(contentService, times(1)).updateViewCount(content);
+        verify(contentMapper, times(1)).contentToContentAllResponse(content,commentRepository,contentImageRepository,userImageRepository);
+    }
+
+    @Test
+    void getContents() {
+        int size = 100;
+        CommentResponseDto commentResponseDto = new CommentResponseDto(1L,1L,1L,"좋습니다~!","최고입니다~","홍길동",LocalDateTime.now(),LocalDateTime.now());
+        List<CommentResponseDto> comments = new ArrayList<>();
+        comments.add(commentResponseDto);
+
+        ContentImage contentImage = new ContentImage(1L,"1.png");
+        List<ContentImage> contentImages = new ArrayList<>();
+        contentImages.add(contentImage);
+
+        UserImage userImage = new UserImage(1L, "2.png");
+        List<UserImage> userImages = new ArrayList<>();
+        userImages.add(userImage);
+
+        Content content = new Content();
+        ContentResponseDto contentResponseDto = new ContentResponseDto(1L,1L, 0L, 0L,"오늘의 날씨 소개", "오늘 날씨 너무 좋다",contentImages,Category.자유게시판, LocalDateTime.now(),LocalDateTime.now());
+        List<Content> contents = new ArrayList<>();
+        contents.add(content);
+
+        List<ContentResponseDto> contentResponseDtoList = new ArrayList<>();
+        contentResponseDtoList.add(contentResponseDto);
+
+        ContentsListDto contentsListDto = new ContentsListDto(contentResponseDtoList);
+
+        // Arrange
+        when(contentMapper.contentsToContentResponse(anyList(), eq(contentImageRepository))).thenReturn(contentsListDto);
+        when(contentService.findContents()).thenReturn(contents);
+
+        // Act
+        ResponseEntity responseEntity = contentController.getContents(size);
+
+        // Assert
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(contentsListDto, responseEntity.getBody());
+        verify(contentService, times(1)).findContents();
+    }
+
+    @Test
+    void getContentsTodayViewRank() {
+        Content content = new Content();
+        List<Content> contents = new ArrayList<>();
+        contents.add(content);
+
+        HomepageContentResponseDto homepageContentResponseDto = new HomepageContentResponseDto(1L, "오늘의 날씨 소개");
+        List<HomepageContentResponseDto> homepageContentResponseDtos = new ArrayList<>();
+        homepageContentResponseDtos.add(homepageContentResponseDto);
+
+        // Arrange
+        when(contentMapper.contentsToHomepageContentResponseDto(anyList())).thenReturn(homepageContentResponseDtos);
+        when(contentService.findContentsTodayViewRank()).thenReturn(contents);
+
+        // Act
+        ResponseEntity responseEntity = contentController.getContentsTodayViewRank();
+
+        // Assert
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(homepageContentResponseDtos, responseEntity.getBody());
+        verify(contentService, times(1)).findContentsTodayViewRank();
+    }
+    @Test
+    void getContentsWeeklyViewRank() {
+        Content content = new Content();
+        List<Content> contents = new ArrayList<>();
+        contents.add(content);
+
+        HomepageContentResponseDto homepageContentResponseDto = new HomepageContentResponseDto(1L, "오늘의 날씨 소개");
+        List<HomepageContentResponseDto> homepageContentResponseDtos = new ArrayList<>();
+        homepageContentResponseDtos.add(homepageContentResponseDto);
+
+        // Arrange
+        when(contentMapper.contentsToHomepageContentResponseDto(anyList())).thenReturn(homepageContentResponseDtos);
+        when(contentService.findContentsWeeklyViewRank()).thenReturn(contents);
+
+        // Act
+        ResponseEntity responseEntity = contentController.getContentsWeeklyViewRank();
+
+        // Assert
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(homepageContentResponseDtos, responseEntity.getBody());
+        verify(contentService, times(1)).findContentsWeeklyViewRank();
+    }
+
+    @Test
+    void getContentsLikeRank() {
+        Content content = new Content();
+        List<Content> contents = new ArrayList<>();
+        contents.add(content);
+
+        HomepageContentResponseDto homepageContentResponseDto = new HomepageContentResponseDto(1L, "오늘의 날씨 소개");
+        List<HomepageContentResponseDto> homepageContentResponseDtos = new ArrayList<>();
+        homepageContentResponseDtos.add(homepageContentResponseDto);
+
+        // Arrange
+        when(contentMapper.contentsToHomepageContentResponseDto(anyList())).thenReturn(homepageContentResponseDtos);
+        when(contentService.findContentsLikeRank()).thenReturn(contents);
+
+        // Act
+        ResponseEntity responseEntity = contentController.getContentsLikeRank();
+
+        // Assert
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(homepageContentResponseDtos, responseEntity.getBody());
+        verify(contentService, times(1)).findContentsLikeRank();
+    }
+
+    @Test
+    void getContentsRecentImage() {
+        Content content = new Content();
+        List<Content> contents = new ArrayList<>();
+        contents.add(content);
+
+        ContentImage contentImage = new ContentImage(1L,"1.png");
+        List<ContentImage> contentImages = new ArrayList<>();
+        contentImages.add(contentImage);
+
+        HomepageContentImageResponseDto homepageContentImageResponseDto = new HomepageContentImageResponseDto(1L, "오늘의 날씨 소개", "날씨 너무 좋다", 0L, contentImages);
+        List<HomepageContentImageResponseDto> homepageContentImageResponseDtos = new ArrayList<>();
+        homepageContentImageResponseDtos.add(homepageContentImageResponseDto);
+
+        // Arrange
+        when(contentMapper.contentsToHomepageContentImageResponseDto(anyList(),eq(contentImageRepository))).thenReturn(homepageContentImageResponseDtos);
+        when(contentService.findContentsRecentImage()).thenReturn(contents);
+
+        // Act
+        ResponseEntity responseEntity = contentController.getContentsRecentImage();
+
+        // Assert
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(homepageContentImageResponseDtos, responseEntity.getBody());
+        verify(contentService, times(1)).findContentsRecentImage();
+    }
+
+    @Test
+    void getContentFromCategory() {
+        Category category = Category.자유게시판;
+
+        ContentImage contentImage = new ContentImage(1L,"1.png");
+        List<ContentImage> contentImages = new ArrayList<>();
+        contentImages.add(contentImage);
+
+        List<CategoryResponseDto> categoryResponseDtos = new ArrayList<>();
+        CategoryResponseDto categoryResponseDto = new CategoryResponseDto(1L,1L,"홍길동",0L,0L,"오늘의 날씨 소개","날씨 너무 좋다",contentImages,Category.자유게시판,LocalDateTime.now(),LocalDateTime.now());
+        categoryResponseDtos.add(categoryResponseDto);
+
+        CategoryContentsResponseDto categoryContentsResponseDto = new CategoryContentsResponseDto(Category.자유게시판, categoryResponseDtos);
+
+        SingleResponseDto sing = new SingleResponseDto(categoryContentsResponseDto);
+        // Arrange
+        when(contentMapper.categoryContentsResponseDto(any(Category.class),eq(contentRepository),eq(contentImageRepository))).thenReturn(categoryContentsResponseDto);
+
+        // Act
+        ResponseEntity responseEntity = contentController.getContentFromCategory(category);
+
+        // Assert
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(sing.toString(), responseEntity.getBody().toString());
+    }
+
+    @Test
+    void getContentFromScrap() {
+        Long userId = 1L;
+        User user = new User();
+
+        Content content = new Content();
+        List<Content> contents = new ArrayList<>();
+        contents.add(content);
+
+        ContentImage contentImage = new ContentImage(1L,"1.png");
+        List<ContentImage> contentImages = new ArrayList<>();
+        contentImages.add(contentImage);
+
+        ScrapResponseDto response = new ScrapResponseDto(1L,1L,"홍길동",0L,0L,"오늘 날씨 정말 좋다","오늘 여행가기 딱좋음",contentImages,LocalDateTime.now(),LocalDateTime.now());
+        List<ScrapResponseDto> scrapResponseDtos = new ArrayList<>();
+        scrapResponseDtos.add(response);
+
+        List<ScrapListDto> scrapListDtos = new ArrayList<>();
+        ScrapListDto scrapListDto = new ScrapListDto(scrapResponseDtos);
+        scrapListDtos.add(scrapListDto);
+
+        SingleResponseDto sing = new SingleResponseDto(scrapListDto);
+
+        // Arrange
+        when(contentService.findVerifiedUser(anyLong())).thenReturn(user);
+        when(contentMapper.scrapResponseDto(any(User.class),eq(contentRepository),eq(contentImageRepository))).thenReturn(scrapListDto);
+
+        // Act
+        ResponseEntity responseEntity = contentController.getContentFromScrap(userId);
+
+        // Assert
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(sing.toString(), responseEntity.getBody().toString());
+    }
+
+    @Test
+    void getSearch() {
+        String keyword = "오늘";
+
+        Content content = new Content();
+        List<Content> contents = new ArrayList<>();
+        contents.add(content);
+
+        ContentImage contentImage = new ContentImage(1L,"1.png");
+        List<ContentImage> contentImages = new ArrayList<>();
+        contentImages.add(contentImage);
+
+        ContentResponseDto contentResponseDto = new ContentResponseDto(1L,1L,0L,0L,"오늘 날씨 최고다","오늘 날씨 정말로 좋다!!", contentImages,Category.자유게시판,LocalDateTime.now(),LocalDateTime.now());
+        List<ContentResponseDto> contentResponseDtos = new ArrayList<>();
+        contentResponseDtos.add(contentResponseDto);
+
+        ContentsListDto contentsListDto = new ContentsListDto(contentResponseDtos);
+
+
+        // Arrange
+        when(contentService.findAllSearch(anyString())).thenReturn(contents);
+        when(contentMapper.contentsToContentResponse(anyList(),eq(contentImageRepository))).thenReturn(contentsListDto);
+
+        // Act
+        ResponseEntity responseEntity = contentController.getSearch(keyword);
+
+        // Assert
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(contentsListDto, responseEntity.getBody());
+    }
+
+    @Test
+    void patchContent() {
+        ContentImage contentImage = new ContentImage(1L,"1.png");
+        List<ContentImage> contentImages = new ArrayList<>();
+        contentImages.add(contentImage);
+
+        ContentPatchDto requestBody = new ContentPatchDto(1L,"오늘 날씨 최고","수영장 가고 싶다", contentImages,Category.자유게시판);
+        Long contentId = 1L;
+        Content content = new Content();
+        ContentResponseDto contentResponseDto = new ContentResponseDto(1L,1L,1L,0L,"오늘 날씨 짱","덧글 내용",contentImages,Category.자유게시판, LocalDateTime.now(),LocalDateTime.now());
+
+        when(contentMapper.contentPatchDtoToContent(any(ContentPatchDto.class))).thenReturn(content);
+        when(contentService.updateContent(any(Content.class))).thenReturn(content);
+        when(contentMapper.contentToContentResponse(any(Content.class),eq(contentImageRepository))).thenReturn(contentResponseDto);
+
+        // Act
+        ResponseEntity responseEntity = contentController.patchContent(requestBody, contentId);
+
+        // Assert
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(contentResponseDto, responseEntity.getBody());
+        verify(contentService, times(1)).updateContent(content);
+    }
+
+    @Test
+    void deleteContent() {
+        // Arrange
+        Long contentId = 1L;
+
+        // Act
+        ResponseEntity responseEntity = contentController.deleteContent(contentId);
+
+        // Assert
+        assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
+        verify(contentService, times(1)).deleteContent(contentId);
+    }
+}
