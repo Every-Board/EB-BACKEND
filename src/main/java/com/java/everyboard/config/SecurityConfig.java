@@ -56,7 +56,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests(auth -> auth
                         .antMatchers(HttpMethod.GET, "/**").permitAll()
-                        .antMatchers(HttpMethod.POST, "/user/join").permitAll()
+                        .antMatchers(HttpMethod.POST, "/user/join","/auth/email").permitAll()
                         .antMatchers(HttpMethod.PATCH, "/auth/password/**").permitAll()
                         .antMatchers(HttpMethod.DELETE, "/user").hasRole("USER")
                         .antMatchers("/h2/**").permitAll()
