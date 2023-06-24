@@ -56,12 +56,12 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests(auth -> auth
                         .antMatchers(HttpMethod.GET, "/**").permitAll()
-                        .antMatchers(HttpMethod.POST, "/user/join","/login/**", "/logout", "/token/reissue", "/email/**").permitAll()
-                        .antMatchers(HttpMethod.PATCH, "/api/auth/password/**").permitAll()
+                        .antMatchers(HttpMethod.POST, "/user/join").permitAll()
+                        .antMatchers(HttpMethod.PATCH, "/auth/password/**").permitAll()
                         .antMatchers(HttpMethod.DELETE, "/user").hasRole("USER")
                         .antMatchers("/h2/**").permitAll()
                         .antMatchers(HttpMethod.OPTIONS).permitAll()
-                        .antMatchers("/login/**", "/oauth2/**", "/loading/**").permitAll()
+                        .antMatchers("/oauth2/**", "/loading/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
