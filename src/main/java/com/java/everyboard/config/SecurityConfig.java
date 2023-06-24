@@ -61,7 +61,7 @@ public class SecurityConfig {
                         .antMatchers(HttpMethod.DELETE, "/user").hasRole("USER")
                         .antMatchers("/h2/**").permitAll()
                         .antMatchers(HttpMethod.OPTIONS).permitAll()
-                        .antMatchers("/oauth2/**", "/loading/**").permitAll()
+                        .antMatchers("/oauth2/**", "/loading/**","/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
