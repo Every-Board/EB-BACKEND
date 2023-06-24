@@ -1,8 +1,7 @@
 package com.java.everyboard.user.service;
 
-import com.java.everyboard.AwsS3.AwsS3Service;
+import com.java.everyboard.awsS3.AwsS3Service;
 import com.java.everyboard.constant.LoginType;
-import com.java.everyboard.content.entity.ContentImage;
 import com.java.everyboard.exception.BusinessLogicException;
 import com.java.everyboard.exception.ExceptionCode;
 import com.java.everyboard.security.utils.CustomAuthorityUtils;

@@ -1,4 +1,4 @@
-package com.java.everyboard.AwsS3;
+package com.java.everyboard.awsS3;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

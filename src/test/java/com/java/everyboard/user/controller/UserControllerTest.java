@@ -1,20 +1,15 @@
 package com.java.everyboard.user.controller;
 
-import com.java.everyboard.AwsS3.AwsS3Service;
-import com.java.everyboard.comment.dto.CommentPostDto;
-import com.java.everyboard.comment.entity.Comment;
+import com.java.everyboard.awsS3.AwsS3Service;
 import com.java.everyboard.comment.repository.CommentRepository;
 import com.java.everyboard.constant.HeartType;
 import com.java.everyboard.constant.LoginType;
 import com.java.everyboard.constant.ScrapType;
-import com.java.everyboard.content.entity.Content;
 import com.java.everyboard.content.entity.ContentImage;
 import com.java.everyboard.content.repository.ContentImageRepository;
 import com.java.everyboard.content.repository.ContentRepository;
-import com.java.everyboard.content.scrap.entity.Scrap;
 import com.java.everyboard.content.scrap.repository.ScrapRepository;
 import com.java.everyboard.heart.commentheart.repository.CommentHeartRepository;
-import com.java.everyboard.heart.contentHeart.entity.ContentHeart;
 import com.java.everyboard.heart.contentHeart.repository.ContentHeartRepository;
 import com.java.everyboard.response.SingleResponseDto;
 import com.java.everyboard.user.dto.*;
