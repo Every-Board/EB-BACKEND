@@ -11,7 +11,7 @@ https://main.d2oi0np8ja85am.amplifyapp.com
 ## 👨‍👩‍👧‍👦 **팀원 소개**
 |강진원<br>(FE)</br>|김은수<br>(FE)</br>|강하렴<br>(BE)</br>|최유진<br>(BE)</br>|안서희<br>(BE)</br>|  
 |:---:|:---:|:---:|:---:|:---:|
-|<img src="https://avatars.githubusercontent.com/u/89727516?s=100&v=4" width=150>|<img src="https://avatars.githubusercontent.com/u/106465014?v=4" width=150>|<img src="https://avatars.githubusercontent.com/u/108250233?v=4" width=100>|<img src="https://avatars.githubusercontent.com/u/57933510?s=100&v=4" width=100>|<img src="https://avatars.githubusercontent.com/u/89247924?s=100&v=4" width=200>|
+|<img src="https://avatars.githubusercontent.com/u/89727516?s=100&v=4" width=150>|<img src="https://avatars.githubusercontent.com/u/106465014?v=4" width=150>|<img src="https://avatars.githubusercontent.com/u/108250233?v=4" width=100>|<img src="https://avatars.githubusercontent.com/u/57933510?s=100&v=4" width=100>|<img src="https://avatars.githubusercontent.com/u/89247924?s=100&v=4" width=140>|
 |[@z1nun](https://github.com/z1nun)|[@Kim-EunSu](https://github.com/Kim-EunSu)|[@kangharyeom](https://github.com/kangharyeom)|[@Choiyu330](https://github.com/Choiyu330)|[@eehres](https://github.com/eehres)|
 |- 반응형 웹 <br> - HomePage CRUD <br> - DetailPage CRUD <br> - S3배포 |-Content CRUD - Comment CRUD <br> - UserInfo CRUD <br> - API 통신|- Content, Scrap CRUD <br> - CICD (Git Actions) <br> - 이미지 업로드(Multipart & S3) <br> - 소셜로그인(Oauth) <br> - 이메일 인증 | - User CRUD <br> |-Comment CRUD |
 
