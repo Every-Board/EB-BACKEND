@@ -13,7 +13,35 @@ https://main.d2oi0np8ja85am.amplifyapp.com
 |:---:|:---:|:---:|:---:|:---:|
 |<img src="https://avatars.githubusercontent.com/u/89727516?s=100&v=4" width=150>|<img src="https://avatars.githubusercontent.com/u/106465014?v=4" width=150>|<img src="https://avatars.githubusercontent.com/u/108250233?v=4" width=100>|<img src="https://avatars.githubusercontent.com/u/57933510?s=100&v=4" width=100>|<img src="https://avatars.githubusercontent.com/u/89247924?s=100&v=4" width=140>|
 |[@z1nun](https://github.com/z1nun)|[@Kim-EunSu](https://github.com/Kim-EunSu)|[@kangharyeom](https://github.com/kangharyeom)|[@Choiyu330](https://github.com/Choiyu330)|[@eehres](https://github.com/eehres)|
-|- 반응형 웹 <br> - HomePage CRUD <br> - DetailPage CRUD <br> - S3배포 |-Content CRUD - Comment CRUD <br> - UserInfo CRUD <br> - API 통신|- Content, Scrap CRUD <br> - CICD (Git Actions) <br> - 이미지 업로드(Multipart & S3) <br> - 소셜로그인(Oauth) <br> - 이메일 인증 | - User CRUD <br> |-Comment CRUD |
+|- 반응형 웹 <br> - HomePage CRUD <br> - DetailPage CRUD <br> - S3배포 |-Content CRUD - Comment CRUD <br> - UserInfo CRUD <br> - API 통신|- Content, Scrap CRUD <br> - CICD (Git Actions) <br> - 이미지 업로드(Multipart & S3) <br> - 소셜로그인(Oauth) <br> - 이메일 인증 <br> - README | - User CRUD <br> |-Comment CRUD |
+
+
+<br></br>
+
+## 📝 기능 소개
+### 1. 유저 도메인 (User Domain)
+- User CRUD <br></br>
+
+- JWT & Oauth <br></br>
+
+- 이메일 인증 구현 (SMTP서버 메세지) <br></br>
+<br></br>
+### 2. 게시글 도메인 (Content Domain)
+- Content CRUD <br></br>
+
+- Image Upload (AWS S3 & Multipart) <br></br>
+
+- 검색기능 비롯한 쿼리 활용 (Native Query) <br></br>
+<br></br>
+### 3. 댓글 도메인 (Comment Domain)
+- Comment CRUD <br></br>
+
+- Reply CRUD (대댓글) <br></br>
+
+<br></br>
+
+## 🗃 ERD 
+<img src="https://cdn.discordapp.com/attachments/1119084439608238081/1122815186840080445/d85ee10725305ea9.png"> 
 
 <br></br>
 <br></br>
