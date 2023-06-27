@@ -61,8 +61,8 @@ public class UserController {
     }
 
     // 프로필 이미지 업로드
-    @PostMapping(name = "/{userId}/profile", consumes = {"multipart/form-data"})
-    public ResponseEntity postProfile(@PathVariable("userId") @Positive Long userId,@ModelAttribute UserPostImageDto requestBody,
+    @PostMapping(value = "/{userId}/profile",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity postProfile(@PathVariable("userId") @Positive Long userId, @ModelAttribute UserPostImageDto requestBody,
                                       @RequestPart(required = false, value = "ProfileUrl") List<MultipartFile> multipartfiles) {
 
         requestBody.setUserId(userId);
