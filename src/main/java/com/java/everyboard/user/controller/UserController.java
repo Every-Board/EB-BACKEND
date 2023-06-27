@@ -20,6 +20,7 @@ import com.java.everyboard.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -60,8 +61,8 @@ public class UserController {
     }
 
     // 프로필 이미지 업로드
-    @PostMapping("/{userId}/profile")
-    public ResponseEntity postProfile(@PathVariable("userId") @Positive Long userId,@RequestPart("data") UserPostImageDto requestBody,
+    @PostMapping(name = "/{userId}/profile", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity postProfile(@PathVariable("userId") @Positive Long userId,@ModelAttribute("data") UserPostImageDto requestBody,
                                       @RequestPart(required = false, value = "ProfileUrl") List<MultipartFile> multipartfiles) {
 
         requestBody.setUserId(userId);

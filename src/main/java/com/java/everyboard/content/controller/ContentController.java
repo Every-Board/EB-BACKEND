@@ -18,6 +18,7 @@ import com.java.everyboard.user.repository.UserImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +42,8 @@ public class ContentController {
     private final UserImageRepository userImageRepository;
 
     // 게시글 생성 //
-    @PostMapping
-    public ResponseEntity postContent(@Valid @RequestPart("data") ContentPostDto requestBody,
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity postContent(@Valid @ModelAttribute("data") ContentPostDto requestBody,
                                       @RequestPart(required=false, value="ContentImgUrl") List<MultipartFile> multipartFiles) {
 
          if (multipartFiles == null) {
