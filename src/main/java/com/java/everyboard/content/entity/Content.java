@@ -35,7 +35,6 @@ public class Content extends Auditable {
     @Column(nullable = false)
     private String content; // 컨텐츠 내용
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     private Category category = Category.자유게시판; // 카테고리 (Enum값으로 받음)
 //    @Column(nullable = false)
 //    private String tag;
