@@ -43,7 +43,7 @@ public class ContentController {
 
     // 게시글 생성 //
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity postContent(@Valid @ModelAttribute ContentPostDto requestBody,
+    public ResponseEntity postContent(@ModelAttribute ContentPostDto requestBody,
                                       @RequestPart(required=false, value="ContentImgUrl") List<MultipartFile> multipartFiles) {
 
          if (multipartFiles == null) {
