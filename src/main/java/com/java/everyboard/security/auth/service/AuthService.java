@@ -160,7 +160,7 @@ public class AuthService {
 
     private String setPasswordContext(String authCode) {
         Context context = new Context();
-        context.setVariable("link", "https://everyboard.shop/auth/password?authCode=" + authCode);
+        context.setVariable("link", "https://every-board.shop/auth/password?authCode=" + authCode);
         context.setVariable("authCode", authCode);
         return templateEngine.process("NewPassword", context);
     }
