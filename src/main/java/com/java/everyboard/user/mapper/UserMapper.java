@@ -117,4 +117,12 @@ public interface UserMapper {
                         .build())
                 .collect(Collectors.toList());
     }
+
+    default UserNicknameResponseDto userToUserNicknameResponseDto(User user){
+
+        return UserNicknameResponseDto.builder()
+                .userId(user.getUserId())
+                .nickname(user.getNickname())
+                .build();
+    }
 }
