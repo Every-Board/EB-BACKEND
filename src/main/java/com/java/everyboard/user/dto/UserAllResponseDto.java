@@ -1,5 +1,6 @@
 package com.java.everyboard.user.dto;
 
+import com.java.everyboard.user.entity.UserImage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ public class UserAllResponseDto {
     private String email;
     private String nickname;
     private String password;
-    private String profileUrl;
+    private List<UserImage> profileUrl;
 
     private List<UserContentResponseDto> contents;
 

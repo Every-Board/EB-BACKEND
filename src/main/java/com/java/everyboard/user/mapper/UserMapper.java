@@ -45,7 +45,6 @@ public interface UserMapper {
 
     default UserAllResponseDto userMyPage(User user, UserImageRepository userImageRepository, ContentRepository contentRepository, ContentImageRepository contentImageRepository, CommentRepository commentRepository, ContentHeartRepository contentHeartRepository, ScrapRepository scrapRepository){
         List<UserImage> userImage = userImageRepository.findByUserId(user.getUserId());
-        Collections.reverse(userImage);
         List<Content> contents = contentRepository.findByUserId(user.getUserId());
         Collections.reverse(contents);
         List<Comment> comments = commentRepository.findByUserId(user.getUserId());
@@ -60,7 +59,7 @@ public interface UserMapper {
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .nickname(user.getNickname())
-                .profileUrl(userImage.toString())
+                .profileUrl(userImage)
                 .createdAt(user.getCreatedAt())
                 .modifiedAt(user.getModifiedAt())
                 .comments(commentsToCommentResponseDtos(comments))
@@ -72,11 +71,10 @@ public interface UserMapper {
 
     default UserImageResponseDto userImage(User user, UserImageRepository userImageRepository){
         List<UserImage> userImage = userImageRepository.findByUserId(user.getUserId());
-        Collections.reverse(userImage);
 
         return UserImageResponseDto.builder()
                 .userId(user.getUserId())
-                .profileUrl(userImage.toString())
+                .profileUrl(userImage)
                 .build();
     }
 
