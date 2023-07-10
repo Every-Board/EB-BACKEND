@@ -199,6 +199,10 @@ class UserControllerTest {
         List<ContentImage> contentImages = new ArrayList<>();
         contentImages.add(contentImage);
 
+        UserImage userImage = new UserImage();
+        List<UserImage> userImages = new ArrayList<>();
+        userImages.add(userImage);
+
         UserContentResponseDto userContentResponseDto = new UserContentResponseDto(1L,"오늘 날씨 정말 좋다", "오늘 날씨 짱좋아", contentImages, LocalDateTime.now(),LocalDateTime.now());
         List<UserContentResponseDto> userContentResponseDtos = new ArrayList<>();
         userContentResponseDtos.add(userContentResponseDto);
@@ -217,7 +221,7 @@ class UserControllerTest {
 
         long userId = 1L;
         User user = new User();
-        UserAllResponseDto userAllResponseDto = new UserAllResponseDto(1L,"kang@gmail.com", "홍길동", "12345678aa!!", profileUrl,userContentResponseDtos,userCommentResponseDtos, userContentHeartResponseDtos,userScrapResponseDtos,LocalDateTime.now(), LocalDateTime.now());
+        UserAllResponseDto userAllResponseDto = new UserAllResponseDto(1L,"kang@gmail.com", "홍길동", "12345678aa!!", userImages,userContentResponseDtos,userCommentResponseDtos, userContentHeartResponseDtos,userScrapResponseDtos,LocalDateTime.now(), LocalDateTime.now());
 
         // Arrange
         when(userService.findUser(anyLong())).thenReturn(user);
