@@ -67,6 +67,15 @@ public interface UserMapper {
                 .scraps(scrapsToScrapResponseDtos(scraps, contentImageRepository))
                 .build();
     }
+
+    default UserImageResponseDto userImage(User user, UserImageRepository userImageRepository){
+
+        return UserImageResponseDto.builder()
+                .userId(user.getUserId())
+                .profileUrl(user.getProfileUrl())
+                .build();
+    }
+
     default List<UserCommentResponseDto> commentsToCommentResponseDtos(List<Comment> comments){
         return comments.stream()
                 .map(comment -> UserCommentResponseDto.builder()

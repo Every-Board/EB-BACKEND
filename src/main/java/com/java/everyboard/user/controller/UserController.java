@@ -109,6 +109,13 @@ public class UserController {
         return new ResponseEntity<>(userMapper.userMyPage(user, userImageRepository, contentRepository, contentImageRepository, commentRepository, contentHeartRepository, scrapRepository), HttpStatus.OK);
     }
 
+    // 회원 이미지 조회
+    @GetMapping("/{userId}/image")
+    public ResponseEntity getUserImage(@PathVariable("userId") @Positive Long userId) {
+        User user = userService.findUser(userId);
+        return new ResponseEntity<>(userMapper.userImage(user, userImageRepository), HttpStatus.OK);
+    }
+
     // 회원 닉네임 조회
     @GetMapping("/{userId}/nickname")
     public ResponseEntity getUserNickname(@PathVariable("userId") @Positive Long userId) {
