@@ -1,10 +1,10 @@
 ![header](https://capsule-render.vercel.app/api?type=waving&&color=timeGradient&height=300&section=header&text=Every%20Board&fontSize=90&animation=twinkling&desc=모두의_게시판&descAlign=68&descAlignY=65&)
 
-## ![image](https://avatars.githubusercontent.com/u/132429955?s=200&v=4) **프로젝트 소개**
+## ![image](https://avatars.githubusercontent.com/u/132429955?s=200&v=4) **프로젝트 소개** ( https://findthelostedhobby.tistory.com/124 )
 
 🖥️ 새로운 소식을 원하는 모두에게 모든 소식을 전하는 커뮤니티! 모두의 게시판 입니다. 🖥️
 
-다음은 모두의 게시판 프로젝트를 블로깅한 링크입니다.( https://findthelostedhobby.tistory.com/124 )
+
 
 <br></br>
 #### 배포링크
