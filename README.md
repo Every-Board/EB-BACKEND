@@ -40,7 +40,8 @@ https://main.d2oi0np8ja85am.amplifyapp.com
 
 <br></br>
 
-## 🗃 ERD 
+## 🗃 ERD (설계 설명 블로깅 https://findthelostedhobby.tistory.com/142)
+
 <img src="https://cdn.discordapp.com/attachments/1119084439608238081/1122815186840080445/d85ee10725305ea9.png"> 
 
 <br></br>
