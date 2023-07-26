@@ -1,6 +1,6 @@
 ![header](https://capsule-render.vercel.app/api?type=waving&&color=timeGradient&height=300&section=header&text=Every%20Board&fontSize=90&animation=twinkling&desc=모두의_게시판&descAlign=68&descAlignY=65&)
 
-## ![image](https://avatars.githubusercontent.com/u/132429955?s=200&v=4) **프로젝트 소개** ( https://findthelostedhobby.tistory.com/124 )
+## ![image](https://avatars.githubusercontent.com/u/132429955?s=200&v=4) **프로젝트 소개** ( 소개 블로깅 https://findthelostedhobby.tistory.com/124 )
 
 🖥️ 새로운 소식을 원하는 모두에게 모든 소식을 전하는 커뮤니티! 모두의 게시판 입니다. 🖥️
 
@@ -43,7 +43,7 @@ https://main.d2oi0np8ja85am.amplifyapp.com
 
 <br></br>
 
-## 🗃 ERD (설계 설명 블로깅 https://findthelostedhobby.tistory.com/142)
+## 🗃 ERD ( erd 블로깅 https://findthelostedhobby.tistory.com/142 )
 
 <img src="https://cdn.discordapp.com/attachments/1119084439608238081/1122815186840080445/d85ee10725305ea9.png"> 
 
