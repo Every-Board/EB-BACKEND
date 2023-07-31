@@ -66,7 +66,7 @@ public class CommentController {
 
     // 코멘트 전체 조회 //
     @GetMapping
-    public ResponseEntity getComments(@PathVariable("commentId") @Positive Long commentId,
+    public ResponseEntity getComments(@PathVariable("contentId") @Positive Long contentId,
                                       @Positive @RequestParam("page") int page,
                                       @Positive @RequestParam("size") int size) {
         Page<Comment> pageComments = commentService.findComments(page - 1, size);
