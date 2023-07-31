@@ -17,11 +17,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("comments")
+@RequestMapping("/comments")
 public class CommentController {
     private final CommentService commentService;
     private final CommentMapper commentMapper;
@@ -65,9 +66,8 @@ public class CommentController {
     }
 
     // 코멘트 전체 조회 //
-    @GetMapping("/contents/{contentId}")
-    public ResponseEntity getComments(@PathVariable("contentId") @Positive Long contentId,
-                                      @Positive @RequestParam("page") int page,
+    @GetMapping
+    public ResponseEntity getComments(@Positive @RequestParam("page") int page,
                                       @Positive @RequestParam("size") int size) {
         Page<Comment> pageComments = commentService.findComments(page - 1, size);
         List<Comment> comments = pageComments.getContent();
@@ -75,6 +75,15 @@ public class CommentController {
         return new ResponseEntity<>(
                 new MultiResponseDto<>(commentMapper.commentsToCommentResponseDtos(comments),
                         pageComments),
+                HttpStatus.OK);
+    }
+
+    // 게시글 Id 단위 코멘트 조회 //
+    @GetMapping("/contents/{contentId}")
+    public ResponseEntity getContentComments(@PathVariable("contentId") @Positive int contentId) {
+       List<Comment> comments = commentService.findContentComments(contentId);
+
+        return new ResponseEntity<>(commentMapper.contentCommentsToCommentResponseDtos(comments),
                 HttpStatus.OK);
     }
 

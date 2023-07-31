@@ -1,5 +1,6 @@
 package com.java.everyboard.comment.service;
 
+import com.java.everyboard.comment.dto.CommentResponseDto;
 import com.java.everyboard.comment.entity.Comment;
 import com.java.everyboard.comment.repository.CommentRepository;
 import com.java.everyboard.content.entity.Content;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -68,6 +70,11 @@ public class CommentService {
                 Sort.by("commentId").descending()));
     }
 
+    // 게시글 Id 단위 코멘트 조회
+    public List<Comment> findContentComments(int contentId) {
+        return findVerifiedContentComments(contentId);
+    }
+
     //코멘트 삭제
     public void deleteComment(long commentId) {
         Comment findComment = findVerifiedComment(commentId);
@@ -85,5 +92,11 @@ public class CommentService {
                 optionalComment.orElseThrow(() ->
                         new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
         return findComment;
+    }
+
+    public List<Comment> findVerifiedContentComments(long contentId) {
+        List<Comment> findContentComments = commentRepository.findAllByContentId(contentId);
+
+        return findContentComments;
     }
 }
