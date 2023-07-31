@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/contents/{contentId}/comments")
+@RequestMapping("comments")
 public class CommentController {
     private final CommentService commentService;
     private final CommentMapper commentMapper;
@@ -65,7 +65,7 @@ public class CommentController {
     }
 
     // 코멘트 전체 조회 //
-    @GetMapping
+    @GetMapping("/contents/{contentId}")
     public ResponseEntity getComments(@PathVariable("contentId") @Positive Long contentId,
                                       @Positive @RequestParam("page") int page,
                                       @Positive @RequestParam("size") int size) {
