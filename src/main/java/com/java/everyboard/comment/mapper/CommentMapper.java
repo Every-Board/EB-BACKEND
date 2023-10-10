@@ -9,6 +9,7 @@ import com.java.everyboard.user.entity.User;
 import org.mapstruct.Mapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
@@ -55,4 +56,5 @@ public interface CommentMapper {
                 .build();
     }
     List<CommentResponseDto> commentsToCommentResponseDtos(List<Comment> comment);
+    List<CommentResponseDto> contentCommentsToCommentResponseDtos(List<Comment> comment);
 }

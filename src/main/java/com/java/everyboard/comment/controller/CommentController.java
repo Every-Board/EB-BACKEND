@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Validated
@@ -74,6 +75,15 @@ public class CommentController {
         return new ResponseEntity<>(
                 new MultiResponseDto<>(commentMapper.commentsToCommentResponseDtos(comments),
                         pageComments),
+                HttpStatus.OK);
+    }
+
+    // 게시글 Id 단위 코멘트 조회 //
+    @GetMapping("/contents/{contentId}")
+    public ResponseEntity getContentComments(@PathVariable("contentId") @Positive int contentId) {
+       List<Comment> comments = commentService.findContentComments(contentId);
+
+        return new ResponseEntity<>(commentMapper.contentCommentsToCommentResponseDtos(comments),
                 HttpStatus.OK);
     }
 
